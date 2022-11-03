@@ -77,16 +77,16 @@ export default {
   data() {
     return {
       filterName: "",
+      chosenCities: [],
     };
   },
-  created() {
-    this.fetchData();
+  props: {
+    cities: {
+      type: Array,
+    },
   },
   computed: {
-    ...mapGetters({
-      cities: "city/getCities",
-      chosenCities: "city/getChosenCities",
-    }),
+    ...mapGetters({}),
     filterCities() {
       return this.cities.filter((city) => {
         return city.name.match(this.filterName);
@@ -95,22 +95,28 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetch: "city/fetchData",
-      addChosen: "city/addChosenCity",
-      removeChosen: "city/removeChosenCity",
+      removeOneInCities: "city/removeOneInCities",
+      addOneInCities: "city/addOneInCities",
     }),
-    fetchData() {
-      this.fetch();
-    },
     addChosenCities(city) {
-      this.addChosen({
+      this.chosenCities.push({
+        code: city.code,
+        codename: city.codename,
+        name: city.name,
+      });
+      this.removeOneInCities({
         code: city.code,
         codename: city.codename,
         name: city.name,
       });
     },
     removeChosenCities(chosenCity) {
-      this.removeChosen({
+      const index = this.chosenCities.findIndex(
+        (c) => c.code === chosenCity.code
+      );
+      this.chosenCities.splice(index, 1);
+
+      this.addOneInCities({
         code: chosenCity.code,
         codename: chosenCity.codename,
         name: chosenCity.name,
@@ -124,7 +130,7 @@ export default {
 .container {
   width: 400px;
   max-width: 600px;
-  margin: 10rem auto;
+  margin: 2rem auto;
   padding: 0;
 }
 .search-block {
