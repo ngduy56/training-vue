@@ -1,53 +1,14 @@
 <template>
   <div class="container">
     <div class="search-block">
-      <svg
-        class="search-icon"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M20.8536 20.6464L16.9994 16.7923C18.2445 15.382 19 13.5292 19 11.5C19 7.08172 15.4183 3.5 11 3.5C6.58172 3.5 3 7.08172 3 11.5C3 15.9183 6.58172 19.5 11 19.5C13.0292 19.5 14.882 18.7445 16.2923 17.4994L20.1464 21.3536C20.3417 21.5488 20.6583 21.5488 20.8536 21.3536C21.0488 21.1583 21.0488 20.8417 20.8536 20.6464ZM18 11.5C18 15.366 14.866 18.5 11 18.5C7.13401 18.5 4 15.366 4 11.5C4 7.63401 7.13401 4.5 11 4.5C14.866 4.5 18 7.63401 18 11.5Z"
-          fill="#999999"
-        />
-      </svg>
+      <SearchIcon />
       <div class="chosen-list">
-        <div
-          v-for="chosenCity in chosenCities"
-          class="chosen-item"
-          :key="chosenCity.code"
+        <ChosenItem
+          v-for="chosenItem in chosenList"
+          :key="chosenItem.code"
+          :chosenItem="chosenItem"
         >
-          <span>{{ chosenCity.name }}</span>
-          <svg
-            @click="removeChosenCities(chosenCity)"
-            class="close-icon"
-            width="14"
-            height="24"
-            viewBox="0 0 14 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10.9375 8.0625L3.0625 15.9375"
-              stroke="#627D98"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M10.9375 15.9375L3.0625 8.0625"
-              stroke="#627D98"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </div>
+        </ChosenItem>
       </div>
       <input
         v-model="filterName"
@@ -55,16 +16,15 @@
         placeholder="Nhập tên thành phố để tìm kiếm..."
       />
     </div>
-    <div class="city-block">
-      <div class="city-list">
-        <div
-          v-for="city in filterCities"
-          @click="addChosenCities(city)"
-          class="list-item"
-          :key="city.name"
+    <div class="option-block">
+      <div class="option-list">
+        <OptionItem
+          v-for="option in options"
+          :key="option.codename"
+          :option="option"
+          @input="addOption(option)"
         >
-          {{ city.name }}
-        </div>
+        </OptionItem>
       </div>
     </div>
   </div>
@@ -72,55 +32,44 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import SearchIcon from "../icons/SearchIcon.vue";
+import ChosenItem from "../common/ChosenItem.vue";
+import OptionItem from "../common/OptionItem.vue";
 export default {
   name: "InputExam",
   data() {
     return {
       filterName: "",
-      chosenCities: [],
     };
   },
   props: {
-    cities: {
+    options: {
       type: Array,
+      require: true,
     },
+    chosenList: {
+      type: Array,
+      require: true,
+    },
+  },
+  components: {
+    SearchIcon,
+    ChosenItem,
+    OptionItem,
   },
   computed: {
     ...mapGetters({}),
-    filterCities() {
-      return this.cities.filter((city) => {
-        return city.name.match(this.filterName);
+    filterOptions() {
+      return this.options.filter((option) => {
+        return option.name.match(this.filterName);
       });
     },
   },
   methods: {
-    ...mapActions({
-      removeOneInCities: "city/removeOneInCities",
-      addOneInCities: "city/addOneInCities",
-    }),
-    addChosenCities(city) {
-      this.chosenCities.push({
-        code: city.code,
-        codename: city.codename,
-        name: city.name,
-      });
-      this.removeOneInCities({
-        code: city.code,
-        codename: city.codename,
-        name: city.name,
-      });
-    },
-    removeChosenCities(chosenCity) {
-      const index = this.chosenCities.findIndex(
-        (c) => c.code === chosenCity.code
-      );
-      this.chosenCities.splice(index, 1);
+    ...mapActions({}),
 
-      this.addOneInCities({
-        code: chosenCity.code,
-        codename: chosenCity.codename,
-        name: chosenCity.name,
-      });
+    addOption(city) {
+      this.$emit("input", city);
     },
   },
 };
@@ -172,7 +121,7 @@ export default {
 .input-search::placeholder {
   color: #bfbfbf;
 }
-.city-block {
+.option-block {
   max-width: 400px;
   width: 400px;
   background-color: #e5f9ff33;
@@ -180,11 +129,17 @@ export default {
   border-radius: 4px;
   margin-top: 4px;
 }
-.city-list {
+.option-list {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  overflow: scroll;
+  overflow-x: hidden;
+  max-height: 240px;
+}
+.option-list::-webkit-scrollbar {
+  display: none;
 }
 .list-item {
   font-family: "Noto Sans JP";

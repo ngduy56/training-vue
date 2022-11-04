@@ -2,37 +2,39 @@ import axios from "axios";
 const state = () => ({
   totalCities: [],
   cities: [],
-  // chosenCities: [],
+  chosenCities: [],
 });
 // getters
 const getters = {
   getCities(state) {
     return state.cities;
   },
-  // getChosenCities(state) {
-  //   return state.chosenCities;
-  // },
+  getChosenCities(state) {
+    return state.chosenCities;
+  },
 };
 // mutations
 const mutations = {
-  FETCH_DATA(state, cities) {
+  GET_CITY_LIST(state, cities) {
     state.cities = cities;
   },
-  // ADD_CHOSEN_CITY(state, city) {
-  //   let canAdd = true;
-  //   state.chosenCities.map((c) => {
-  //     if (c.code === city.code) canAdd = false;
-  //   });
-  //   if (canAdd) {
-  //     state.chosenCities.push({
-  //       code: city.code,
-  //       codename: city.codename,
-  //       name: city.name,
-  //     });
-  //   } else return;
-  //   const index = state.cities.findIndex((c) => c.code === city.code);
-  //   state.cities.splice(index, 1);
-  // },
+  ADD_CHOSEN_CITY() {
+    console.log("mutation......");
+
+    // let canAdd = true;
+    // state.chosenCities.map((c) => {
+    //   if (c.code === city.code) canAdd = false;
+    // });
+    // if (canAdd) {
+    //   state.chosenCities.push({
+    //     code: city.code,
+    //     codename: city.codename,
+    //     name: city.name,
+    //   });
+    // } else return;
+    // const index = state.cities.findIndex((c) => c.code === city.code);
+    // state.cities.splice(index, 1);
+  },
   // REMOVE_CHOSEN_CTTY(state, city) {
   //   const index = state.chosenCities.findIndex((c) => c.code === city.code);
   //   state.chosenCities.splice(index, 1);
@@ -69,7 +71,7 @@ const mutations = {
 };
 // actions
 const actions = {
-  async fetchData({ commit }) {
+  async getCityList({ commit }) {
     await axios
       .get(`https://provinces.open-api.vn/api/p/`)
       .then((response) => {
@@ -82,16 +84,16 @@ const actions = {
             }
             return city;
           });
-          commit("FETCH_DATA", formatCities);
+          commit("GET_CITY_LIST", formatCities);
         }
       })
       .catch((e) => {
         console.log(e);
       });
   },
-  // addChosenCity({ commit }, city) {
-  //   commit("ADD_CHOSEN_CITY", city);
-  // },
+  addChosenCity({ commit }, city) {
+    commit("ADD_CHOSEN_CITY", city);
+  },
   // removeChosenCity({ commit }, city) {
   //   commit("REMOVE_CHOSEN_CTTY", city);
   // },

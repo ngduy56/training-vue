@@ -1,5 +1,9 @@
 <template>
-  <input-exam :cities="cities"></input-exam>
+  <InputExam
+    :options="cities"
+    :chosenList="chosenCities"
+    @input="handleAddOption"
+  ></InputExam>
 </template>
 
 <script>
@@ -7,19 +11,24 @@ import { mapActions, mapGetters } from "vuex";
 import InputExam from "./InputExam.vue";
 export default {
   created() {
-    this.fetchData();
+    this.getCityList();
   },
   computed: {
     ...mapGetters({
       cities: "city/getCities",
+      chosenCities: "city/getChosenCities",
     }),
   },
   methods: {
     ...mapActions({
-      fetch: "city/fetchData",
+      getCity: "city/getCityList",
+      addChosen: "city/addChosenCity",
     }),
-    fetchData() {
-      this.fetch();
+    getCityList() {
+      this.getCity();
+    },
+    handleAddOption(city) {
+      this.addChosen(city);
     },
   },
   components: {
