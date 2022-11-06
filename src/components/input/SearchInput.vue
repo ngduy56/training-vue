@@ -1,0 +1,41 @@
+<template>
+  <input
+    v-model="value"
+    @input="$emit('input', $event.target.value)"
+    class="input-search"
+    :placeholder="placeholder"
+  />
+</template>
+
+<script>
+export default {
+  props: {
+    modelValue: {
+      type: String,
+    },
+    placeholder: {
+      type: String,
+    },
+  },
+};
+</script>
+
+<style>
+.input-search {
+  min-width: 120px;
+  width: 100%;
+  height: 100%;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 8px 10px 8px 0;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  caret-color: #1991d2;
+  flex: 1;
+}
+.input-search::placeholder {
+  color: #bfbfbf;
+}
+</style>

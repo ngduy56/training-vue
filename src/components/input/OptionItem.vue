@@ -1,5 +1,5 @@
 <template>
-  <div class="list-item" @click="addOption">
+  <div class="option-item" @click="addOption">
     {{ name }}
   </div>
 </template>
@@ -27,4 +27,22 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.option-item {
+  font-family: "Noto Sans JP";
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #486581;
+}
+.option-item:hover {
+  background-color: #617d98;
+  color: #ffffff;
+  cursor: pointer;
+}
+</style>

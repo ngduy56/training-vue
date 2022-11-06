@@ -1,34 +1,50 @@
 <template>
   <InputExam
-    :options="cities"
-    :chosenList="chosenCities"
-    @input="handleAddOption"
+    v-model="filterName"
+    :options="filterOptions"
+    :chosenList="chosenList"
+    @inputAdd="handleAddOption"
+    @inputRemove="handleRemoveChosen"
   ></InputExam>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import InputExam from "./InputExam.vue";
+import InputExam from "../input/InputExam.vue";
 export default {
+  data() {
+    return {
+      filterName: "",
+    };
+  },
   created() {
     this.getCityList();
   },
   computed: {
     ...mapGetters({
       cities: "city/getCities",
-      chosenCities: "city/getChosenCities",
+      chosenList: "city/getChosenList",
     }),
+    filterOptions() {
+      return this.cities.filter((option) => {
+        return option.name.match(this.filterName);
+      });
+    },
   },
   methods: {
     ...mapActions({
       getCity: "city/getCityList",
       addChosen: "city/addChosenCity",
+      removeChosen: "city/removeChosenCity",
     }),
     getCityList() {
       this.getCity();
     },
-    handleAddOption(city) {
-      this.addChosen(city);
+    handleAddOption(option) {
+      this.addChosen(option);
+    },
+    handleRemoveChosen(chosenItem) {
+      this.removeChosen(chosenItem);
     },
   },
   components: {

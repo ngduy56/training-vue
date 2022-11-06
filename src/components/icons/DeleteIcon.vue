@@ -1,7 +1,6 @@
 <template>
   <svg
-
-    class="close-icon"
+    class="delete-icon"
     width="14"
     height="24"
     viewBox="0 0 14 24"
@@ -32,7 +31,7 @@ export default {
 </script>
 
 <style>
-.close-icon {
+.delete-icon {
   cursor: pointer;
 }
 </style>

@@ -7,14 +7,21 @@
           v-for="chosenItem in chosenList"
           :key="chosenItem.code"
           :chosenItem="chosenItem"
+          @input="removeChosen"
         >
         </ChosenItem>
+        <input
+          :value="value"
+          @input="$emit('input', $event.target.value)"
+          class="input-search"
+          placeholder="Nhập tên"
+        />
+
+        <!-- <SearchInput
+          v-model="value"
+          :placeholder="'Nhập tên thành phố để tìm kiếm'"
+        ></SearchInput> -->
       </div>
-      <input
-        v-model="filterName"
-        class="input-search"
-        placeholder="Nhập tên thành phố để tìm kiếm..."
-      />
     </div>
     <div class="option-block">
       <div class="option-list">
@@ -22,7 +29,7 @@
           v-for="option in options"
           :key="option.codename"
           :option="option"
-          @input="addOption(option)"
+          @input="addOption"
         >
         </OptionItem>
       </div>
@@ -31,18 +38,16 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
 import SearchIcon from "../icons/SearchIcon.vue";
-import ChosenItem from "../common/ChosenItem.vue";
-import OptionItem from "../common/OptionItem.vue";
+import ChosenItem from "../input/ChosenItem.vue";
+import OptionItem from "../input/OptionItem.vue";
+// import SearchInput from "../input/SearchInput.vue";
 export default {
   name: "InputExam",
-  data() {
-    return {
-      filterName: "",
-    };
-  },
   props: {
+    value: {
+      type: String,
+    },
     options: {
       type: Array,
       require: true,
@@ -56,20 +61,14 @@ export default {
     SearchIcon,
     ChosenItem,
     OptionItem,
-  },
-  computed: {
-    ...mapGetters({}),
-    filterOptions() {
-      return this.options.filter((option) => {
-        return option.name.match(this.filterName);
-      });
-    },
+    // SearchInput,
   },
   methods: {
-    ...mapActions({}),
-
-    addOption(city) {
-      this.$emit("input", city);
+    addOption(option) {
+      this.$emit("inputAdd", option);
+    },
+    removeChosen(chosenItem) {
+      this.$emit("inputRemove", chosenItem);
     },
   },
 };
@@ -85,7 +84,7 @@ export default {
 .search-block {
   position: relative;
   width: 100%;
-  height: 100%;
+  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -111,7 +110,7 @@ export default {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  padding: 14.5px 10px 14.5px 0;
+  padding: 8px 10px 8px 0;
   outline: none;
   border: none;
   background-color: transparent;
@@ -141,26 +140,8 @@ export default {
 .option-list::-webkit-scrollbar {
   display: none;
 }
-.list-item {
-  font-family: "Noto Sans JP";
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 10px;
-  gap: 10px;
-  width: 100%;
-  height: 40px;
-  font-size: 16px;
-  font-weight: 400;
-  color: #486581;
-}
-.list-item:hover {
-  background-color: #617d98;
-  color: #ffffff;
-  cursor: pointer;
-}
 .chosen-list {
-  max-width: 220px;
+  width: 100%;
   padding: 6px 0 6px 6px;
   display: flex;
   flex-direction: row;
@@ -168,27 +149,5 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   gap: 4px;
-}
-.chosen-item {
-  font-family: Noto Sans;
-  font-size: 14px;
-  height: 32px;
-  min-width: 83px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 4px 8px;
-  gap: 8px;
-  line-height: 20px;
-  background: #f0f4f8;
-  color: #627d98;
-  border: 1px solid #dcdcdc;
-  border-radius: 4px;
-}
-.chosen-item:last-child {
-  margin-right: 6px;
-}
-.close-icon:hover {
-  cursor: pointer;
 }
 </style>

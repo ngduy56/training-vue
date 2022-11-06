@@ -2,15 +2,15 @@ import axios from "axios";
 const state = () => ({
   totalCities: [],
   cities: [],
-  chosenCities: [],
+  chosenList: [],
 });
 // getters
 const getters = {
   getCities(state) {
     return state.cities;
   },
-  getChosenCities(state) {
-    return state.chosenCities;
+  getChosenList(state) {
+    return state.chosenList;
   },
 };
 // mutations
@@ -18,53 +18,34 @@ const mutations = {
   GET_CITY_LIST(state, cities) {
     state.cities = cities;
   },
-  ADD_CHOSEN_CITY() {
-    console.log("mutation......");
-
-    // let canAdd = true;
-    // state.chosenCities.map((c) => {
-    //   if (c.code === city.code) canAdd = false;
-    // });
-    // if (canAdd) {
-    //   state.chosenCities.push({
-    //     code: city.code,
-    //     codename: city.codename,
-    //     name: city.name,
-    //   });
-    // } else return;
-    // const index = state.cities.findIndex((c) => c.code === city.code);
-    // state.cities.splice(index, 1);
-  },
-  // REMOVE_CHOSEN_CTTY(state, city) {
-  //   const index = state.chosenCities.findIndex((c) => c.code === city.code);
-  //   state.chosenCities.splice(index, 1);
-
-  //   let canAdd = true;
-  //   state.cities.map((c) => {
-  //     if (c.code === city.code) canAdd = false;
-  //   });
-  //   if (canAdd) {
-  //     state.cities.unshift({
-  //       code: city.code,
-  //       codename: city.codename,
-  //       name: city.name,
-  //     });
-  //   } else return;
-  // },
-  REMOVE_ONE_IN_CITIES(state, city) {
-    const index = state.cities.findIndex((c) => c.code === city.code);
+  ADD_CHOSEN_CITY(state, option) {
+    let canAdd = true;
+    state.chosenList.map((chosenItem) => {
+      if (chosenItem.code === option.code) canAdd = false;
+    });
+    if (canAdd) {
+      state.chosenList.push({
+        code: option.code,
+        codename: option.codename,
+        name: option.name,
+      });
+    } else return;
+    const index = state.cities.findIndex((c) => c.code === option.code);
     state.cities.splice(index, 1);
   },
-  ADD_ONE_IN_CITIES(state, city) {
+  REMOVE_CHOSEN_CTTY(state, chosenItem) {
+    const index = state.chosenList.findIndex((c) => c.code === chosenItem.code);
+    state.chosenList.splice(index, 1);
+
     let canAdd = true;
     state.cities.map((c) => {
-      if (c.code === city.code) canAdd = false;
+      if (c.code === chosenItem.code) canAdd = false;
     });
     if (canAdd) {
       state.cities.unshift({
-        code: city.code,
-        codename: city.codename,
-        name: city.name,
+        code: chosenItem.code,
+        codename: chosenItem.codename,
+        name: chosenItem.name,
       });
     } else return;
   },
@@ -91,17 +72,11 @@ const actions = {
         console.log(e);
       });
   },
-  addChosenCity({ commit }, city) {
-    commit("ADD_CHOSEN_CITY", city);
+  addChosenCity({ commit }, option) {
+    commit("ADD_CHOSEN_CITY", option);
   },
-  // removeChosenCity({ commit }, city) {
-  //   commit("REMOVE_CHOSEN_CTTY", city);
-  // },
-  removeOneInCities({ commit }, city) {
-    commit("REMOVE_ONE_IN_CITIES", city);
-  },
-  addOneInCities({ commit }, city) {
-    commit("ADD_ONE_IN_CITIES", city);
+  removeChosenCity({ commit }, chosenItem) {
+    commit("REMOVE_CHOSEN_CTTY", chosenItem);
   },
 };
 
