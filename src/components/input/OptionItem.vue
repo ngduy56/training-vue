@@ -1,5 +1,9 @@
 <template>
-  <div class="option-item" @click="addOption">
+  <div
+    class="option-item"
+    :class="{ 'is-chosen': option.isChosen }"
+    @click="addOption"
+  >
     {{ name }}
   </div>
 </template>
@@ -15,8 +19,6 @@ export default {
   data() {
     return {
       name: this.option.name,
-      codename: this.option.codename,
-      code: this.option.code,
     };
   },
   methods: {
@@ -44,5 +46,9 @@ export default {
   background-color: #617d98;
   color: #ffffff;
   cursor: pointer;
+}
+.is-chosen {
+  background-color: #617d98;
+  color: #ffffff;
 }
 </style>

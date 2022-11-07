@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="search-block">
+    <div class="search-block" :class="{ 'is-focused': isFocused }">
       <SearchIcon />
       <div class="chosen-list">
         <ChosenItem
@@ -11,23 +11,19 @@
         >
         </ChosenItem>
         <input
-          :value="value"
-          @input="$emit('input', $event.target.value)"
           class="input-search"
           placeholder="Nhập tên"
+          :value="value"
+          @input="changeFilterName"
+          @focus="toggleFocus"
         />
-
-        <!-- <SearchInput
-          v-model="value"
-          :placeholder="'Nhập tên thành phố để tìm kiếm'"
-        ></SearchInput> -->
       </div>
     </div>
     <div class="option-block">
-      <div class="option-list">
+      <div v-if="isFocused" class="option-list">
         <OptionItem
-          v-for="option in options"
-          :key="option.codename"
+          v-for="option in optionList"
+          :key="option.code"
           :option="option"
           @input="addOption"
         >
@@ -44,11 +40,16 @@ import OptionItem from "../input/OptionItem.vue";
 // import SearchInput from "../input/SearchInput.vue";
 export default {
   name: "InputExam",
+  data() {
+    return {
+      isFocused: false,
+    };
+  },
   props: {
     value: {
       type: String,
     },
-    options: {
+    optionList: {
       type: Array,
       require: true,
     },
@@ -69,6 +70,12 @@ export default {
     },
     removeChosen(chosenItem) {
       this.$emit("inputRemove", chosenItem);
+    },
+    changeFilterName($event) {
+      this.$emit("input", $event.target.value);
+    },
+    toggleFocus() {
+      this.isFocused = true;
     },
   },
 };
@@ -96,8 +103,8 @@ export default {
   font-family: Noto Sans;
   font-style: normal;
 }
-.search-block:hover {
-  border: 1px solid #1991d2;
+.is-focused {
+  border-color: #1991d2;
 }
 .search-icon {
   min-width: 24px;

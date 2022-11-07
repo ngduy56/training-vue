@@ -20,8 +20,6 @@ export default {
   data() {
     return {
       name: this.chosenItem.name,
-      codename: this.chosenItem.codename,
-      code: this.chosenItem.code,
     };
   },
   methods: {

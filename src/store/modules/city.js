@@ -1,8 +1,6 @@
 import axios from "axios";
 const state = () => ({
-  totalCities: [],
   cities: [],
-  chosenList: [],
 });
 // getters
 const getters = {
@@ -10,7 +8,8 @@ const getters = {
     return state.cities;
   },
   getChosenList(state) {
-    return state.chosenList;
+    let chosenList = state.cities.filter((city) => city.isChosen);
+    return chosenList;
   },
 };
 // mutations
@@ -19,35 +18,22 @@ const mutations = {
     state.cities = cities;
   },
   ADD_CHOSEN_CITY(state, option) {
-    let canAdd = true;
-    state.chosenList.map((chosenItem) => {
-      if (chosenItem.code === option.code) canAdd = false;
+    let newCities = state.cities.map((city) => {
+      if (city.codename === option.codename) {
+        city.isChosen = true;
+      }
+      return city;
     });
-    if (canAdd) {
-      state.chosenList.push({
-        code: option.code,
-        codename: option.codename,
-        name: option.name,
-      });
-    } else return;
-    const index = state.cities.findIndex((c) => c.code === option.code);
-    state.cities.splice(index, 1);
+    state.cities = newCities;
   },
   REMOVE_CHOSEN_CTTY(state, chosenItem) {
-    const index = state.chosenList.findIndex((c) => c.code === chosenItem.code);
-    state.chosenList.splice(index, 1);
-
-    let canAdd = true;
-    state.cities.map((c) => {
-      if (c.code === chosenItem.code) canAdd = false;
+    let newCities = state.cities.map((city) => {
+      if (city.codename === chosenItem.codename) {
+        city.isChosen = false;
+      }
+      return city;
     });
-    if (canAdd) {
-      state.cities.unshift({
-        code: chosenItem.code,
-        codename: chosenItem.codename,
-        name: chosenItem.name,
-      });
-    } else return;
+    state.cities = newCities;
   },
 };
 // actions
@@ -59,11 +45,11 @@ const actions = {
         if (response.status == 200) {
           let formatCities = response.data.map((city) => {
             if (city.division_type === "thành phố trung ương") {
-              city.name = city.name.slice(10, city.name.lenght);
+              city.name = city.name.replace("Thành phố", "");
             } else if (city.division_type === "tỉnh") {
-              city.name = city.name.slice(5, city.name.lenght);
+              city.name = city.name.replace("Tỉnh", "");
             }
-            return city;
+            return { ...city, isChosen: false };
           });
           commit("GET_CITY_LIST", formatCities);
         }
