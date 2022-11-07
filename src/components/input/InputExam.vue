@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="main">
     <div class="search-block" :class="{ 'is-focused': isFocused }">
       <SearchIcon />
       <div class="chosen-list">
@@ -10,22 +10,27 @@
           @input="removeChosen"
         >
         </ChosenItem>
-        <input
+        <SearchInput
+          v-model="value"
+          @input="changeFilterName"
+          @focus="toggleFocus"
+        />
+        <!-- <input
           class="input-search"
           placeholder="Nhập tên"
           :value="value"
           @input="changeFilterName"
           @focus="toggleFocus"
-        />
+        /> -->
       </div>
     </div>
     <div class="option-block">
       <div v-if="isFocused" class="option-list">
         <OptionItem
-          v-for="option in optionList"
-          :key="option.code"
-          :option="option"
-          @input="addOption"
+          v-for="optionItem in optionList"
+          :key="optionItem.code"
+          :optionItem="optionItem"
+          @input="addChosen"
         >
         </OptionItem>
       </div>
@@ -37,18 +42,19 @@
 import SearchIcon from "../icons/SearchIcon.vue";
 import ChosenItem from "../input/ChosenItem.vue";
 import OptionItem from "../input/OptionItem.vue";
-// import SearchInput from "../input/SearchInput.vue";
+import SearchInput from "../input/SearchInput.vue";
 export default {
   name: "InputExam",
   data() {
     return {
+      value: "",
       isFocused: false,
     };
   },
   props: {
-    value: {
-      type: String,
-    },
+    // value: {
+    //   type: String,
+    // },
     optionList: {
       type: Array,
       require: true,
@@ -62,17 +68,17 @@ export default {
     SearchIcon,
     ChosenItem,
     OptionItem,
-    // SearchInput,
+    SearchInput,
   },
   methods: {
-    addOption(option) {
-      this.$emit("inputAdd", option);
+    addChosen(optionItem) {
+      this.$emit("inputAdd", optionItem);
     },
     removeChosen(chosenItem) {
       this.$emit("inputRemove", chosenItem);
     },
-    changeFilterName($event) {
-      this.$emit("input", $event.target.value);
+    changeFilterName() {
+      this.$emit("input", this.value);
     },
     toggleFocus() {
       this.isFocused = true;
@@ -82,7 +88,7 @@ export default {
 </script>
 
 <style>
-.container {
+.main {
   width: 400px;
   max-width: 600px;
   margin: 2rem auto;

@@ -2,6 +2,7 @@
   <input
     v-model="value"
     @input="$emit('input', $event.target.value)"
+    @focus="$emit('focus')"
     class="input-search"
     :placeholder="placeholder"
   />
@@ -9,10 +10,12 @@
 
 <script>
 export default {
+  data() {
+    return {
+      value: "",
+    };
+  },
   props: {
-    modelValue: {
-      type: String,
-    },
     placeholder: {
       type: String,
     },
