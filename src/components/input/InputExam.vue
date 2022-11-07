@@ -1,21 +1,20 @@
 <template>
-  <div class="container">
+  <div class="main" @click="show" v-click-outside="hide">
     <div class="search-block" :class="{ 'is-focused': isFocused }">
       <SearchIcon />
       <div class="chosen-list">
         <ChosenItem
+          v-click-outside="show"
           v-for="chosenItem in chosenList"
           :key="chosenItem.code"
           :chosenItem="chosenItem"
           @input="removeChosen"
-        >
-        </ChosenItem>
-        <input
-          class="input-search"
-          placeholder="Nhập tên"
-          :value="value"
+        />
+        <SearchInput
+          v-model="value"
+          :placeholder="'Nhập tên để tìm kiếm'"
           @input="changeFilterName"
-          @focus="toggleFocus"
+          @focusInput="show"
         />
       </div>
     </div>
@@ -26,8 +25,7 @@
           :key="option.code"
           :option="option"
           @input="addOption"
-        >
-        </OptionItem>
+        />
       </div>
     </div>
   </div>
@@ -35,20 +33,18 @@
 
 <script>
 import SearchIcon from "../icons/SearchIcon.vue";
-import ChosenItem from "../input/ChosenItem.vue";
-import OptionItem from "../input/OptionItem.vue";
-// import SearchInput from "../input/SearchInput.vue";
+import ChosenItem from "./ChosenItem.vue";
+import OptionItem from "./OptionItem.vue";
+import SearchInput from "./SearchInput.vue";
 export default {
   name: "InputExam",
   data() {
     return {
+      value: "",
       isFocused: false,
     };
   },
   props: {
-    value: {
-      type: String,
-    },
     optionList: {
       type: Array,
       require: true,
@@ -62,7 +58,7 @@ export default {
     SearchIcon,
     ChosenItem,
     OptionItem,
-    // SearchInput,
+    SearchInput,
   },
   methods: {
     addOption(option) {
@@ -71,18 +67,21 @@ export default {
     removeChosen(chosenItem) {
       this.$emit("inputRemove", chosenItem);
     },
-    changeFilterName($event) {
-      this.$emit("input", $event.target.value);
+    changeFilterName() {
+      this.$emit("input", this.value);
     },
-    toggleFocus() {
+    show() {
       this.isFocused = true;
+    },
+    hide() {
+      this.isFocused = false;
     },
   },
 };
 </script>
 
-<style>
-.container {
+<style scoped>
+.main {
   width: 400px;
   max-width: 600px;
   margin: 2rem auto;
@@ -109,23 +108,6 @@ export default {
 .search-icon {
   min-width: 24px;
   height: 24px;
-}
-.input-search {
-  min-width: 120px;
-  width: 100%;
-  height: 100%;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  padding: 8px 10px 8px 0;
-  outline: none;
-  border: none;
-  background-color: transparent;
-  caret-color: #1991d2;
-  flex: 1;
-}
-.input-search::placeholder {
-  color: #bfbfbf;
 }
 .option-block {
   max-width: 400px;

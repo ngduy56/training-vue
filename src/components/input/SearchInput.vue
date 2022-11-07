@@ -1,18 +1,21 @@
 <template>
   <input
-    v-model="value"
-    @input="$emit('input', $event.target.value)"
     class="input-search"
+    v-model="value"
     :placeholder="placeholder"
+    @input="$emit('input', $event.target.value)"
+    @focus="$emit('focusInput')"
   />
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      value: "",
+    };
+  },
   props: {
-    modelValue: {
-      type: String,
-    },
     placeholder: {
       type: String,
     },

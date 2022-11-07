@@ -12,6 +12,15 @@
         >
           <a class="nav-link">Exam 1</a>
         </router-link>
+        <router-link
+          :to="{ name: 'dropzone' }"
+          class="nav-item"
+          active-class="active"
+          tag="li"
+          exact
+        >
+          <a class="nav-link">Exam 2</a>
+        </router-link>
       </ul>
     </div>
   </nav>
