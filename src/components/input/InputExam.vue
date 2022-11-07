@@ -12,16 +12,10 @@
         </ChosenItem>
         <SearchInput
           v-model="value"
+          :placeholder="'Nhập tên để tìm kiếm'"
           @input="changeFilterName"
           @focus="toggleFocus"
         />
-        <!-- <input
-          class="input-search"
-          placeholder="Nhập tên"
-          :value="value"
-          @input="changeFilterName"
-          @focus="toggleFocus"
-        /> -->
       </div>
     </div>
     <div class="option-block">
@@ -52,9 +46,6 @@ export default {
     };
   },
   props: {
-    // value: {
-    //   type: String,
-    // },
     optionList: {
       type: Array,
       require: true,
@@ -115,23 +106,6 @@ export default {
 .search-icon {
   min-width: 24px;
   height: 24px;
-}
-.input-search {
-  min-width: 120px;
-  width: 100%;
-  height: 100%;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  padding: 8px 10px 8px 0;
-  outline: none;
-  border: none;
-  background-color: transparent;
-  caret-color: #1991d2;
-  flex: 1;
-}
-.input-search::placeholder {
-  color: #bfbfbf;
 }
 .option-block {
   max-width: 400px;
