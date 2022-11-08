@@ -25,6 +25,6 @@ export default {};
 
 <style scoped>
 .next-icon {
-  transform: translateX(43px);
+  transform: translateX(10px);
 }
 </style>

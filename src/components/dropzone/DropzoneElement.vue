@@ -11,12 +11,11 @@
         <UploadIcon />
         <div class="action">
           <p>Drag and drop files</p>
-          <label for="dropzone-file">Browse files</label>
+          <p>Browse files</p>
           <input
             multiple
             type="file"
             ref="file"
-            id="dropzone-file"
             class="dropzone-file"
             @change="uploadFile"
           />
@@ -25,17 +24,14 @@
     </div>
     <div v-if="inValid" class="error-vali">The maximum file size is 10 MB</div>
     <div v-if="errorType" class="error-vali">
-      The type file must be .pdf, .doc, or xls/xlsx
+      The type file must be .pdf, .doc, .pub or .txt.
     </div>
     <div v-if="success" class="success-vali">Upload file successfully!!!</div>
   </div>
 </template>
 
 <script>
-// import { ref } from "vue";
-import { ref as refer, uploadBytes } from "firebase/storage";
 import UploadIcon from "@/components/icons/UploadIcon.vue";
-import { storage } from "@/firebase/firebase.js";
 
 export default {
   components: {
@@ -46,7 +42,6 @@ export default {
       success: false,
       inValid: false,
       errorType: false,
-      fileName: "",
     };
   },
   methods: {
@@ -72,13 +67,7 @@ export default {
       } else this.errorType = false;
 
       if (!this.inValid && !this.errorType) {
-        for (let i = 0; i < files.length; i++) {
-          let file = files[i];
-          let storageRef = refer(storage, "dropzone/" + file.name);
-          uploadBytes(storageRef, file).then(() => {
-            this.success = true;
-          });
-        }
+        this.$emit("input", files);
       }
     },
   },

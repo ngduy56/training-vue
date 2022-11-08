@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <DropzoneElement />
-    <FileElement />
+    <DropzoneElement @input="uploadFile" />
+    <FileElement :fileList="fileList" @input="removeFile" />
   </div>
 </template>
 
@@ -9,11 +9,24 @@
 import DropzoneElement from "./DropzoneElement.vue";
 import FileElement from "./FileElement.vue";
 export default {
+  props: {
+    fileList: {
+      type: Array,
+      required: true,
+    },
+  },
   components: {
     DropzoneElement,
     FileElement,
   },
-  methods: {},
+  methods: {
+    uploadFile(files) {
+      this.$emit("inputUpload", files);
+    },
+    removeFile(name) {
+      this.$emit("input", name);
+    },
+  },
 };
 </script>
 
