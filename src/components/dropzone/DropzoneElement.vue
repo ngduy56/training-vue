@@ -22,11 +22,15 @@
         </div>
       </div>
     </div>
-    <div v-if="inValid" class="error-vali">The maximum file size is 10 MB</div>
-    <div v-if="errorType" class="error-vali">
-      The type file must be .pdf, .doc, .pub or .txt.
+    <div v-if="errors.size" class="error-vali">
+      {{ errors.size }}
     </div>
-    <div v-if="success" class="success-vali">Upload file successfully!!!</div>
+    <div v-if="errors.number" class="error-vali">
+      {{ errors.number }}
+    </div>
+    <div v-if="errors.type" class="error-vali">
+      {{ errors.type }}
+    </div>
   </div>
 </template>
 
@@ -39,9 +43,12 @@ export default {
   },
   data() {
     return {
-      success: false,
+      errors: {
+        number: "",
+        size: "",
+        type: "",
+      },
       inValid: false,
-      errorType: false,
     };
   },
   methods: {
@@ -49,24 +56,41 @@ export default {
       this.$refs.file.click();
     },
     uploadFile(e) {
-      const maximum = 102400;
+      const maxSize = 102400;
+      const maxNumber = 3;
       const typeFile = [
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "application/vnd.ms-publisher",
+        "application/vnd.ms-excel",
         "application/pdf",
         "text/plain",
       ];
+      this.errors = {
+        number: "",
+        size: "",
+        type: "",
+      };
       let files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
 
-      if (files[0].size > maximum) {
+      if (files.length > maxNumber) {
+        this.errors.number = "The maximum file uploaded is 3";
         this.inValid = true;
       } else this.inValid = false;
-      if (!typeFile.includes(files[0].type)) {
-        this.errorType = true;
-      } else this.errorType = false;
 
-      if (!this.inValid && !this.errorType) {
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].size > maxSize) {
+          this.errors.size = "The maximum file size is 10 MB";
+          this.inValid = true;
+        }
+        if (!typeFile.includes(files[i].type)) {
+          this.errors.type =
+            "The type file must be .pdf, .doc, .pub, .xlsx or .txt.";
+          this.inValid = true;
+        }
+      }
+      if (!this.inValid) {
         this.$emit("input", files);
       }
     },

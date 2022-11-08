@@ -1,10 +1,10 @@
 <template>
   <div class="file-item">
     <div class="content">
-      <ExcelIcon v-if="isPub"></ExcelIcon>
-      <DocIcon v-if="isDoc"></DocIcon>
-      <PdfIcon v-if="isPdf"></PdfIcon>
-      <UnknownIcon v-if="unknownFile"></UnknownIcon>
+      <ExcelIcon v-if="isPub" />
+      <DocIcon v-if="isDoc" />
+      <PdfIcon v-if="isPdf" />
+      <UnknownIcon v-if="unknownFile" />
       <div class="file-info">
         <p>{{ name }}</p>
         <p>905kB</p>
@@ -49,7 +49,11 @@ export default {
   },
   methods: {
     changeIcon(name) {
-      if (name.includes(".pub")) {
+      if (
+        name.includes(".pub") ||
+        name.includes(".xlsx") ||
+        name.includes(".xls")
+      ) {
         this.isPub = true;
       } else if (name.includes(".docx") || name.includes(".doc")) {
         this.isDoc = true;
