@@ -1,9 +1,10 @@
 <template>
-  <div class="main">
+  <div class="main" @click="show" v-click-outside="hide">
     <div class="search-block" :class="{ 'is-focused': isFocused }">
       <SearchIcon />
       <div class="chosen-list">
         <ChosenItem
+          v-click-outside="show"
           v-for="chosenItem in chosenList"
           :key="chosenItem.code"
           :chosenItem="chosenItem"
@@ -14,7 +15,7 @@
           v-model="value"
           :placeholder="'Nhập tên để tìm kiếm'"
           @input="changeFilterName"
-          @focus="toggleFocus"
+          @focusInput="show"
         />
       </div>
     </div>
@@ -74,11 +75,17 @@ export default {
     toggleFocus() {
       this.isFocused = true;
     },
+    show() {
+      this.isFocused = true;
+    },
+    hide() {
+      this.isFocused = false;
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .main {
   width: 400px;
   max-width: 600px;
