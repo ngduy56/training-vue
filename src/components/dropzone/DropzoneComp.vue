@@ -13,6 +13,7 @@ export default {
     DropzoneElement,
     FileElement,
   },
+  methods: {},
 };
 </script>
 

@@ -1,10 +1,8 @@
 <template>
   <div>
     <div
-      :class="{ 'in-valid': inValid }"
       class="drag-block"
-      @dragenter.prevent="toggleActive"
-      @dragleave="toggleActive"
+      :class="{ 'in-valid': inValid }"
       @dragover.prevent
       @drop.prevent="uploadFile"
       @click="selectFile"
@@ -15,6 +13,7 @@
           <p>Drag and drop files</p>
           <label for="dropzone-file">Browse files</label>
           <input
+            multiple
             type="file"
             ref="file"
             id="dropzone-file"
@@ -25,14 +24,18 @@
       </div>
     </div>
     <div v-if="inValid" class="error-vali">The maximum file size is 10 MB</div>
+    <div v-if="errorType" class="error-vali">
+      The type file must be .pdf, .doc, or xls/xlsx
+    </div>
+    <div v-if="success" class="success-vali">Upload file successfully!!!</div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
-// import { ref as refer, uploadBytes } from "firebase/storage";
-import UploadIcon from "../icons/UploadIcon.vue";
-// import { storage } from "@/firebase/firebase.js";
+// import { ref } from "vue";
+import { ref as refer, uploadBytes } from "firebase/storage";
+import UploadIcon from "@/components/icons/UploadIcon.vue";
+import { storage } from "@/firebase/firebase.js";
 
 export default {
   components: {
@@ -40,35 +43,43 @@ export default {
   },
   data() {
     return {
+      success: false,
       inValid: false,
+      errorType: false,
       fileName: "",
     };
-  },
-  setup() {
-    let active = ref(false);
-    const toggleActive = () => {
-      active.value = !active.value;
-    };
-    return { active, toggleActive };
   },
   methods: {
     selectFile() {
       this.$refs.file.click();
     },
     uploadFile(e) {
-      // const storageRef = refer(storage, files[0].name);
-
+      const maximum = 102400;
+      const typeFile = [
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.ms-publisher",
+        "application/pdf",
+        "text/plain",
+      ];
       let files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
 
-      if (files[0].size > 10000) {
+      if (files[0].size > maximum) {
         this.inValid = true;
       } else this.inValid = false;
-      // if (this.isValid) {
-      //   uploadBytes(storageRef, files[0]).then(() => {
-      //     console.log("Uploaded a blob or file!");
-      //   });
-      // }
+      if (!typeFile.includes(files[0].type)) {
+        this.errorType = true;
+      } else this.errorType = false;
+
+      if (!this.inValid && !this.errorType) {
+        for (let i = 0; i < files.length; i++) {
+          let file = files[i];
+          let storageRef = refer(storage, "dropzone/" + file.name);
+          uploadBytes(storageRef, file).then(() => {
+            this.success = true;
+          });
+        }
+      }
     },
   },
 };
@@ -87,13 +98,19 @@ export default {
   margin-bottom: 17px;
 }
 .error-vali {
-  font-family: "Noto Sans";
-  font-style: normal;
   width: 100%;
   height: 20px;
   font-weight: 400;
   font-size: 14px;
   color: #ed5d5d;
+  line-height: 20px;
+}
+.success-vali {
+  width: 100%;
+  height: 20px;
+  font-weight: 400;
+  font-size: 14px;
+  color: #00bd00;
   line-height: 20px;
 }
 .wrapper {
@@ -121,8 +138,6 @@ export default {
   display: none;
 }
 .action p {
-  font-family: "Noto Sans";
-  font-style: normal;
   font-size: 18px;
   line-height: 22px;
   margin-bottom: 0;

@@ -126,9 +126,6 @@ export default {
   overflow-x: hidden;
   max-height: 240px;
 }
-.option-list::-webkit-scrollbar {
-  display: none;
-}
 .chosen-list {
   width: 100%;
   padding: 6px 0 6px 6px;
