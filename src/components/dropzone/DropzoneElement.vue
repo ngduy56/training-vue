@@ -65,6 +65,9 @@ export default {
         "application/vnd.ms-excel",
         "application/pdf",
         "text/plain",
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
       ];
       this.errors = {
         number: "",
@@ -78,20 +81,20 @@ export default {
         this.errors.number = "The maximum file uploaded is 3";
         this.inValid = true;
       } else this.inValid = false;
-
       for (let i = 0; i < files.length; i++) {
         if (files[i].size > maxSize) {
-          this.errors.size = "The maximum file size is 10 MB";
+          this.errors.size = "The maximum file size is 100 MB";
           this.inValid = true;
         }
         if (!typeFile.includes(files[i].type)) {
           this.errors.type =
-            "The type file must be .pdf, .doc, .pub, .xlsx or .txt.";
+            "The type file must be .pdf, .docx, .pub, .xls/.xlsx or .txt.";
           this.inValid = true;
         }
       }
+      let newFileList = Array.from(files);
       if (!this.inValid) {
-        this.$emit("input", files);
+        this.$emit("input", newFileList);
       }
     },
   },
@@ -129,11 +132,6 @@ export default {
 .wrapper {
   margin-top: 30px;
 }
-/* drag active class*/
-.active-dropzone {
-  border-color: #1991d2;
-  background: rgba(25, 145, 210, 0.1);
-}
 .in-valid {
   border-color: #ed5d5d;
 }
@@ -159,13 +157,8 @@ export default {
 .action p:first-child {
   font-weight: 700;
 }
-.action label {
+.action p:nth-child(2) {
   text-decoration: underline;
-  transform: translateY(-4px);
-}
-.action label:hover {
-  text-decoration: underline;
-  transform: translateY(-4px);
 }
 .upload-icon {
   width: 100%;

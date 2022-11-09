@@ -1,37 +1,37 @@
 <template>
   <DropzoneComp
     :fileList="fileList"
-    @input="handleRemoveFile"
+    @inputRemove="handleRemoveFile"
     @inputUpload="handleUploadFile"
+    @inputSubmit="handleSubmitFile"
   />
 </template>
 
 <script>
 import DropzoneComp from "../dropzone/DropzoneComp.vue";
-
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
     DropzoneComp,
   },
-  created() {
-    this.getFileList();
-  },
   computed: {
     ...mapGetters({ fileList: "file/fileList" }),
   },
   methods: {
     ...mapActions({
-      getFileList: "file/getFileList",
       uploadFile: "file/uploadFile",
       removeFile: "file/removeFile",
+      submitFile: "file/submitFile",
     }),
     handleUploadFile(files) {
       this.uploadFile(files);
     },
     handleRemoveFile(name) {
       this.removeFile(name);
+    },
+    handleSubmitFile() {
+      this.submitFile();
     },
   },
 };

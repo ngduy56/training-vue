@@ -9,7 +9,7 @@
           @input="removeFile"
         />
       </div>
-      <NextIcon />
+      <NextIcon v-if="fileList.length > 0" />
     </div>
   </div>
 </template>
