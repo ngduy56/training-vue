@@ -90,20 +90,24 @@ export default {
 .content {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 .file-info {
-  margin-left: 14px;
+  margin-left: 12px;
+  flex: 1;
 }
 .file-info p {
   margin-bottom: 0;
-  font-family: "Noto Sans";
-  font-style: normal;
 }
 .file-info p:first-child {
+  width: 150px;
   font-weight: 700;
   font-size: 12px;
   line-height: 16px;
   color: #333333;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .file-info p:nth-child(2) {
   font-weight: 400;
