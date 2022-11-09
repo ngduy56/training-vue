@@ -30,7 +30,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .delete-icon {
   cursor: pointer;
 }

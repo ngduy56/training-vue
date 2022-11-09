@@ -1,5 +1,5 @@
 <template>
-  <div class="chosen-item">
+  <div id="chosen-item" class="chosen-item">
     <span>{{ name }}</span>
     <DeleteIcon @click.native="removeChosen" />
   </div>
@@ -30,7 +30,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .chosen-item {
   font-family: Noto Sans;
   font-size: 14px;

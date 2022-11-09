@@ -29,7 +29,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .option-item {
   font-family: "Noto Sans JP";
   display: flex;

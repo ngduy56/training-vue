@@ -1,21 +1,19 @@
 <template>
-  <div class="main" @click="show" v-click-outside="hide">
+  <div class="main" @click="showDropdown" v-click-outside="hideDropdown">
     <div class="search-block" :class="{ 'is-focused': isFocused }">
       <SearchIcon />
       <div class="chosen-list">
         <ChosenItem
-          v-click-outside="show"
           v-for="chosenItem in chosenList"
           :key="chosenItem.code"
           :chosenItem="chosenItem"
           @input="removeChosen"
-        >
-        </ChosenItem>
+        />
         <SearchInput
           v-model="value"
           :placeholder="'Nhập tên để tìm kiếm'"
           @input="changeFilterName"
-          @focusInput="show"
+          @focusInput="showDropdown"
         />
       </div>
     </div>
@@ -26,8 +24,7 @@
           :key="optionItem.code"
           :optionItem="optionItem"
           @input="addChosen"
-        >
-        </OptionItem>
+        />
       </div>
     </div>
   </div>
@@ -62,6 +59,11 @@ export default {
     OptionItem,
     SearchInput,
   },
+  watch: {
+    chosenList() {
+      this.isFocused = true;
+    },
+  },
   methods: {
     addChosen(optionItem) {
       this.$emit("inputAdd", optionItem);
@@ -72,13 +74,10 @@ export default {
     changeFilterName() {
       this.$emit("input", this.value);
     },
-    toggleFocus() {
+    showDropdown() {
       this.isFocused = true;
     },
-    show() {
-      this.isFocused = true;
-    },
-    hide() {
+    hideDropdown() {
       this.isFocused = false;
     },
   },

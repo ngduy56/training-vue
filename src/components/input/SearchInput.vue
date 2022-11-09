@@ -23,7 +23,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .input-search {
   min-width: 120px;
   width: 100%;
