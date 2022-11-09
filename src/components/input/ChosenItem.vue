@@ -1,5 +1,5 @@
 <template>
-  <div id="chosen-item" class="chosen-item">
+  <div class="chosen-item">
     <span>{{ name }}</span>
     <DeleteIcon @click.native="removeChosen" />
   </div>

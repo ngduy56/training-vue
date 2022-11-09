@@ -1,30 +1,32 @@
 <template>
-  <div class="main" @click="showDropdown" v-click-outside="hideDropdown">
-    <div class="search-block" :class="{ 'is-focused': isFocused }">
-      <SearchIcon />
-      <div class="chosen-list">
-        <ChosenItem
-          v-for="chosenItem in chosenList"
-          :key="chosenItem.code"
-          :chosenItem="chosenItem"
-          @input="removeChosen"
-        />
-        <SearchInput
-          v-model="value"
-          :placeholder="'Nhập tên để tìm kiếm'"
-          @input="changeFilterName"
-          @focusInput="showDropdown"
-        />
+  <div class="main">
+    <div @click="showDropdown" v-click-outside="hideDropdown">
+      <div class="search-block" :class="{ 'is-focused': isFocused }">
+        <SearchIcon />
+        <div class="chosen-list">
+          <ChosenItem
+            v-for="chosenItem in chosenList"
+            :key="chosenItem.code"
+            :chosenItem="chosenItem"
+            @input="removeChosen"
+          />
+          <SearchInput
+            v-model="value"
+            :placeholder="'Nhập tên để tìm kiếm'"
+            @input="changeFilterName"
+            @focusInput="showDropdown"
+          />
+        </div>
       </div>
-    </div>
-    <div class="option-block">
-      <div v-if="isFocused" class="option-list">
-        <OptionItem
-          v-for="optionItem in optionList"
-          :key="optionItem.code"
-          :optionItem="optionItem"
-          @input="addChosen"
-        />
+      <div class="option-block">
+        <div v-if="isFocused" class="option-list">
+          <OptionItem
+            v-for="optionItem in optionList"
+            :key="optionItem.code"
+            :optionItem="optionItem"
+            @input="addChosen"
+          />
+        </div>
       </div>
     </div>
   </div>
