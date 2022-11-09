@@ -41,6 +41,20 @@ export default {
   components: {
     UploadIcon,
   },
+  props: {
+    maxSize: {
+      type: Number,
+      required: true,
+    },
+    maxNumber: {
+      type: Number,
+      required: true,
+    },
+    typeFile: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
       errors: {
@@ -56,19 +70,6 @@ export default {
       this.$refs.file.click();
     },
     uploadFile(e) {
-      const maxSize = 102400;
-      const maxNumber = 3;
-      const typeFile = [
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "application/vnd.ms-publisher",
-        "application/vnd.ms-excel",
-        "application/pdf",
-        "text/plain",
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-      ];
       this.errors = {
         number: "",
         size: "",
@@ -77,18 +78,22 @@ export default {
       let files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
 
-      if (files.length > maxNumber) {
-        this.errors.number = "The maximum file uploaded is 3";
+      if (files.length > this.maxNumber) {
+        this.errors.number = `The maximum file uploaded is ${this.maxNumber}`;
         this.inValid = true;
       } else this.inValid = false;
       for (let i = 0; i < files.length; i++) {
-        if (files[i].size > maxSize) {
-          this.errors.size = "The maximum file size is 100 MB";
+        if (Math.ceil(files[i].size / 1024) > this.maxSize) {
+          this.errors.size = `The maximum file size is ${
+            this.maxSize / 1024
+          } MB`;
           this.inValid = true;
         }
-        if (!typeFile.includes(files[i].type)) {
-          this.errors.type =
-            "The type file must be .pdf, .docx, .pub, .xls/.xlsx or .txt.";
+        let filterName = files[i].name.match(/\.[0-9a-z]+$/i)[0];
+        if (!this.typeFile.includes(filterName)) {
+          this.errors.type = `The type file must be ${this.typeFile.join(
+            ", "
+          )}.`;
           this.inValid = true;
         }
       }

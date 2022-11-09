@@ -5,13 +5,13 @@ const state = () => ({
   fileList: [],
 });
 const getters = {
-  fileList(state) {
+  getFileList(state) {
     return state.fileList;
-  }
+  },
 };
 const mutations = {
   SET_FILE_LIST(state, files) {
-    state.fileList = files;
+    state.fileList = state.fileList.concat(files);
   },
   REMOVE_FILE(state, name) {
     const index = state.fileList.findIndex((item) => item.name == name);
@@ -22,26 +22,27 @@ const mutations = {
   }
 };
 const actions = {
-    uploadFile({ commit }, files) {
-      commit("SET_FILE_LIST", files)
-    },
-    removeFile({ commit }, name) {
-      commit("REMOVE_FILE", name)
-    }, 
-    submitFile({ commit, getters }) {
-      let files = getters.fileList;
-      for (let i = 0; i < files.length; i++) {
-          let file = files[i];
-          let storageRef = ref(storage, "dropzone/" + file.name);
-          uploadBytes(storageRef, file)
-          .then(() => {
-            commit("SUBMIT_FILE");
-          })
-          .catch((error) => {
-              console.log(error)
-          });
-      }
+
+  uploadFile({ commit }, files) {
+    commit("SET_FILE_LIST", files)
+  },
+  removeFile({ commit }, name) {
+    commit("REMOVE_FILE", name)
+  }, 
+  submitFile({commit, getters}) {
+    let files = getters.getFileList;
+    for (let i = 0; i < files.length; i++) {
+      let file = files[i];
+      let storageRef = ref(storage, "dropzone/" + file.name);
+      uploadBytes(storageRef, file)
+      .then(() => {
+        commit("SUBMIT_FILE");
+      })
+      .catch((error) => {
+          console.log(error)
+      });
     }
+  }
 };
 
 export default {

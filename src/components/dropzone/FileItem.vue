@@ -7,7 +7,7 @@
       <UnknownIcon v-if="unknownFile" />
       <div class="file-info">
         <p>{{ name }}</p>
-        <p>{{ size }} kB</p>
+        <p>{{ sizeNum }} kB</p>
       </div>
     </div>
     <RemoveIcon @click.native="$emit('input', name)" />
@@ -22,7 +22,7 @@ import PdfIcon from "../icons/PdfIcon.vue";
 import UnknownIcon from "../icons/UnknownIcon.vue";
 export default {
   props: {
-    fileItem: {},
+    fileItem: { type: [Object, File], required: true },
   },
   data() {
     return {
@@ -41,9 +41,13 @@ export default {
     PdfIcon,
     UnknownIcon,
   },
-
   created() {
     this.changeIcon(this.name);
+  },
+  computed: {
+    sizeNum() {
+      return Math.ceil(this.size / 1024);
+    },
   },
   methods: {
     changeIcon(name) {
