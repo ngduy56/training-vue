@@ -4,12 +4,12 @@
       <div class="file-list">
         <FileItem
           v-for="fileItem in fileList"
-          :key="fileItem.name"
+          :key="fileItem.lastModified"
           :fileItem="fileItem"
-          @input="removeFile"
+          @onRemove="removeFile"
         />
       </div>
-      <NextIcon v-if="fileList.length > 0" />
+      <NextIcon v-if="showNextIcon" />
     </div>
   </div>
 </template>
@@ -28,9 +28,14 @@ export default {
     FileItem,
     NextIcon,
   },
+  computed: {
+    showNextIcon() {
+      return this.fileList.length > 0;
+    },
+  },
   methods: {
-    removeFile(name) {
-      this.$emit("input", name);
+    removeFile(lastModified) {
+      this.$emit("onRemove", lastModified);
     },
   },
 };

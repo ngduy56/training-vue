@@ -1,13 +1,13 @@
 <template>
   <div class="main">
     <DropzoneElement
-      @input="uploadFile"
+      @onUpload="uploadFile"
       :maxSize="maxSize"
       :maxNumber="maxNumber"
       :typeFile="typeFile"
     />
-    <FileElement :fileList="fileList" @input="removeFile" />
-    <button class="btn-submit" v-if="fileList.length > 0" @click="submitUpload">
+    <FileElement :fileList="fileList" @onRemove="removeFile" />
+    <button v-if="showUploadButton" class="btn-submit" @click="submitUpload">
       Upload
     </button>
   </div>
@@ -35,19 +35,24 @@ export default {
       required: true,
     },
   },
+  computed: {
+    showUploadButton() {
+      return this.fileList.length > 0;
+    },
+  },
   components: {
     DropzoneElement,
     FileElement,
   },
   methods: {
     uploadFile(files) {
-      this.$emit("inputUpload", files);
+      this.$emit("onUpload", files);
     },
-    removeFile(name) {
-      this.$emit("inputRemove", name);
+    removeFile(lastModified) {
+      this.$emit("onRemove", lastModified);
     },
     submitUpload(files) {
-      this.$emit("inputSubmit", files);
+      this.$emit("onSubmit", files);
     },
   },
 };

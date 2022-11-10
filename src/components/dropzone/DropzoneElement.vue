@@ -36,6 +36,7 @@
 
 <script>
 import UploadIcon from "@/components/icons/UploadIcon.vue";
+import { Validate } from "@/utils/Validate.js";
 
 export default {
   components: {
@@ -77,29 +78,16 @@ export default {
       };
       let files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
-
-      if (files.length > this.maxNumber) {
-        this.errors.number = `The maximum file uploaded is ${this.maxNumber}`;
-        this.inValid = true;
-      } else this.inValid = false;
-      for (let i = 0; i < files.length; i++) {
-        if (Math.ceil(files[i].size / 1024) > this.maxSize) {
-          this.errors.size = `The maximum file size is ${
-            this.maxSize / 1024
-          } MB`;
-          this.inValid = true;
-        }
-        let filterName = files[i].name.match(/\.[0-9a-z]+$/i)[0];
-        if (!this.typeFile.includes(filterName)) {
-          this.errors.type = `The type file must be ${this.typeFile.join(
-            ", "
-          )}.`;
-          this.inValid = true;
-        }
-      }
+      this.inValid = Validate(
+        files,
+        this.typeFile,
+        this.errors,
+        this.maxNumber,
+        this.maxSize
+      );
       let newFileList = Array.from(files);
       if (!this.inValid) {
-        this.$emit("input", newFileList);
+        this.$emit("onUpload", newFileList);
       }
     },
   },

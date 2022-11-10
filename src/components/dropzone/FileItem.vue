@@ -1,69 +1,66 @@
 <template>
   <div class="file-item">
     <div class="content">
-      <ExcelIcon v-if="isPub" />
-      <DocIcon v-if="isDoc" />
-      <PdfIcon v-if="isPdf" />
-      <UnknownIcon v-if="unknownFile" />
+      <DocIcon v-if="showDocIcon" />
+      <PdfIcon v-if="showPdfIcon" />
+      <ExcelIcon v-if="showExcelIcon" />
+      <UnknownIcon v-if="!showDocIcon && !showPdfIcon && !showExcelIcon" />
       <div class="file-info">
         <p>{{ name }}</p>
         <p>{{ sizeNum }} kB</p>
       </div>
     </div>
-    <RemoveIcon @click.native="$emit('input', name)" />
+    <RemoveIcon @click.native="removeFile" />
   </div>
 </template>
 
 <script>
 import RemoveIcon from "../icons/RemoveIcon.vue";
-import ExcelIcon from "../icons/ExcelIcon.vue";
 import DocIcon from "../icons/DocIcon.vue";
+import ExcelIcon from "../icons/ExcelIcon.vue";
 import PdfIcon from "../icons/PdfIcon.vue";
 import UnknownIcon from "../icons/UnknownIcon.vue";
+
+import { NUM_BYTE } from "@/constants/DropzoneConstants.js";
 export default {
   props: {
     fileItem: { type: [Object, File], required: true },
   },
   data() {
     return {
-      isPub: false,
-      isDoc: false,
-      isPdf: false,
-      unknownFile: false,
       name: this.fileItem.name,
       size: this.fileItem.size,
+      lastModified: this.fileItem.lastModified,
     };
   },
   components: {
     RemoveIcon,
-    ExcelIcon,
     DocIcon,
+    ExcelIcon,
     PdfIcon,
     UnknownIcon,
   },
-  created() {
-    this.changeIcon(this.name);
-  },
   computed: {
     sizeNum() {
-      return Math.ceil(this.size / 1024);
+      return Math.ceil(this.size / NUM_BYTE);
+    },
+    showDocIcon() {
+      return this.name.includes(".docx") || this.name.includes(".doc");
+    },
+    showExcelIcon() {
+      return (
+        this.name.includes(".pub") ||
+        this.name.includes(".xlsx") ||
+        this.name.includes(".xls")
+      );
+    },
+    showPdfIcon() {
+      return this.name.includes(".pdf");
     },
   },
   methods: {
-    changeIcon(name) {
-      if (
-        name.includes(".pub") ||
-        name.includes(".xlsx") ||
-        name.includes(".xls")
-      ) {
-        this.isPub = true;
-      } else if (name.includes(".docx") || name.includes(".doc")) {
-        this.isDoc = true;
-      } else if (name.includes(".pdf")) {
-        this.isPdf = true;
-      } else {
-        this.unknownFile = true;
-      }
+    removeFile() {
+      this.$emit("onRemove", this.lastModified);
     },
   },
 };

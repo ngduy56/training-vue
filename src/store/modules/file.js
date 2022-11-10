@@ -13,8 +13,8 @@ const mutations = {
   SET_FILE_LIST(state, files) {
     state.fileList = state.fileList.concat(files);
   },
-  REMOVE_FILE(state, name) {
-    const index = state.fileList.findIndex((item) => item.name == name);
+  REMOVE_FILE(state, lastModified) {
+    const index = state.fileList.findIndex((item) => item.lastModified == lastModified);
     state.fileList.splice(index, 1);
   },
   SUBMIT_FILE(state) {
@@ -26,8 +26,8 @@ const actions = {
   uploadFile({ commit }, files) {
     commit("SET_FILE_LIST", files)
   },
-  removeFile({ commit }, name) {
-    commit("REMOVE_FILE", name)
+  removeFile({ commit }, lastModified) {
+    commit("REMOVE_FILE", lastModified)
   }, 
   submitFile({commit, getters}) {
     let files = getters.getFileList;
