@@ -21,6 +21,16 @@
         >
           <a class="nav-link">Exam 2</a>
         </router-link>
+
+        <router-link
+          :to="{ name: 'first-step' }"
+          class="nav-item"
+          active-class="active"
+          tag="li"
+          exact
+        >
+          <a class="nav-link">Exam 3</a>
+        </router-link>
       </ul>
     </div>
   </nav>

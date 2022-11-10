@@ -14,7 +14,7 @@ const mutations = {
     state.fileList = state.fileList.concat(files);
   },
   REMOVE_FILE(state, lastModified) {
-    const index = state.fileList.findIndex((item) => item.lastModified == lastModified);
+    const index = state.fileList.findIndex((item) => item.lastModified === lastModified);
     state.fileList.splice(index, 1);
   },
   SUBMIT_FILE(state) {
