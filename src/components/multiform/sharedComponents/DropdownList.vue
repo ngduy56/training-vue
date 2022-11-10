@@ -36,12 +36,12 @@ select {
   background: #ffffff;
   border: 1px solid #dbdbdb;
   border-radius: 4px;
+  font-size: 14px;
 
   option {
     width: 45px;
     height: 20px;
     font-weight: 400;
-    font-size: 14px;
     line-height: 20px;
     border: none;
     color: #333333;

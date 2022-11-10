@@ -5,6 +5,7 @@
       <InputDate :label="'Ngày sinh'" />
       <DropdownList :label="'Thành phố'" />
       <PositionInput />
+      <AboutArea />
     </div>
   </div>
 </template>
@@ -14,20 +15,23 @@ import InputField from "./sharedComponents/InputField.vue";
 import InputDate from "./sharedComponents/InputDate.vue";
 import DropdownList from "./sharedComponents/DropdownList.vue";
 import PositionInput from "./sharedComponents/PositionInput.vue";
+import AboutArea from "./sharedComponents/AboutArea.vue";
+
 export default {
   components: {
     InputField,
     InputDate,
     DropdownList,
     PositionInput,
+    AboutArea,
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .first-block {
   width: 100%;
-  height: 100%;
+  height: 850px;
   position: relative;
   display: flex;
   flex-direction: column;
