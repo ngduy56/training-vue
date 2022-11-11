@@ -16,7 +16,11 @@
           @onAddChosen="handleAddChosen"
           @onRemoveChosen="handleRemoveChosen"
         />
-        <AboutArea v-model="about" :error="error.about" />
+        <AboutArea
+          v-model="about"
+          :label="'Mô tả về bản thân'"
+          :error="error.about"
+        />
         <DropzoneComp
           :fileList="fileList"
           :maxNumber="maxNumber"
@@ -36,7 +40,7 @@ import InputField from "../sharedComponents/InputField.vue";
 import InputDate from "../sharedComponents/InputDate.vue";
 import DropdownList from "./DropdownList.vue";
 import PositionInput from "./PositionInput.vue";
-import AboutArea from "./AboutArea.vue";
+import AboutArea from "./TextArea.vue";
 import DropzoneComp from "@/components/multiform/dropzone/DropzoneComp.vue";
 import { mapActions, mapGetters } from "vuex";
 import {

@@ -21,7 +21,7 @@ export default {
 
 <style lang="scss" scoped>
 .label-block {
-  width: 120px;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;

@@ -1,6 +1,6 @@
 <template>
-  <div class="about-block">
-    <InputLabel :label="'Mô tả về bản thân'" />
+  <div class="area-block">
+    <InputLabel :label="label" :required="required" />
     <textarea v-model="value" @input="onChange"></textarea>
     <span>{{ length }}/1000</span>
     <span v-if="showError" class="error-vali">{{ error }}</span>
@@ -20,6 +20,12 @@ export default {
     InputLabel,
   },
   props: {
+    label: {
+      type: String,
+    },
+    required: {
+      type: Boolean,
+    },
     error: {
       type: String,
     },
@@ -41,7 +47,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.about-block {
+.area-block {
+  width: 528px;
   position: relative;
   margin-bottom: 10px;
 
