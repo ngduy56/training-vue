@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     addOption() {
-      this.$emit("input", this.optionItem);
+      this.$emit("onAdd", this.optionItem);
     },
   },
 };

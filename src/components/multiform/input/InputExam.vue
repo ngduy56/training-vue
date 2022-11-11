@@ -24,7 +24,7 @@
             v-for="optionItem in optionList"
             :key="optionItem.code"
             :optionItem="optionItem"
-            @input="addChosen"
+            @onAdd="addChosen"
           />
         </div>
       </div>

@@ -1,24 +1,35 @@
 <template>
   <div class="input-field">
     <InputLabel :label="label" :required="true" />
-    <input type="text" />
+    <input type="text" v-model="value" @input="onChange" />
+    <span v-if="error" class="error-vali">{{ error }}</span>
   </div>
 </template>
 
 <script>
 import InputLabel from "./InputLabel.vue";
 export default {
+  data() {
+    return {
+      value: "",
+    };
+  },
   props: {
     label: {
       type: String,
       required: true,
     },
-    type: {
+    error: {
       type: String,
     },
   },
   components: {
     InputLabel,
+  },
+  methods: {
+    onChange(e) {
+      this.$emit("input", e.target.value);
+    },
   },
 };
 </script>
@@ -36,6 +47,10 @@ export default {
     border: 1px solid #dcdcdc;
     border-radius: 4px;
     padding: 0 10px;
+    font-size: 14px;
+  }
+  .error-vali {
+    color: red;
     font-size: 14px;
   }
 }

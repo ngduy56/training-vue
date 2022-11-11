@@ -21,7 +21,6 @@
         >
           <a class="nav-link">Exam 2</a>
         </router-link>
-
         <router-link
           :to="{ name: 'first-step' }"
           class="nav-item"

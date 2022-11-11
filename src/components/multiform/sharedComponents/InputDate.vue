@@ -1,34 +1,47 @@
 <template>
-  <div class="input-field">
+  <div class="input-date">
     <InputLabel :label="label" :required="true" />
-    <input type="date" />
+    <input type="date" @input="onChange" />
+    <span v-if="error" class="error-vali">{{ error }}</span>
   </div>
 </template>
 <script>
 import InputLabel from "./InputLabel.vue";
 export default {
+  data() {
+    return {
+      value: "",
+    };
+  },
   props: {
     label: {
       type: String,
       required: true,
     },
-    type: {
+    error: {
       type: String,
     },
   },
   components: {
     InputLabel,
   },
+  methods: {
+    onChange(e) {
+      this.$emit("input", e.target.value);
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.input-field {
-  width: 118px;
+.input-date {
+  width: 100%;
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
 
   input {
-    width: 100%;
+    width: 120px;
     height: 40px;
     outline: none;
     background: #ffffff;
@@ -40,6 +53,10 @@ export default {
     text-align: center;
     line-height: 40px;
     padding: 0 8px 0 6px;
+  }
+  .error-vali {
+    color: red;
+    font-size: 14px;
   }
 }
 </style>

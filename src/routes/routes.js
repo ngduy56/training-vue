@@ -3,9 +3,9 @@ import InputPage from "../components/pages/InputPage.vue";
 import DropzonePage from "../components/pages/DropzonePage.vue";
 import MultiFormPage from "../components/pages/MultiFormPage.vue";
 
-import FirstStepComp from "../components/multiform/FirstStepComp.vue";
-import SecondStepComp from "../components/multiform/SecondStepComp.vue";
-import ThirdStepComp from "../components/multiform/ThirdStepComp.vue";
+import FirstStepComp from "@/components/multiform/FirstStepComp/FirstStepComp.vue";
+import SecondStepComp from "@/components/multiform/SecondStepComp/SecondStepComp.vue";
+import ThirdStepComp from "@/components/multiform/ThirdStepComp/ThirdStepComp.vue";
 
 export const routes = [
   { path: "/", name: "HomePage", component: Homepage },
