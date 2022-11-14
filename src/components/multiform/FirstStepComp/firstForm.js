@@ -6,6 +6,7 @@ import {
 import store from "@/store/store";
 
 let optionList = store.getters["position/getPositionList"];
+let chosenList = optionList.filter((pos) => pos.isChosen);
 
 export const firstForm = [
   {
@@ -38,6 +39,7 @@ export const firstForm = [
     value: null,
     key: "position",
     optionList: optionList,
+    chosenList: chosenList,
   },
   {
     label: "Mô tả về bản thân",

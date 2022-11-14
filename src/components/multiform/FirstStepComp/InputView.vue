@@ -6,6 +6,7 @@
       :label="item.label"
       :required="item.required"
       :error="item.error"
+      @input="onChange"
     />
     <InputDate
       v-if="item.view_type === 'input-date'"
@@ -13,22 +14,24 @@
       :label="item.label"
       :required="item.required"
       :error="item.error"
+      @input="onChange"
     />
     <DropdownList
       v-if="item.view_type === 'input-dropdown'"
       v-model="value"
       :label="item.label"
       :required="item.required"
+      @input="onChange"
     />
     <PositionInput
       v-if="item.view_type === 'input-dropdown-search'"
       v-model="filterName"
       :label="item.label"
       :required="item.required"
-      :optionList="item.optionList"
-      :chosenList="chosenList"
-      @onAddChosen="handleAddChosen"
-      @onRemoveChosen="handleRemoveChosen"
+      :optionList="filterOptions"
+      :chosenList="item.chosenList"
+      @onAddChosen="onAddChosen"
+      @onRemoveChosen="onRemoveChosen"
     />
     <AboutArea
       v-if="item.view_type === 'input-area'"
@@ -36,6 +39,7 @@
       :label="item.label"
       :required="item.required"
       :error="item.error"
+      @input="onChange"
     />
     <DropzoneComp
       v-if="item.view_type === 'img-dropzone'"
@@ -45,8 +49,8 @@
       :maxSize="item.maxSize"
       :typeFile="item.typeFile"
       :fileList="fileList"
-      @onRemove="handleRemoveFile"
-      @onUpload="handleUploadFile"
+      @onRemove="onRemoveFile"
+      @onUpload="onUploadFile"
     />
   </div>
 </template>
@@ -58,12 +62,12 @@ import DropdownList from "./DropdownList.vue";
 import PositionInput from "./PositionInput.vue";
 import AboutArea from "@/components/multiform/sharedComponents/TextArea.vue";
 import DropzoneComp from "@/components/multiform/dropzone/DropzoneComp.vue";
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
       filterName: "",
-      value: this.item.value,
+      value: "",
     };
   },
   components: {
@@ -82,41 +86,30 @@ export default {
   },
   computed: {
     ...mapGetters({
-      optionList: "position/getPositionList",
-      chosenList: "position/getChosenList",
-
       fileList: "file/getFileList",
       firstForm: "form/getFirstForm",
     }),
     filterOptions() {
-      return this.optionList.filter((option) => {
+      return this.item.optionList.filter((option) => {
         return option.name.match(this.filterName);
       });
     },
   },
   methods: {
-    ...mapActions({
-      addChosen: "position/addChosenCity",
-      removeChosen: "position/removeChosenCity",
-
-      uploadFile: "file/uploadFile",
-      removeFile: "file/removeFile",
-      submitFile: "file/submitFile",
-
-      saveForm: "form/saveForm",
-    }),
-
-    handleAddChosen(option) {
-      this.addChosen(option);
+    onChange(value) {
+      this.$emit("input", value);
     },
-    handleRemoveChosen(chosenItem) {
-      this.removeChosen(chosenItem);
+    onUploadFile(files) {
+      this.$emit("onUploadFile", files);
     },
-    handleUploadFile(files) {
-      this.uploadFile(files);
+    onRemoveFile(lastModified) {
+      this.$emit("onRemoveFile", lastModified);
     },
-    handleRemoveFile(lastModified) {
-      this.removeFile(lastModified);
+    onAddChosen(option) {
+      this.$emit("onAddChosen", option);
+    },
+    onRemoveChosen(chosenItem) {
+      this.$emit("onRemoveChosen", chosenItem);
     },
   },
 };

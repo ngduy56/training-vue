@@ -1,6 +1,6 @@
 <template>
   <div class="position-input">
-    <InputLabel :label="'Vị trí làm việc'" :required="required" />
+    <InputLabel :label="label" :required="required" />
     <span class="note">Có thể chọn nhiều vị trí mà bạn muốn làm việc</span>
     <InputExam
       v-model="value"
@@ -33,6 +33,9 @@ export default {
     chosenList: {
       type: Array,
       required: true,
+    },
+    label: {
+      type: String,
     },
     required: {
       type: Boolean,

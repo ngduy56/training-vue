@@ -52,7 +52,16 @@
             @onUpload="handleUploadFile"
           />
         </div> -->
-        <InputView v-for="item in firstStepForm" :key="item.key" :item="item" />
+        <InputView
+          v-for="item in firstStepForm"
+          v-model="item.value"
+          :key="item.key"
+          :item="item"
+          @onUploadFile="handleUploadFile"
+          @onRemoveFile="handleRemoveFile"
+          @onAddChosen="handleAddChosen"
+          @onRemoveChosen="handleRemoveChosen"
+        />
       </div>
     </div>
     <button class="btn-next active" @click="nextStep">Tiếp</button>
@@ -61,24 +70,12 @@
 
 <script>
 import InputView from "./InputView.vue";
-// import InputField from "../sharedComponents/InputField.vue";
-// import InputDate from "../sharedComponents/InputDate.vue";
-// import DropdownList from "./DropdownList.vue";
-// import PositionInput from "./PositionInput.vue";
-// import AboutArea from "@/components/multiform/sharedComponents/TextArea.vue";
-// import DropzoneComp from "@/components/multiform/dropzone/DropzoneComp.vue";
 import { mapActions, mapGetters } from "vuex";
 import { firstForm } from "./firstForm.js";
 import { ValidateForm } from "@/utils/ValidateFormFirstStep.js";
 export default {
   components: {
     InputView,
-    // InputField,
-    // InputDate,
-    // DropdownList,
-    // PositionInput,
-    // AboutArea,
-    // DropzoneComp,
   },
   data() {
     return {
@@ -101,9 +98,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      optionList: "position/getPositionList",
-      chosenList: "position/getChosenList",
-
       fileList: "file/getFileList",
       firstForm: "form/getFirstForm",
     }),
@@ -115,27 +109,24 @@ export default {
   },
   methods: {
     ...mapActions({
-      addChosen: "position/addChosenCity",
-      removeChosen: "position/removeChosenCity",
-
+      addChosen: "position/addChosen",
+      removeChosen: "position/removeChosen",
       uploadFile: "file/uploadFile",
       removeFile: "file/removeFile",
-      submitFile: "file/submitFile",
 
       saveForm: "form/saveForm",
     }),
-
-    handleAddChosen(option) {
-      this.addChosen(option);
-    },
-    handleRemoveChosen(chosenItem) {
-      this.removeChosen(chosenItem);
-    },
     handleUploadFile(files) {
       this.uploadFile(files);
     },
     handleRemoveFile(lastModified) {
       this.removeFile(lastModified);
+    },
+    handleAddChosen(option) {
+      this.addChosen(option);
+    },
+    handleRemoveChosen(chosenItem) {
+      this.removeChosen(chosenItem);
     },
     // validate form
     nextStep() {

@@ -9,13 +9,12 @@ const getters = {
   },
   getChosenList(state) {
     let chosenList = state.positionList.filter((pos) => pos.isChosen);
-    console.log(chosenList);
     return chosenList;
   },
 };
 // mutations
 const mutations = {
-  ADD_CHOSEN_CITY(state, option) {
+  ADD_CHOSEN(state, option) {
     let newPositionList = state.positionList.map((pos) => {
       if (pos.codename === option.codename) {
         pos.isChosen = true;
@@ -24,7 +23,7 @@ const mutations = {
     });
     state.positionList = newPositionList;
   },
-  REMOVE_CHOSEN_CTTY(state, chosenItem) {
+  REMOVE_CHOSEN(state, chosenItem) {
     let newCities = state.positionList.map((pos) => {
       if (pos.codename === chosenItem.codename) {
         pos.isChosen = false;
@@ -36,11 +35,11 @@ const mutations = {
 };
 // actions
 const actions = {
-  addChosenCity({ commit }, option) {
-    commit("ADD_CHOSEN_CITY", option);
+  addChosen({ commit }, option) {
+    commit("ADD_CHOSEN", option);
   },
-  removeChosenCity({ commit }, chosenItem) {
-    commit("REMOVE_CHOSEN_CTTY", chosenItem);
+  removeChosen({ commit }, chosenItem) {
+    commit("REMOVE_CHOSEN", chosenItem);
   },
 };
 
