@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import TextArea from "@/components/multiform/FirstStepComp/TextArea.vue";
+import TextArea from "@/components/multiform/sharedComponents/TextArea.vue";
 import SalaryElement from "./SalaryElement.vue";
 export default {
   components: {

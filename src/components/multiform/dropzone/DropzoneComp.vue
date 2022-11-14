@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <InputLabel :label="'Ảnh cá nhân'" :required="false" />
+    <InputLabel :label="label" :required="required" />
     <DropzoneElement
       @onUpload="uploadFile"
       :maxSize="maxSize"
@@ -17,6 +17,12 @@ import DropzoneElement from "./DropzoneElement.vue";
 import FileElement from "./FileElement.vue";
 export default {
   props: {
+    label: {
+      type: String,
+    },
+    required: {
+      type: Boolean,
+    },
     fileList: {
       type: Array,
       required: true,

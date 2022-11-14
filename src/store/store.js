@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import city from "./modules/city";
 import file from "./modules/file";
 import form from "./modules/form";
+import position from "./modules/position";
 
 Vue.use(Vuex);
 
@@ -11,5 +12,6 @@ export default new Vuex.Store({
     city,
     file,
     form,
+    position,
   },
 });

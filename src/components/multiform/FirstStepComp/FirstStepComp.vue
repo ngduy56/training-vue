@@ -2,33 +2,57 @@
   <div>
     <div class="first-block">
       <div class="info-content">
-        <InputField
-          :label="'Họ và tên'"
-          v-model="fullName"
-          :error="error.fullName"
-        />
-        <InputDate :label="'Ngày sinh'" v-model="dob" :error="error.dob" />
-        <DropdownList :label="'Thành phố'" />
-        <PositionInput
-          v-model="filterName"
-          :optionList="filterOptions"
-          :chosenList="chosenList"
-          @onAddChosen="handleAddChosen"
-          @onRemoveChosen="handleRemoveChosen"
-        />
-        <AboutArea
-          v-model="about"
-          :label="'Mô tả về bản thân'"
-          :error="error.about"
-        />
-        <DropzoneComp
-          :fileList="fileList"
-          :maxNumber="maxNumber"
-          :maxSize="maxSize"
-          :typeFile="typeFile"
-          @onRemove="handleRemoveFile"
-          @onUpload="handleUploadFile"
-        />
+        <!-- <div v-for="item in firstStepForm" :key="item.key">
+          <InputField
+            v-if="item.view_type === 'input-text'"
+            v-model="item.value"
+            :label="item.label"
+            :required="item.required"
+            :error="item.error"
+          />
+          <InputDate
+            v-if="item.view_type === 'input-date'"
+            v-model="item.value"
+            :label="item.label"
+            :required="item.required"
+            :error="item.error"
+          />
+          <DropdownList
+            v-if="item.view_type === 'input-dropdown'"
+            v-model="item.value"
+            :label="item.label"
+            :required="item.required"
+          />
+          <PositionInput
+            v-if="item.view_type === 'input-dropdown-search'"
+            v-model="filterName"
+            :label="item.label"
+            :required="item.required"
+            :optionList="item.optionList"
+            :chosenList="chosenList"
+            @onAddChosen="handleAddChosen"
+            @onRemoveChosen="handleRemoveChosen"
+          />
+          <AboutArea
+            v-if="item.view_type === 'input-area'"
+            v-model="item.value"
+            :label="item.label"
+            :required="item.required"
+            :error="item.error"
+          />
+          <DropzoneComp
+            v-if="item.view_type === 'img-dropzone'"
+            :label="item.label"
+            :required="item.required"
+            :maxNumber="item.maxNumber"
+            :maxSize="item.maxSize"
+            :typeFile="item.typeFile"
+            :fileList="fileList"
+            @onRemove="handleRemoveFile"
+            @onUpload="handleUploadFile"
+          />
+        </div> -->
+        <InputView v-for="item in firstStepForm" :key="item.key" :item="item" />
       </div>
     </div>
     <button class="btn-next active" @click="nextStep">Tiếp</button>
@@ -36,57 +60,51 @@
 </template>
 
 <script>
-import InputField from "../sharedComponents/InputField.vue";
-import InputDate from "../sharedComponents/InputDate.vue";
-import DropdownList from "./DropdownList.vue";
-import PositionInput from "./PositionInput.vue";
-import AboutArea from "./TextArea.vue";
-import DropzoneComp from "@/components/multiform/dropzone/DropzoneComp.vue";
+import InputView from "./InputView.vue";
+// import InputField from "../sharedComponents/InputField.vue";
+// import InputDate from "../sharedComponents/InputDate.vue";
+// import DropdownList from "./DropdownList.vue";
+// import PositionInput from "./PositionInput.vue";
+// import AboutArea from "@/components/multiform/sharedComponents/TextArea.vue";
+// import DropzoneComp from "@/components/multiform/dropzone/DropzoneComp.vue";
 import { mapActions, mapGetters } from "vuex";
-import {
-  MAX_SIZE,
-  MAX_NUMBER,
-  TYPE_FILE_IMAGE,
-} from "@/constants/DropzoneConstants.js";
+import { firstForm } from "./firstForm.js";
 import { ValidateForm } from "@/utils/ValidateFormFirstStep.js";
 export default {
   components: {
-    InputField,
-    InputDate,
-    DropdownList,
-    PositionInput,
-    AboutArea,
-    DropzoneComp,
+    InputView,
+    // InputField,
+    // InputDate,
+    // DropdownList,
+    // PositionInput,
+    // AboutArea,
+    // DropzoneComp,
   },
   data() {
     return {
       filterName: "",
-
-      fullName: "",
-      dob: "",
-      about: "",
-
+      firstStepForm: firstForm,
       isValid: false,
-
-      maxSize: MAX_SIZE,
-      maxNumber: MAX_NUMBER,
-      typeFile: TYPE_FILE_IMAGE,
-      error: {
-        fullName: "",
-        dob: "",
-        about: "",
-      },
     };
   },
-  created() {
-    this.getCityList();
+  watch: {
+    firstStepForm: {
+      handler(val) {
+        console.log(val);
+        // val.map((item) => {
+        //   console.log(item);
+        // });
+      },
+      immediate: true,
+      deep: true,
+    },
   },
   computed: {
     ...mapGetters({
-      optionList: "city/getCities",
-      chosenList: "city/getChosenList",
-      fileList: "file/getFileList",
+      optionList: "position/getPositionList",
+      chosenList: "position/getChosenList",
 
+      fileList: "file/getFileList",
       firstForm: "form/getFirstForm",
     }),
     filterOptions() {
@@ -97,9 +115,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      getCities: "city/getCityList",
-      addChosen: "city/addChosenCity",
-      removeChosen: "city/removeChosenCity",
+      addChosen: "position/addChosenCity",
+      removeChosen: "position/removeChosenCity",
 
       uploadFile: "file/uploadFile",
       removeFile: "file/removeFile",
@@ -107,9 +124,7 @@ export default {
 
       saveForm: "form/saveForm",
     }),
-    getCityList() {
-      this.getCities();
-    },
+
     handleAddChosen(option) {
       this.addChosen(option);
     },

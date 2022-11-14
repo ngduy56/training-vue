@@ -1,7 +1,7 @@
 <template>
   <div class="input-field">
-    <InputLabel :label="label" :required="true" />
-    <input type="text" v-model="value" @input="onChange" />
+    <InputLabel :label="label" :required="required" />
+    <input type="text" @input="onChange" />
     <span v-if="error" class="error-vali">{{ error }}</span>
   </div>
 </template>
@@ -9,15 +9,13 @@
 <script>
 import InputLabel from "./InputLabel.vue";
 export default {
-  data() {
-    return {
-      value: "",
-    };
-  },
   props: {
     label: {
       type: String,
       required: true,
+    },
+    required: {
+      type: Boolean,
     },
     error: {
       type: String,

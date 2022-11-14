@@ -1,19 +1,25 @@
 <template>
-  <div class="input-date">
-    <InputLabel :label="label" :required="required" />
-    <input type="date" @input="onChange" />
-    <span v-if="error" class="error-vali">{{ error }}</span>
+  <div class="time-working">
+    <InputLabel :label="label" :required="true" />
+    <div class="time-zone">
+      <input class="from-data" type="date" />
+      <div>-</div>
+      <input class="to-date" type="date" />
+    </div>
   </div>
 </template>
 <script>
-import InputLabel from "./InputLabel.vue";
+import InputLabel from "@/components/multiform/sharedComponents/InputLabel.vue";
 export default {
+  data() {
+    return {
+      value: "",
+    };
+  },
   props: {
     label: {
       type: String,
-    },
-    required: {
-      type: Boolean,
+      required: true,
     },
     error: {
       type: String,
@@ -31,11 +37,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.input-date {
+.time-working {
   width: 100%;
-  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
+  margin: 14px 0 24px 0;
 
   input {
     width: 120px;
@@ -51,9 +57,13 @@ export default {
     line-height: 40px;
     padding: 0 8px 0 6px;
   }
-  .error-vali {
-    color: red;
-    font-size: 14px;
+  .time-zone {
+    display: flex;
+    align-items: center;
+
+    div {
+      margin: 0 10px;
+    }
   }
 }
 </style>

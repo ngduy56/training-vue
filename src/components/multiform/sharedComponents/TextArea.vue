@@ -1,14 +1,14 @@
 <template>
   <div class="area-block">
     <InputLabel :label="label" :required="required" />
-    <textarea v-model="value" @input="onChange"></textarea>
+    <textarea @input="onChange"></textarea>
     <span>{{ length }}/1000</span>
     <span v-if="showError" class="error-vali">{{ error }}</span>
   </div>
 </template>
 
 <script>
-import InputLabel from "@/components/multiform/sharedComponents/InputLabel.vue";
+import InputLabel from "./InputLabel.vue";
 
 export default {
   data() {
@@ -51,6 +51,7 @@ export default {
   width: 528px;
   position: relative;
   margin-bottom: 10px;
+  color: #000000;
 
   textarea {
     width: 100%;

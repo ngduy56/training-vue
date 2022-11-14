@@ -37,7 +37,7 @@ export default {
   height: 32px;
   min-width: 83px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   padding: 4px 8px;
   gap: 8px;
