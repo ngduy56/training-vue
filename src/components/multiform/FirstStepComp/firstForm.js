@@ -4,11 +4,10 @@ import {
   TYPE_FILE_IMAGE,
 } from "@/constants/DropzoneConstants.js";
 import store from "@/store/store";
+import { CITY_LIST } from "@/constants/FirstStepConstants";
+const optionList = store.getters["position/getPositionList"];
 
-let optionList = store.getters["position/getPositionList"];
-let chosenList = optionList.filter((pos) => pos.isChosen);
-
-export const firstForm = [
+const firstForm = [
   {
     label: "Họ và tên",
     view_type: "input-text",
@@ -29,17 +28,16 @@ export const firstForm = [
     label: "Thành phố",
     view_type: "input-dropdown",
     required: false,
-    value: null,
+    value: "hanoi",
     key: "city",
+    cityList: CITY_LIST,
   },
   {
     label: "Vị trí làm việc",
     view_type: "input-dropdown-search",
     required: false,
-    value: null,
     key: "position",
-    optionList: optionList,
-    chosenList: chosenList,
+    optionList,
   },
   {
     label: "Mô tả về bản thân",
@@ -53,10 +51,11 @@ export const firstForm = [
     label: "Ảnh cá nhân",
     view_type: "img-dropzone",
     required: false,
-    value: "",
+    fileList: "",
     key: "ava-dropzone",
     maxSize: MAX_SIZE,
     maxNumber: MAX_NUMBER,
     typeFile: TYPE_FILE_IMAGE,
   },
 ];
+export { firstForm };

@@ -1,18 +1,42 @@
 <template>
   <div class="company-item">
     <div class="selection">
-      <select>
-        <option value="mor1">MorSoftware 1</option>
-        <option value="mor2">MorSoftware 2</option>
-        <option value="mor3">MorSoftware 3</option>
-        <option value="mor4">MorSoftware 4</option>
-      </select>
+      <DropdownList
+        v-if="item.view_type === 'input-dropdown'"
+        v-model="valueLocal"
+        :label="item.label"
+        :list="item.companyList"
+        @input="onChange"
+      />
       <TrashIcon />
     </div>
-    <div class="content">
-      <InputField :label="'Vị trí từng làm'" required="true" />
-      <InputDate :label="'Thời gian làm việc'" required="true" />
-      <WorkArea :label="'Mô tả về công việc'" />
+    <div
+      v-for="(child, indexChild) in item.childrens"
+      :key="child.key"
+      class="content"
+    >
+      <InputField
+        v-if="child.view_type === 'input-text'"
+        :value="child.value"
+        :label="child.label"
+        :required="child.required"
+        :error="child.error"
+        @input="(value) => onChangeChildren(value, indexChild)"
+      />
+      <InputDate
+        v-if="child.view_type === 'input-date'"
+        :value="child.value"
+        :label="child.label"
+        :required="child.required"
+        :error="child.error"
+      />
+      <WorkArea
+        v-if="child.view_type === 'input-area'"
+        :value="child.value"
+        :label="child.label"
+        :required="child.required"
+        :error="child.error"
+      />
     </div>
   </div>
 </template>
@@ -21,13 +45,48 @@
 import InputField from "@/components/multiform/sharedComponents/InputField.vue";
 import TrashIcon from "@/components/icons/TrashIcon.vue";
 import InputDate from "./TimeWorking.vue";
+import DropdownList from "../FirstStepComp/DropdownList.vue";
 import WorkArea from "@/components/multiform/sharedComponents/TextArea.vue";
 export default {
+  data() {
+    return {
+      valueLocal: "",
+      valueLocal2: "",
+    };
+  },
+  watch: {
+    value: {
+      handler(val) {
+        console.log(val);
+        this.valueLocal = val;
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+    value: {
+      type: String,
+    },
+  },
   components: {
     TrashIcon,
     InputField,
     InputDate,
     WorkArea,
+    DropdownList,
+  },
+  methods: {
+    onChange(value) {
+      this.$emit("input", value);
+    },
+    onChangeChildren(value, indexChild) {
+      this.$emit("onChangeChildren", value, indexChild);
+    },
   },
 };
 </script>
@@ -49,7 +108,7 @@ export default {
     align-items: center;
     height: 60px;
     border-radius: 4px;
-    padding: 10px 16px 10px 16px;
+    padding: 10px 18px 10px 16px;
     margin-bottom: 24px;
 
     select {

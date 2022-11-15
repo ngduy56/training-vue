@@ -1,7 +1,7 @@
 <template>
   <div class="area-block">
     <InputLabel :label="label" :required="required" />
-    <textarea @input="onChange"></textarea>
+    <textarea v-model="valueLocal" @input="onChange"></textarea>
     <span>{{ length }}/1000</span>
     <span v-if="showError" class="error-vali">{{ error }}</span>
   </div>
@@ -13,8 +13,17 @@ import InputLabel from "./InputLabel.vue";
 export default {
   data() {
     return {
-      value: "",
+      valueLocal: "",
     };
+  },
+  watch: {
+    value: {
+      handler(val) {
+        this.valueLocal = val;
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   components: {
     InputLabel,
@@ -29,13 +38,16 @@ export default {
     error: {
       type: String,
     },
+    value: {
+      type: String,
+    },
   },
   computed: {
-    length() {
-      return this.value.length;
-    },
     showError() {
-      return this.value.length > 1000;
+      return this.error;
+    },
+    length() {
+      return this.valueLocal.length;
     },
   },
   methods: {

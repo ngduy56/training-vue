@@ -1,16 +1,37 @@
 <template>
   <div class="second-block">
     <div class="company-list">
-      <CompanyItem />
+      <CompanyItem
+        v-for="(item, index) in secondStepForm"
+        v-model="item.value"
+        :index="index"
+        :item="item"
+        :key="item.key"
+        @onChangeChildren="
+          (value, indexChild) => onChangeChildren(value, indexChild, index)
+        "
+      />
     </div>
   </div>
 </template>
 
 <script>
 import CompanyItem from "./CompanyItem.vue";
+import { secondForm } from "./secondForm";
+
 export default {
+  data() {
+    return {
+      secondStepForm: secondForm,
+    };
+  },
   components: {
     CompanyItem,
+  },
+  methods: {
+    onChangeChildren(value, indexChild, index) {
+      console.log(value, indexChild, index);
+    },
   },
 };
 </script>

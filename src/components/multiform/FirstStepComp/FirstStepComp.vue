@@ -2,56 +2,6 @@
   <div>
     <div class="first-block">
       <div class="info-content">
-        <!-- <div v-for="item in firstStepForm" :key="item.key">
-          <InputField
-            v-if="item.view_type === 'input-text'"
-            v-model="item.value"
-            :label="item.label"
-            :required="item.required"
-            :error="item.error"
-          />
-          <InputDate
-            v-if="item.view_type === 'input-date'"
-            v-model="item.value"
-            :label="item.label"
-            :required="item.required"
-            :error="item.error"
-          />
-          <DropdownList
-            v-if="item.view_type === 'input-dropdown'"
-            v-model="item.value"
-            :label="item.label"
-            :required="item.required"
-          />
-          <PositionInput
-            v-if="item.view_type === 'input-dropdown-search'"
-            v-model="filterName"
-            :label="item.label"
-            :required="item.required"
-            :optionList="item.optionList"
-            :chosenList="chosenList"
-            @onAddChosen="handleAddChosen"
-            @onRemoveChosen="handleRemoveChosen"
-          />
-          <AboutArea
-            v-if="item.view_type === 'input-area'"
-            v-model="item.value"
-            :label="item.label"
-            :required="item.required"
-            :error="item.error"
-          />
-          <DropzoneComp
-            v-if="item.view_type === 'img-dropzone'"
-            :label="item.label"
-            :required="item.required"
-            :maxNumber="item.maxNumber"
-            :maxSize="item.maxSize"
-            :typeFile="item.typeFile"
-            :fileList="fileList"
-            @onRemove="handleRemoveFile"
-            @onUpload="handleUploadFile"
-          />
-        </div> -->
         <InputView
           v-for="item in firstStepForm"
           v-model="item.value"
@@ -72,45 +22,33 @@
 import InputView from "./InputView.vue";
 import { mapActions, mapGetters } from "vuex";
 import { firstForm } from "./firstForm.js";
-import { ValidateForm } from "@/utils/ValidateFormFirstStep.js";
+import { ValidateForm } from "@/utils/ValidateFormFirstStep";
+
 export default {
   components: {
     InputView,
   },
   data() {
     return {
-      filterName: "",
       firstStepForm: firstForm,
       isValid: false,
     };
   },
-  watch: {
-    firstStepForm: {
-      handler(val) {
-        console.log(val);
-        // val.map((item) => {
-        //   console.log(item);
-        // });
-      },
-      immediate: true,
-      deep: true,
-    },
+  mounted() {
+    if (this.firstFormStore.length) {
+      this.firstStepForm = this.firstFormStore;
+    }
   },
   computed: {
     ...mapGetters({
-      fileList: "file/getFileList",
-      firstForm: "form/getFirstForm",
+      firstFormStore: "form/getFirstForm",
     }),
-    filterOptions() {
-      return this.optionList.filter((option) => {
-        return option.name.match(this.filterName);
-      });
-    },
   },
   methods: {
     ...mapActions({
       addChosen: "position/addChosen",
       removeChosen: "position/removeChosen",
+
       uploadFile: "file/uploadFile",
       removeFile: "file/removeFile",
 
@@ -128,25 +66,11 @@ export default {
     handleRemoveChosen(chosenItem) {
       this.removeChosen(chosenItem);
     },
-    // validate form
     nextStep() {
-      this.error = {
-        fullName: "",
-        dob: "",
-        about: "",
-      };
-      this.isValid = ValidateForm(
-        this.fullName,
-        this.dob,
-        this.about,
-        this.error
-      );
+      this.isValid = ValidateForm(this.firstStepForm);
       if (this.isValid) {
-        this.saveForm({
-          fullname: this.fullName,
-          dob: this.dob,
-          about: this.about,
-        });
+        this.saveForm(this.firstStepForm);
+        this.$router.push({ path: "/3/2" });
       }
     },
   },

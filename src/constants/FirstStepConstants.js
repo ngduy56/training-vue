@@ -1,8 +1,8 @@
 const POSITION_LIST = [
   {
     code: 1,
-    codename: "ba",
-    name: "BA",
+    codename: "software_engineer",
+    name: "Software Engineer",
     isChosen: false,
   },
   {
@@ -30,4 +30,60 @@ const POSITION_LIST = [
     isChosen: false,
   },
 ];
-export { POSITION_LIST };
+const INPUT_TEXT = "input-text";
+const INPUT_DATE = "input-date";
+const INPUT_DROPDOWN = "input-dropdown";
+const INPUT_DROPDOWN_SEARCH = "input-dropdown-search";
+const INPUT_AREA = "input-area";
+const IMG_DROPZONE = "img-dropzone";
+const CITY_LIST = [
+  {
+    name: "Hà Nội",
+    value: "hanoi",
+  },
+  {
+    name: "Đà Nẵng",
+    value: "danang",
+  },
+  {
+    name: "Huế",
+    value: "hue",
+  },
+  {
+    name: "Đà Lạt",
+    value: "dalat",
+  },
+  {
+    name: "Hồ Chí Minh",
+    value: "hochiminh",
+  },
+];
+const COMPANY_LIST = [
+  {
+    name: "Morsoftware 1",
+    value: "mor1",
+  },
+  {
+    name: "Morsoftware 2",
+    value: "mor2",
+  },
+  {
+    name: "Morsoftware 3",
+    value: "mor3",
+  },
+  {
+    name: "Morsoftware 4",
+    value: "mor4",
+  },
+];
+export {
+  COMPANY_LIST,
+  POSITION_LIST,
+  INPUT_TEXT,
+  INPUT_DATE,
+  INPUT_DROPDOWN,
+  INPUT_DROPDOWN_SEARCH,
+  INPUT_AREA,
+  IMG_DROPZONE,
+  CITY_LIST,
+};

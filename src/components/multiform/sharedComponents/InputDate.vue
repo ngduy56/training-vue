@@ -1,13 +1,27 @@
 <template>
   <div class="input-date">
     <InputLabel :label="label" :required="required" />
-    <input type="date" @input="onChange" />
+    <input type="date" v-model="valueLocal" @input="onChange" />
     <span v-if="error" class="error-vali">{{ error }}</span>
   </div>
 </template>
 <script>
 import InputLabel from "./InputLabel.vue";
 export default {
+  data() {
+    return {
+      valueLocal: "",
+    };
+  },
+  watch: {
+    value: {
+      handler(val) {
+        this.valueLocal = val;
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
   props: {
     label: {
       type: String,
@@ -16,6 +30,9 @@ export default {
       type: Boolean,
     },
     error: {
+      type: String,
+    },
+    value: {
       type: String,
     },
   },

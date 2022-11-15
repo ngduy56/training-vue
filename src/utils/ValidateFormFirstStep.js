@@ -1,20 +1,37 @@
-export const ValidateForm = (fullName, dob, about, error) => {
+export const ValidateForm = (firstStepForm) => {
+  firstStepForm.map((item) => {
+    item.error = "";
+    return item;
+  });
   let isValid = true;
+
+  const fullNameInput = firstStepForm.filter((item) => item.key === "fullName");
+  let fullName = fullNameInput[0].value;
   if (!fullName) {
-    error.fullName = "Họ và tên là bắt buộc";
+    fullNameInput[0].error = "Họ và tên là bắt buộc";
     isValid = false;
   } else if (fullName.length > 100) {
-    error.fullName = "Họ và tên có độ dài tối đa 100 ký tự";
+    fullNameInput[0].error = "Họ và tên có độ dài tối đa 100 ký tự";
     isValid = false;
   }
-  if (about.length > 10) {
-    error.about = "Giới thiệu có độ dài tối đa 1000 ký tự";
+
+  const aboutInput = firstStepForm.filter((item) => item.key === "about-me");
+  let about = aboutInput[0].value;
+  if (about.length > 1000) {
+    aboutInput[0].error = "Phần giới thiệu có độ dài tối đa 1000 ký tự";
     isValid = false;
   }
-  let inputDate = new Date(dob).getTime();
+
+  const dateInput = firstStepForm.filter((item) => item.key === "dob");
+  let dob = dateInput[0].value;
+  let dateTime = new Date(dob).getTime();
   let currentDate = new Date().getTime();
-  if (inputDate > currentDate) {
-    error.dob = "Vui lòng chọn lại ngày";
+  if (!dob) {
+    dateInput[0].error = "Vui lòng chọn ngày sinh";
+    isValid = false;
+  }
+  if (dateTime > currentDate) {
+    dateInput[0].error = "Vui lòng chọn lại ngày";
     isValid = false;
   }
   return isValid;

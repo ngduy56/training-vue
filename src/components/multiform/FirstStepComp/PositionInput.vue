@@ -3,10 +3,9 @@
     <InputLabel :label="label" :required="required" />
     <span class="note">Có thể chọn nhiều vị trí mà bạn muốn làm việc</span>
     <InputExam
-      v-model="value"
-      :optionList="optionList"
+      v-model="filterName"
+      :optionList="filterOptions"
       :chosenList="chosenList"
-      @input="changeFilterName"
       @inputAdd="onAddChosen"
       @inputRemove="onRemoveChosen"
     />
@@ -18,7 +17,7 @@ import InputExam from "@/components/multiform/input/InputExam.vue";
 export default {
   data() {
     return {
-      value: "",
+      filterName: "",
     };
   },
   components: {
@@ -39,6 +38,13 @@ export default {
     },
     required: {
       type: Boolean,
+    },
+  },
+  computed: {
+    filterOptions() {
+      return this.optionList.filter((option) => {
+        return option.name.match(this.filterName);
+      });
     },
   },
   methods: {

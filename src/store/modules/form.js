@@ -1,28 +1,19 @@
 const state = () => ({
-  firstForm: {
-    fullName: "",
-    dob: "",
-    city: "",
-    postion: "",
-    about: "",
-  },
+  firstForm: [],
 });
 const getters = {
-  getFirstForm() {
+  getFirstForm(state) {
     return state.firstForm;
   },
 };
 const mutations = {
-  SAVE_FORM(state, { fullName, dob, postion, about }) {
-    state.firstForm.fullName = fullName;
-    state.firstForm.dob = dob;
-    state.firstForm.postion = postion;
-    state.firstForm.about = about;
+  SAVE_FORM(state, payload) {
+    console.log(payload);
+    state.firstForm = payload;
   },
 };
 const actions = {
   saveForm({ commit }, payload) {
-    console.log(payload);
     commit("SAVE_FORM", payload);
   },
 };
