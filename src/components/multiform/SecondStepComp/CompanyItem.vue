@@ -29,6 +29,7 @@
         :label="child.label"
         :required="child.required"
         :error="child.error"
+        @input="(value) => onChangeChildren(value, indexChild)"
       />
       <WorkArea
         v-if="child.view_type === 'input-area'"
@@ -36,6 +37,7 @@
         :label="child.label"
         :required="child.required"
         :error="child.error"
+        @input="(value) => onChangeChildren(value, indexChild)"
       />
     </div>
   </div>
@@ -51,13 +53,11 @@ export default {
   data() {
     return {
       valueLocal: "",
-      valueLocal2: "",
     };
   },
   watch: {
     value: {
       handler(val) {
-        console.log(val);
         this.valueLocal = val;
       },
       deep: true,

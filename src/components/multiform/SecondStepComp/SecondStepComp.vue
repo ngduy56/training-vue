@@ -4,7 +4,6 @@
       <CompanyItem
         v-for="(item, index) in secondStepForm"
         v-model="item.value"
-        :index="index"
         :item="item"
         :key="item.key"
         @onChangeChildren="
@@ -12,10 +11,12 @@
         "
       />
     </div>
+    <button @click="nextStep">Next</button>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 import CompanyItem from "./CompanyItem.vue";
 import { secondForm } from "./secondForm";
 
@@ -25,12 +26,33 @@ export default {
       secondStepForm: secondForm,
     };
   },
+  mounted() {
+    if (this.secondSecondStore.length) {
+      this.secondStepForm = this.secondSecondStore;
+    }
+  },
+  computed: {
+    ...mapGetters({
+      secondSecondStore: "form/getSecondForm",
+    }),
+  },
   components: {
     CompanyItem,
   },
   methods: {
+    ...mapActions({
+      saveSecondForm: "form/saveSecondForm",
+    }),
     onChangeChildren(value, indexChild, index) {
-      console.log(value, indexChild, index);
+      this.secondStepForm[index].childrens.map((item, idx) => {
+        if (idx === indexChild) {
+          item.value = value;
+        }
+      });
+    },
+    nextStep() {
+      this.saveSecondForm(this.secondStepForm);
+      // this.$router.push({ path: "/3/3" });
     },
   },
 };

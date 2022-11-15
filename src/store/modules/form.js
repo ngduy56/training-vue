@@ -1,20 +1,30 @@
 const state = () => ({
   firstForm: [],
+  secondForm: [],
 });
 const getters = {
   getFirstForm(state) {
     return state.firstForm;
   },
+  getSecondForm(state) {
+    return state.secondForm;
+  },
 };
 const mutations = {
-  SAVE_FORM(state, payload) {
-    console.log(payload);
+  SAVE_FIRST_FORM(state, payload) {
     state.firstForm = payload;
+  },
+  SAVE_SECOND_FORM(state, payload) {
+    console.log(payload);
+    state.secondForm = payload;
   },
 };
 const actions = {
-  saveForm({ commit }, payload) {
-    commit("SAVE_FORM", payload);
+  saveFirstForm({ commit }, payload) {
+    commit("SAVE_FIRST_FORM", payload);
+  },
+  saveSecondForm({ commit }, payload) {
+    commit("SAVE_SECOND_FORM", payload);
   },
 };
 

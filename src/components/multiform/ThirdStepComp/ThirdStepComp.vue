@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="third-block">
-      <TextArea :label="'Lý do muốn ứng tuyển vào công ty'" required="true" />
+      <!-- <TextArea :label="'Lý do muốn ứng tuyển vào công ty'" required="true" /> -->
       <SalaryElement />
     </div>
     <button class="btn-complete">Hoàn thành</button>
@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import TextArea from "@/components/multiform/sharedComponents/TextArea.vue";
+// import TextArea from "@/components/multiform/sharedComponents/TextArea.vue";
 import SalaryElement from "./SalaryElement.vue";
 export default {
   components: {
-    TextArea,
+    // TextArea,
     SalaryElement,
   },
 };

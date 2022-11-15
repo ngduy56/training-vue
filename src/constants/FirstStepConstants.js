@@ -60,19 +60,19 @@ const CITY_LIST = [
 ];
 const COMPANY_LIST = [
   {
-    name: "Morsoftware 1",
+    name: "MorSoftware 1",
     value: "mor1",
   },
   {
-    name: "Morsoftware 2",
+    name: "MorSoftware 2",
     value: "mor2",
   },
   {
-    name: "Morsoftware 3",
+    name: "MorSoftware 3",
     value: "mor3",
   },
   {
-    name: "Morsoftware 4",
+    name: "MorSoftware 4",
     value: "mor4",
   },
 ];

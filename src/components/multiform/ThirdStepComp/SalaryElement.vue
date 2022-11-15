@@ -1,6 +1,6 @@
 <template>
   <div class="salary-block">
-    <InputLabel :label="'Mức lương mong muốn'" required="true" />
+    <!-- <InputLabel :label="'Mức lương mong muốn'" required="true" /> -->
     <div class="salary-input">
       <input type="text" />
       <span>VND</span>
@@ -9,10 +9,10 @@
 </template>
 
 <script>
-import InputLabel from "@/components/multiform/sharedComponents/InputLabel.vue";
+// import InputLabel from "@/components/multiform/sharedComponents/InputLabel.vue";
 export default {
   components: {
-    InputLabel,
+    // InputLabel,
   },
 };
 </script>

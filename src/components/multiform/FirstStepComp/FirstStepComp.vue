@@ -52,7 +52,7 @@ export default {
       uploadFile: "file/uploadFile",
       removeFile: "file/removeFile",
 
-      saveForm: "form/saveForm",
+      saveFirstForm: "form/saveFirstForm",
     }),
     handleUploadFile(files) {
       this.uploadFile(files);
@@ -69,7 +69,7 @@ export default {
     nextStep() {
       this.isValid = ValidateForm(this.firstStepForm);
       if (this.isValid) {
-        this.saveForm(this.firstStepForm);
+        this.saveFirstForm(this.firstStepForm);
         this.$router.push({ path: "/3/2" });
       }
     },
