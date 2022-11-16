@@ -60,6 +60,10 @@ const CITY_LIST = [
 ];
 const COMPANY_LIST = [
   {
+    name: "Chọn công ty",
+    value: "default",
+  },
+  {
     name: "MorSoftware 1",
     value: "mor1",
   },

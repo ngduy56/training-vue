@@ -1,11 +1,14 @@
 <template>
-  <div class="drop-down">
-    <InputLabel :label="label" :required="required" />
-    <select class="select" v-model="valueLocal" @change="onChange">
-      <option v-for="item in list" :key="item.value" :value="item.value">
-        {{ item.name }}
-      </option>
-    </select>
+  <div>
+    <div class="drop-down">
+      <InputLabel :label="label" :required="required" />
+      <select class="select" v-model="valueLocal" @change="onChange">
+        <option v-for="item in list" :key="item.value" :value="item.value">
+          {{ item.name }}
+        </option>
+      </select>
+      <span v-if="error" class="error-vali">{{ error }}</span>
+    </div>
   </div>
 </template>
 
@@ -39,14 +42,16 @@ export default {
     value: {
       type: String,
     },
+    error: {
+      type: String,
+    },
   },
   components: {
     InputLabel,
   },
   methods: {
     onChange() {
-      let value = document.querySelector(".select").value;
-      this.$emit("input", value);
+      this.$emit("input", this.valueLocal);
     },
   },
 };
@@ -56,6 +61,7 @@ export default {
 .drop-down {
   width: 100%;
   margin-bottom: 10px;
+  position: relative;
 
   .select {
     width: 100%;
@@ -75,5 +81,12 @@ export default {
       color: #333333;
     }
   }
+}
+.error-vali {
+  position: absolute;
+  color: red;
+  left: -15px;
+  top: 58px;
+  font-size: 14px;
 }
 </style>

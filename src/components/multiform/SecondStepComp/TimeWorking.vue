@@ -1,10 +1,21 @@
 <template>
   <div class="time-working">
-    <InputLabel :label="label" :required="true" />
+    <InputLabel :label="label" :required="required" />
     <div class="time-zone">
-      <input class="from-data" type="date" />
+      <input
+        class="from-date"
+        v-model="valueLocal.from"
+        @input="onChange"
+        type="date"
+      />
       <div>-</div>
-      <input class="to-date" type="date" />
+      <input
+        class="to-date"
+        v-model="valueLocal.to"
+        @input="onChange"
+        type="date"
+      />
+      <span v-if="error" class="error-vali">{{ error }}</span>
     </div>
   </div>
 </template>
@@ -13,8 +24,17 @@ import InputLabel from "@/components/multiform/sharedComponents/InputLabel.vue";
 export default {
   data() {
     return {
-      value: "",
+      valueLocal: {},
     };
+  },
+  watch: {
+    value: {
+      handler(val) {
+        this.valueLocal = val;
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   props: {
     label: {
@@ -24,13 +44,19 @@ export default {
     error: {
       type: String,
     },
+    required: {
+      type: Boolean,
+    },
+    value: {
+      type: Object,
+    },
   },
   components: {
     InputLabel,
   },
   methods: {
-    onChange(e) {
-      this.$emit("input", e.target.value);
+    onChange() {
+      this.$emit("input", this.valueLocal);
     },
   },
 };
@@ -38,6 +64,7 @@ export default {
 
 <style lang="scss" scoped>
 .time-working {
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -63,6 +90,11 @@ export default {
 
     div {
       margin: 0 10px;
+    }
+    .error-vali {
+      margin-left: 10px;
+      color: red;
+      font-size: 14px;
     }
   }
 }

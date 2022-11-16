@@ -15,7 +15,6 @@ const mutations = {
     state.firstForm = payload;
   },
   SAVE_SECOND_FORM(state, payload) {
-    console.log(payload);
     state.secondForm = payload;
   },
 };

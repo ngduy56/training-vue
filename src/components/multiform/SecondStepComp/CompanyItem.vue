@@ -1,14 +1,17 @@
 <template>
   <div class="company-item">
-    <div class="selection">
-      <DropdownList
-        v-if="item.view_type === 'input-dropdown'"
-        v-model="valueLocal"
-        :label="item.label"
-        :list="item.companyList"
-        @input="onChange"
-      />
-      <TrashIcon />
+    <div class="selection-block">
+      <div class="selection">
+        <DropdownList
+          v-if="item.view_type === 'input-dropdown'"
+          v-model="valueLocal"
+          :label="item.label"
+          :error="error"
+          :list="item.companyList"
+          @input="onChange"
+        />
+      </div>
+      <TrashIcon @click.native="onRemove" />
     </div>
     <div
       v-for="(child, indexChild) in item.childrens"
@@ -23,7 +26,7 @@
         :error="child.error"
         @input="(value) => onChangeChildren(value, indexChild)"
       />
-      <InputDate
+      <TimeWorking
         v-if="child.view_type === 'input-date'"
         :value="child.value"
         :label="child.label"
@@ -46,7 +49,7 @@
 <script>
 import InputField from "@/components/multiform/sharedComponents/InputField.vue";
 import TrashIcon from "@/components/icons/TrashIcon.vue";
-import InputDate from "./TimeWorking.vue";
+import TimeWorking from "./TimeWorking.vue";
 import DropdownList from "../FirstStepComp/DropdownList.vue";
 import WorkArea from "@/components/multiform/sharedComponents/TextArea.vue";
 export default {
@@ -72,20 +75,26 @@ export default {
     value: {
       type: String,
     },
+    error: {
+      type: String,
+    },
   },
   components: {
     TrashIcon,
     InputField,
-    InputDate,
+    TimeWorking,
     WorkArea,
     DropdownList,
   },
   methods: {
-    onChange(value) {
-      this.$emit("input", value);
+    onChange() {
+      this.$emit("input", this.valueLocal);
     },
     onChangeChildren(value, indexChild) {
       this.$emit("onChangeChildren", value, indexChild);
+    },
+    onRemove() {
+      this.$emit("onRemove", this.item.value);
     },
   },
 };
@@ -100,7 +109,7 @@ export default {
   border: 1px solid #dcdcdc;
   margin-bottom: 24px;
 
-  .selection {
+  .selection-block {
     width: 100%;
     display: flex;
     background: #f8f8f8;
@@ -111,9 +120,13 @@ export default {
     padding: 10px 18px 10px 16px;
     margin-bottom: 24px;
 
+    .selection {
+      width: 94%;
+    }
+
     select {
       border-radius: 4px;
-      width: 94%;
+      width: 100%;
       height: 100%;
       border: 1px solid #dbdbdb;
       font-weight: 400;

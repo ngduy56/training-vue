@@ -22,7 +22,7 @@
 import InputView from "./InputView.vue";
 import { mapActions, mapGetters } from "vuex";
 import { firstForm } from "./firstForm.js";
-import { ValidateForm } from "@/utils/ValidateFormFirstStep";
+import { ValidateFirstForm } from "@/utils/ValidateForm";
 
 export default {
   components: {
@@ -67,7 +67,7 @@ export default {
       this.removeChosen(chosenItem);
     },
     nextStep() {
-      this.isValid = ValidateForm(this.firstStepForm);
+      this.isValid = ValidateFirstForm(this.firstStepForm);
       if (this.isValid) {
         this.saveFirstForm(this.firstStepForm);
         this.$router.push({ path: "/3/2" });
@@ -102,14 +102,13 @@ export default {
   font-weight: 700;
   font-size: 16px;
   line-height: 24px;
+  outline: none;
   border: none;
   color: #ffffff;
   margin-top: 24px;
-  outline: none;
 
   &.active {
-    color: black;
-    border: 1px solid black;
+    background: #627d98;
     cursor: pointer;
   }
 }

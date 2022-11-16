@@ -51,8 +51,8 @@ export default {
     },
   },
   methods: {
-    onChange(e) {
-      this.$emit("input", e.target.value);
+    onChange() {
+      this.$emit("input", this.valueLocal);
     },
   },
 };

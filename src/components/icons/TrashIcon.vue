@@ -44,4 +44,8 @@
 export default {};
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.trash-icon:hover {
+  cursor: pointer;
+}
+</style>

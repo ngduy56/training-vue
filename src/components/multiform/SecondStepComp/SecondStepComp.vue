@@ -3,56 +3,83 @@
     <div class="company-list">
       <CompanyItem
         v-for="(item, index) in secondStepForm"
-        v-model="item.value"
+        :value="item.value"
         :item="item"
-        :key="item.key"
+        :key="item.lastModified"
+        :error="item.error"
+        @input="(value) => onChange(value, index)"
         @onChangeChildren="
           (value, indexChild) => onChangeChildren(value, indexChild, index)
         "
+        @onRemove="onRemove"
       />
     </div>
-    <button @click="nextStep">Next</button>
+    <div class="btn-add" @click="addCompany">
+      <AddIcon />
+      <span>Thêm công ty</span>
+    </div>
+    <div class="navigate-block">
+      <button class="active" @click="nextStep">Tiếp</button>
+      <button @click="previousStep">Quay lại</button>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import CompanyItem from "./CompanyItem.vue";
-import { secondForm } from "./secondForm";
+import { defaultElement, secondForm } from "./secondForm";
+import AddIcon from "@/components/icons/AddIcon.vue";
+import { ValidateSecondForm } from "@/utils/ValidateForm";
 
 export default {
   data() {
     return {
-      secondStepForm: secondForm,
+      isValid: false,
+      secondStepForm: JSON.parse(JSON.stringify(secondForm)),
     };
   },
+  components: {
+    CompanyItem,
+    AddIcon,
+  },
   mounted() {
-    if (this.secondSecondStore.length) {
-      this.secondStepForm = this.secondSecondStore;
+    if (this.secondStepStore.length) {
+      this.secondStepForm = this.secondStepStore;
     }
   },
   computed: {
     ...mapGetters({
-      secondSecondStore: "form/getSecondForm",
+      secondStepStore: "form/getSecondForm",
     }),
-  },
-  components: {
-    CompanyItem,
   },
   methods: {
     ...mapActions({
       saveSecondForm: "form/saveSecondForm",
     }),
+    onChange(value, index) {
+      this.secondStepForm[index].value = value;
+    },
     onChangeChildren(value, indexChild, index) {
-      this.secondStepForm[index].childrens.map((item, idx) => {
-        if (idx === indexChild) {
-          item.value = value;
-        }
-      });
+      this.secondStepForm[index].childrens[indexChild].value = value;
+    },
+    addCompany() {
+      this.secondStepForm.push(JSON.parse(JSON.stringify(defaultElement)));
+    },
+    onRemove(value) {
+      let index = this.secondStepForm.findIndex((item) => item.value === value);
+      this.secondStepForm.splice(index, 1);
     },
     nextStep() {
-      this.saveSecondForm(this.secondStepForm);
-      // this.$router.push({ path: "/3/3" });
+      this.isValid = ValidateSecondForm(this.secondStepForm);
+      if (this.isValid) {
+        console.log("oke");
+        this.saveSecondForm(this.secondStepForm);
+        // this.$router.push({ path: "/3/3" });
+      }
+    },
+    previousStep() {
+      this.$router.push({ path: "/3" });
     },
   },
 };
@@ -71,6 +98,47 @@ export default {
     flex-direction: column;
     justify-content: center;
     width: 100%;
+  }
+  .btn-add {
+    width: 150px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    line-height: 24px;
+    background: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 3px;
+    outline: none;
+    color: #48647f;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .navigate-block button {
+    width: 102px;
+    height: 40px;
+    background: #dcdcdc;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    border: none;
+    color: #ffffff;
+    margin-top: 24px;
+    outline: none;
+
+    &.active {
+      background: #627d98;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+    &:nth-child(2) {
+      margin-left: 10px;
+    }
   }
 }
 </style>
