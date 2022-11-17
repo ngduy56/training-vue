@@ -2,8 +2,10 @@
   <div class="area-block">
     <InputLabel :label="label" :required="required" />
     <textarea v-model="valueLocal" @input="onChange"></textarea>
-    <span>{{ length }}/1000</span>
-    <span v-if="showError" class="error-vali">{{ error }}</span>
+    <div class="validate-block">
+      <span>{{ length }}/1000</span>
+      <span v-if="showError" class="error-vali">{{ error }}</span>
+    </div>
   </div>
 </template>
 
@@ -47,7 +49,7 @@ export default {
       return this.error;
     },
     length() {
-      return this.valueLocal.length;
+      return this.valueLocal ? this.valueLocal.length : 0;
     },
   },
   methods: {
@@ -76,16 +78,21 @@ export default {
     padding: 8px 10px;
     resize: none;
   }
-  span {
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    color: #666666;
-  }
-  .error-vali {
-    margin-left: 10px;
-    color: red;
-    font-size: 14px;
+  .validate-block {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    span {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      color: #666666;
+    }
+    .error-vali {
+      margin-left: 10px;
+      color: red;
+      font-size: 14px;
+    }
   }
 }
 </style>

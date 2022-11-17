@@ -1,11 +1,11 @@
-export const ValidateFirstForm = (firstStepForm) => {
-  firstStepForm.map((item) => {
+export const validateFirstForm = (thirdStepForm) => {
+  thirdStepForm.map((item) => {
     item.error = "";
     return item;
   });
   let isValid = true;
 
-  const fullNameInput = firstStepForm.filter((item) => item.key === "fullName");
+  const fullNameInput = thirdStepForm.filter((item) => item.key === "fullName");
   let fullName = fullNameInput[0].value;
   if (!fullName) {
     fullNameInput[0].error = "Họ và tên là bắt buộc";
@@ -15,14 +15,14 @@ export const ValidateFirstForm = (firstStepForm) => {
     isValid = false;
   }
 
-  const aboutInput = firstStepForm.filter((item) => item.key === "about-me");
+  const aboutInput = thirdStepForm.filter((item) => item.key === "about-me");
   let about = aboutInput[0].value;
   if (about.length > 1000) {
     aboutInput[0].error = "Tối đa là 1000 ký tự";
     isValid = false;
   }
 
-  const dateInput = firstStepForm.filter((item) => item.key === "dob");
+  const dateInput = thirdStepForm.filter((item) => item.key === "dob");
   let dob = dateInput[0].value;
   let dateTime = new Date(dob).getTime();
   let currentDate = new Date().getTime();
@@ -36,21 +36,10 @@ export const ValidateFirstForm = (firstStepForm) => {
   }
   return isValid;
 };
-// const checkTime = (start, end, nextStart, nextEnd) => {
-//   let isValid = false;
 
-//   let fromTime = new Date(start).getTime();
-//   let toTime = new Date(end).getTime();
-//   let nextFromTime = new Date(nextStart).getTime();
-//   let endFromTime = new Date(nextEnd).getTime();
+export const validateSecondForm = (secondStepForm) => {
+  let isValid = true;
 
-//   if (fromTime < toTime) isValid = true;
-//   else if (toTime < nextFromTime) isValid = true;
-//   // else if (fromTime < nextFromTime && toTime < endFromTime) isValid = false;
-//   return isValid;
-// };
-
-export const ValidateSecondForm = (secondStepForm) => {
   secondStepForm.map((item) => {
     item.childrens.map((itemChild) => {
       itemChild.error = "";
@@ -59,10 +48,24 @@ export const ValidateSecondForm = (secondStepForm) => {
   secondStepForm.map((item) => {
     if (item.value === "default") {
       item.error = "Vui lòng chọn công ty";
-    }
+      isValid = false;
+    } else item.error = "";
   });
-  let isValid = true;
-  secondStepForm.map((item) => {
+  secondStepForm.map((item, index, element) => {
+    let nextElement = element[index + 1];
+    let nextTimeElement = "";
+    let nextStartDate;
+
+    if (nextElement) {
+      nextTimeElement = nextElement.childrens.filter(
+        (child) => child.key === "time"
+      );
+      if (nextTimeElement) {
+        nextStartDate = new Date(nextTimeElement[0].value.from).getTime();
+        console.log(nextStartDate);
+      }
+    }
+
     item.childrens.map((itemChild) => {
       if (itemChild.key === "position") {
         if (itemChild.value.length > 100) {
@@ -71,13 +74,24 @@ export const ValidateSecondForm = (secondStepForm) => {
         }
       }
       if (itemChild.key === "time") {
-        let fromTime = new Date(itemChild.value.from).getTime();
-        let toTime = new Date(itemChild.value.to).getTime();
-        if (fromTime > toTime) {
-          itemChild.error = "Thời gian làm việc không hợp lệ";
-          isValid = false;
-        } else if (!itemChild.value.from || !itemChild.value.to) {
+        const currentDate = new Date().getTime();
+        let startDate = new Date(itemChild.value.from).getTime();
+        let endDate = new Date(itemChild.value.to).getTime();
+
+        if (!itemChild.value.from || !itemChild.value.to) {
           itemChild.error = "Vui lòng chọn thời gian làm việc";
+          isValid = false;
+        }
+        if (endDate > currentDate || startDate > currentDate) {
+          itemChild.error = "Thời gian làm việc không hợp lý";
+          isValid = false;
+        }
+        if (startDate > endDate) {
+          itemChild.error = "Thời gian làm việc không hợp lý";
+          isValid = false;
+        }
+        if (startDate > nextStartDate || endDate > nextStartDate) {
+          itemChild.error = "Thời gian làm việc không hợp lý";
           isValid = false;
         }
       }
@@ -89,5 +103,34 @@ export const ValidateSecondForm = (secondStepForm) => {
       }
     });
   });
+  return isValid;
+};
+
+export const validateThirdForm = (thirdStepForm) => {
+  thirdStepForm.map((item) => {
+    item.error = "";
+  });
+  let isValid = true;
+
+  const reasonInput = thirdStepForm.filter((item) => item.key === "reason");
+  let reason = reasonInput[0].value;
+  if (!reason) {
+    reasonInput[0].error = "Lý do ứng tuyển là bắt buộc";
+    isValid = false;
+  } else if (reason.length > 1000) {
+    reasonInput[0].error = "Tối đa là 1000 ký tự";
+    isValid = false;
+  }
+  const salaryInput = thirdStepForm.filter((item) => item.key === "salary");
+  let salary = salaryInput[0].value;
+  var reg = /^\d+$/;
+  if (!reg.test(salary)) {
+    salaryInput[0].error = "Mức lương phải là số";
+    isValid = false;
+  }
+  if (salary && salary.length > 10) {
+    salaryInput[0].error = "Tối đa là 10 chữ số";
+    isValid = false;
+  }
   return isValid;
 };

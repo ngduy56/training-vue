@@ -1,4 +1,4 @@
-import { POSITION_LIST } from "@/constants/FirstStepConstants.js";
+import { POSITION_LIST } from "@/constants/FormConstants";
 const state = () => ({
   positionList: POSITION_LIST,
 });

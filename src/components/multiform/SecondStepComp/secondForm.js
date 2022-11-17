@@ -1,8 +1,8 @@
-import { COMPANY_LIST } from "@/constants/FirstStepConstants";
+import { COMPANY_LIST } from "@/constants/FormConstants";
 const defaultElement = {
   label: "",
   view_type: "input-dropdown",
-  value: "default",
+  value: "",
   companyList: COMPANY_LIST,
   error: "",
   childrens: [

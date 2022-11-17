@@ -1,18 +1,57 @@
 <template>
   <div class="salary-block">
-    <!-- <InputLabel :label="'Mức lương mong muốn'" required="true" /> -->
+    <InputLabel :label="label" :required="required" />
     <div class="salary-input">
-      <input type="text" />
+      <input type="text" v-model="valueLocal" @input="onChange" />
       <span>VND</span>
     </div>
+    <span v-if="showError" class="error-vali">{{ error }}</span>
   </div>
 </template>
 
 <script>
-// import InputLabel from "@/components/multiform/sharedComponents/InputLabel.vue";
+import InputLabel from "@/components/multiform/sharedComponents/InputLabel.vue";
 export default {
+  data() {
+    return {
+      valueLocal: "",
+    };
+  },
+  props: {
+    label: {
+      type: String,
+    },
+    required: {
+      type: Boolean,
+    },
+    value: {
+      type: String,
+    },
+    error: {
+      type: String,
+    },
+  },
+  watch: {
+    value: {
+      handler(val) {
+        this.valueLocal = val;
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
   components: {
-    // InputLabel,
+    InputLabel,
+  },
+  computed: {
+    showError() {
+      return this.error;
+    },
+  },
+  methods: {
+    onChange() {
+      this.$emit("input", this.valueLocal);
+    },
   },
 };
 </script>
@@ -27,7 +66,7 @@ export default {
   border: 1px solid #dcdcdc;
   border-radius: 4px;
   font-size: 14px;
-  width: 120px;
+  width: 140px;
   height: 40px;
 
   input {
@@ -41,5 +80,9 @@ export default {
   span {
     transform: translateX(-10px);
   }
+}
+.error-vali {
+  color: red;
+  font-size: 14px;
 }
 </style>

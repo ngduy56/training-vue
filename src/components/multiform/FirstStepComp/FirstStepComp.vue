@@ -14,7 +14,14 @@
         />
       </div>
     </div>
-    <button class="btn-next active" @click="nextStep">Tiếp</button>
+    <button
+      class="btn-next"
+      :class="{ active: isComplete }"
+      :disabled="!isComplete"
+      @click="nextStep"
+    >
+      Tiếp
+    </button>
   </div>
 </template>
 
@@ -22,7 +29,7 @@
 import InputView from "./InputView.vue";
 import { mapActions, mapGetters } from "vuex";
 import { firstForm } from "./firstForm.js";
-import { ValidateFirstForm } from "@/utils/ValidateForm";
+import { validateFirstForm } from "@/utils/ValidateForm";
 
 export default {
   components: {
@@ -32,12 +39,28 @@ export default {
     return {
       firstStepForm: firstForm,
       isValid: false,
+      isComplete: false,
     };
   },
   mounted() {
     if (this.firstFormStore.length) {
       this.firstStepForm = this.firstFormStore;
     }
+  },
+  watch: {
+    firstStepForm: {
+      handler() {
+        this.firstStepForm.map((item) => {
+          if (item.value) {
+            if (item.value === "") {
+              this.isComplete = false;
+            } else this.isComplete = true;
+          }
+        });
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   computed: {
     ...mapGetters({
@@ -67,7 +90,7 @@ export default {
       this.removeChosen(chosenItem);
     },
     nextStep() {
-      this.isValid = ValidateFirstForm(this.firstStepForm);
+      this.isValid = validateFirstForm(this.firstStepForm);
       if (this.isValid) {
         this.saveFirstForm(this.firstStepForm);
         this.$router.push({ path: "/3/2" });

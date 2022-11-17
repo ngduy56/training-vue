@@ -1,6 +1,7 @@
 const state = () => ({
   firstForm: [],
   secondForm: [],
+  thirdForm: [],
 });
 const getters = {
   getFirstForm(state) {
@@ -8,6 +9,9 @@ const getters = {
   },
   getSecondForm(state) {
     return state.secondForm;
+  },
+  getThirdForm(state) {
+    return state.thirdForm;
   },
 };
 const mutations = {
@@ -17,6 +21,9 @@ const mutations = {
   SAVE_SECOND_FORM(state, payload) {
     state.secondForm = payload;
   },
+  SAVE_THIRD_FORM(state, payload) {
+    state.thirdForm = payload;
+  },
 };
 const actions = {
   saveFirstForm({ commit }, payload) {
@@ -24,6 +31,9 @@ const actions = {
   },
   saveSecondForm({ commit }, payload) {
     commit("SAVE_SECOND_FORM", payload);
+  },
+  saveThirdForm({ commit }, payload) {
+    commit("SAVE_THIRD_FORM", payload);
   },
 };
 

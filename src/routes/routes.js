@@ -11,10 +11,13 @@ export const routes = [
   { path: "/", name: "HomePage", component: Homepage },
   { path: "/1", name: "input-exam", component: InputPage },
   { path: "/2", name: "dropzone", component: DropzonePage },
-  { path: "/3", component: MultiFormPage, children: [
-    
-    { path: "", name: "first-step", component: FirstStepComp },
-    { path: "2", name: "second-step", component: SecondStepComp },
-    { path: "3", name: "third-step", component: ThirdStepComp },
-  ]},
+  {
+    path: "/3",
+    component: MultiFormPage,
+    children: [
+      { path: "1", name: "first-step", component: FirstStepComp },
+      { path: "2", name: "second-step", component: SecondStepComp },
+      { path: "3", name: "third-step", component: ThirdStepComp },
+    ],
+  },
 ];

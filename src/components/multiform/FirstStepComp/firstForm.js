@@ -4,7 +4,7 @@ import {
   TYPE_FILE_IMAGE,
 } from "@/constants/DropzoneConstants.js";
 import store from "@/store/store";
-import { CITY_LIST } from "@/constants/FirstStepConstants";
+import { CITY_LIST } from "@/constants/FormConstants";
 const optionList = store.getters["position/getPositionList"];
 
 const firstForm = [
@@ -20,7 +20,7 @@ const firstForm = [
     label: "Ngày sinh",
     view_type: "input-date",
     required: true,
-    value: null,
+    value: "",
     key: "dob",
     error: "",
   },
@@ -28,7 +28,7 @@ const firstForm = [
     label: "Thành phố",
     view_type: "input-dropdown",
     required: false,
-    value: "hanoi",
+    value: "",
     key: "city",
     cityList: CITY_LIST,
   },

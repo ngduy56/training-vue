@@ -1,20 +1,75 @@
 <template>
   <div>
     <div class="third-block">
-      <!-- <TextArea :label="'Lý do muốn ứng tuyển vào công ty'" required="true" /> -->
-      <SalaryElement />
+      <InputView
+        v-for="item in thirdStepForm"
+        v-model="item.value"
+        :key="item.key"
+        :item="item"
+      />
     </div>
-    <button class="btn-complete">Hoàn thành</button>
+    <button
+      class="btn-complete"
+      :class="{ active: isComplete }"
+      :disabled="!isComplete"
+      @click="onComplete"
+    >
+      Hoàn thành
+    </button>
   </div>
 </template>
 
 <script>
-// import TextArea from "@/components/multiform/sharedComponents/TextArea.vue";
-import SalaryElement from "./SalaryElement.vue";
+import { thirdForm } from "./thirdForm";
+import InputView from "./InputView.vue";
+import { validateThirdForm } from "@/utils/ValidateForm";
+import { mapActions, mapGetters } from "vuex";
+
 export default {
-  components: {
-    // TextArea,
-    SalaryElement,
+  data() {
+    return {
+      isValid: false,
+      isComplete: false,
+      thirdStepForm: JSON.parse(JSON.stringify(thirdForm)),
+    };
+  },
+  components: { InputView },
+  mounted() {
+    if (this.thirdStepStore.length) {
+      this.thirdStepForm = this.thirdStepStore;
+    }
+  },
+  watch: {
+    thirdStepForm: {
+      handler() {
+        this.thirdStepForm.map((item) => {
+          if (item.value) {
+            if (item.value === "") {
+              this.isComplete = false;
+            } else this.isComplete = true;
+          }
+        });
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
+  computed: {
+    ...mapGetters({
+      thirdStepStore: "form/getThirdForm",
+    }),
+  },
+  methods: {
+    ...mapActions({
+      saveThirdForm: "form/saveThirdForm",
+    }),
+    onComplete() {
+      this.isValid = validateThirdForm(this.thirdStepForm);
+      if (this.isValid) {
+        this.saveThirdForm(this.thirdStepForm);
+        this.$router.push({ path: "/" });
+      }
+    },
   },
 };
 </script>
@@ -45,5 +100,10 @@ export default {
   color: #ffffff;
   margin-top: 24px;
   outline: none;
+
+  &.active {
+    background: #627d98;
+    cursor: pointer;
+  }
 }
 </style>

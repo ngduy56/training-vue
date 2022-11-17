@@ -38,6 +38,10 @@ const INPUT_AREA = "input-area";
 const IMG_DROPZONE = "img-dropzone";
 const CITY_LIST = [
   {
+    name: "Chọn thành phố",
+    value: "",
+  },
+  {
     name: "Hà Nội",
     value: "hanoi",
   },
@@ -61,7 +65,7 @@ const CITY_LIST = [
 const COMPANY_LIST = [
   {
     name: "Chọn công ty",
-    value: "default",
+    value: "",
   },
   {
     name: "MorSoftware 1",

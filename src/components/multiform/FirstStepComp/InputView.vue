@@ -1,7 +1,7 @@
 <template>
   <div>
     <InputField
-      v-if="item.view_type === inputText"
+      v-if="item.view_type === 'input-text'"
       v-model="valueLocal"
       :label="item.label"
       :required="item.required"
@@ -9,7 +9,7 @@
       @input="onChange"
     />
     <InputDate
-      v-if="item.view_type === inputDate"
+      v-if="item.view_type === 'input-date'"
       v-model="valueLocal"
       :label="item.label"
       :required="item.required"
@@ -17,7 +17,7 @@
       @input="onChange"
     />
     <DropdownList
-      v-if="item.view_type === inputDropdown"
+      v-if="item.view_type === 'input-dropdown'"
       v-model="valueLocal"
       :label="item.label"
       :list="item.cityList"
@@ -25,7 +25,7 @@
       @input="onChange"
     />
     <PositionInput
-      v-if="item.view_type === inputDropdownSearch"
+      v-if="item.view_type === 'input-dropdown-search'"
       :label="item.label"
       :required="item.required"
       :optionList="item.optionList"
@@ -34,7 +34,7 @@
       @onRemoveChosen="onRemoveChosen"
     />
     <AboutArea
-      v-if="item.view_type === inputArea"
+      v-if="item.view_type === 'input-area'"
       v-model="valueLocal"
       :label="item.label"
       :required="item.required"
@@ -42,7 +42,7 @@
       @input="onChange"
     />
     <DropzoneComp
-      v-if="item.view_type === imgDropzone"
+      v-if="item.view_type === 'img-dropzone'"
       :label="item.label"
       :required="item.required"
       :maxNumber="item.maxNumber"
@@ -63,14 +63,6 @@ import PositionInput from "./PositionInput.vue";
 import AboutArea from "@/components/multiform/sharedComponents/TextArea.vue";
 import DropzoneComp from "@/components/multiform/dropzone/DropzoneComp.vue";
 import { mapGetters } from "vuex";
-import {
-  INPUT_TEXT,
-  INPUT_DATE,
-  INPUT_DROPDOWN,
-  INPUT_DROPDOWN_SEARCH,
-  INPUT_AREA,
-  IMG_DROPZONE,
-} from "@/constants/FirstStepConstants.js";
 
 export default {
   data() {
@@ -109,24 +101,6 @@ export default {
     ...mapGetters({
       fileList: "file/getFileList",
     }),
-    inputText() {
-      return INPUT_TEXT;
-    },
-    inputDate() {
-      return INPUT_DATE;
-    },
-    inputDropdown() {
-      return INPUT_DROPDOWN;
-    },
-    inputArea() {
-      return INPUT_AREA;
-    },
-    inputDropdownSearch() {
-      return INPUT_DROPDOWN_SEARCH;
-    },
-    imgDropzone() {
-      return IMG_DROPZONE;
-    },
     getChosenList() {
       return (
         (this.item.optionList &&

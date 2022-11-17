@@ -19,7 +19,14 @@
       <span>Thêm công ty</span>
     </div>
     <div class="navigate-block">
-      <button class="active" @click="nextStep">Tiếp</button>
+      <button
+        class="btn-next"
+        :class="{ active: isComplete }"
+        :disabled="!isComplete"
+        @click="nextStep"
+      >
+        Tiếp
+      </button>
       <button @click="previousStep">Quay lại</button>
     </div>
   </div>
@@ -30,12 +37,13 @@ import { mapActions, mapGetters } from "vuex";
 import CompanyItem from "./CompanyItem.vue";
 import { defaultElement, secondForm } from "./secondForm";
 import AddIcon from "@/components/icons/AddIcon.vue";
-import { ValidateSecondForm } from "@/utils/ValidateForm";
+import { validateSecondForm } from "@/utils/ValidateForm";
 
 export default {
   data() {
     return {
       isValid: false,
+      isComplete: false,
       secondStepForm: JSON.parse(JSON.stringify(secondForm)),
     };
   },
@@ -47,6 +55,21 @@ export default {
     if (this.secondStepStore.length) {
       this.secondStepForm = this.secondStepStore;
     }
+  },
+  watch: {
+    secondStepForm: {
+      handler() {
+        this.secondStepForm.map((item) => {
+          if (item.value) {
+            if (item.value === "") {
+              this.isComplete = false;
+            } else this.isComplete = true;
+          }
+        });
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   computed: {
     ...mapGetters({
@@ -71,11 +94,10 @@ export default {
       this.secondStepForm.splice(index, 1);
     },
     nextStep() {
-      this.isValid = ValidateSecondForm(this.secondStepForm);
+      this.isValid = validateSecondForm(this.secondStepForm);
       if (this.isValid) {
-        console.log("oke");
         this.saveSecondForm(this.secondStepForm);
-        // this.$router.push({ path: "/3/3" });
+        this.$router.push({ path: "/3/3" });
       }
     },
     previousStep() {
@@ -117,6 +139,7 @@ export default {
       cursor: pointer;
     }
   }
+
   .navigate-block button {
     width: 102px;
     height: 40px;
@@ -130,14 +153,16 @@ export default {
     margin-top: 24px;
     outline: none;
 
+    &:nth-child(2) {
+      margin-left: 10px;
+    }
+  }
+  .btn-next {
     &.active {
       background: #627d98;
     }
     &:hover {
       cursor: pointer;
-    }
-    &:nth-child(2) {
-      margin-left: 10px;
     }
   }
 }
