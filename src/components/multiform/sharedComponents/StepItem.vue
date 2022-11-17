@@ -16,6 +16,25 @@ export default {
       type: Number,
     },
   },
+  mounted() {
+    let item = document.querySelectorAll(".step-num");
+    item[0].classList.add("active");
+  },
+  watch: {
+    $route() {
+      var parts = this.$route.fullPath.split("/");
+      var lastSegment = parts.pop() || parts.pop();
+
+      let item = document.querySelectorAll(".step-num");
+      item.forEach((i) => {
+        i.classList.remove("active");
+      });
+      item[lastSegment - 1].classList.add("active");
+
+      let line = document.querySelector(".line");
+      line.style.width = `${140 * (lastSegment - 1)}px`;
+    },
+  },
   methods: {
     toggleActive() {
       this.$emit("toggleActive", this.index);

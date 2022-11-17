@@ -28,6 +28,7 @@ export default {
   components: {
     StepItem,
   },
+
   methods: {
     toggleActive(index) {
       let pathTo = `/3/${index + 1}`;
@@ -35,7 +36,7 @@ export default {
         this.$router.push({ path: `/3/${index + 1}` });
       }
       let item = document.querySelector(".line");
-      item.style.width = `${140 * index + 1}px`;
+      item.style.width = `${140 * index}px`;
     },
   },
 };
@@ -56,8 +57,7 @@ export default {
   }
 
   .line {
-    background: red;
-    width: 280px;
+    // width: 280px;
     height: 2px;
     position: absolute;
     top: 74px;

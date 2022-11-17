@@ -101,7 +101,7 @@ export default {
       }
     },
     previousStep() {
-      this.$router.push({ path: "/3" });
+      this.$router.push({ path: "/3/1" });
     },
   },
 };
