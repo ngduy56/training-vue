@@ -63,10 +63,10 @@ export default {
   },
   methods: {
     addChosen(optionItem) {
-      this.$emit("inputAdd", optionItem);
+      this.$emit("onAdd", optionItem);
     },
     removeChosen(chosenItem) {
-      this.$emit("inputRemove", chosenItem);
+      this.$emit("onRemove", chosenItem);
     },
     changeFilterName() {
       this.$emit("input", this.value);

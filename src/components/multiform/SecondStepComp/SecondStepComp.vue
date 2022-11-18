@@ -135,9 +135,6 @@ export default {
     border-radius: 3px;
     outline: none;
     color: #48647f;
-    &:hover {
-      cursor: pointer;
-    }
   }
 
   .navigate-block button {
@@ -159,10 +156,8 @@ export default {
   }
   .btn-next {
     &.active {
-      background: #627d98;
-    }
-    &:hover {
       cursor: pointer;
+      background: #627d98;
     }
   }
 }

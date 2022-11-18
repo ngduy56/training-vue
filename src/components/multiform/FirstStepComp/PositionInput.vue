@@ -6,8 +6,8 @@
       v-model="filterName"
       :optionList="filterOptions"
       :chosenList="chosenList"
-      @inputAdd="onAddChosen"
-      @inputRemove="onRemoveChosen"
+      @onAdd="onAddChosen"
+      @onRemove="onRemoveChosen"
     />
   </div>
 </template>

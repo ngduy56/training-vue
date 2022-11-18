@@ -7,10 +7,10 @@
           v-model="item.value"
           :key="item.key"
           :item="item"
-          @onUploadFile="handleUploadFile"
-          @onRemoveFile="handleRemoveFile"
-          @onAddChosen="handleAddChosen"
-          @onRemoveChosen="handleRemoveChosen"
+          @onUploadFile="onUploadFile"
+          @onRemoveFile="onRemoveFile"
+          @onAddChosen="onAddChosen"
+          @onRemoveChosen="onRemoveChosen"
         />
       </div>
     </div>
@@ -77,16 +77,16 @@ export default {
 
       saveFirstForm: "form/saveFirstForm",
     }),
-    handleUploadFile(files) {
+    onUploadFile(files) {
       this.uploadFile(files);
     },
-    handleRemoveFile(lastModified) {
+    onRemoveFile(lastModified) {
       this.removeFile(lastModified);
     },
-    handleAddChosen(option) {
+    onAddChosen(option) {
       this.addChosen(option);
     },
-    handleRemoveChosen(chosenItem) {
+    onRemoveChosen(chosenItem) {
       this.removeChosen(chosenItem);
     },
     nextStep() {
