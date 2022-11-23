@@ -79,9 +79,9 @@ const COMPANY_LIST = [
   },
 ];
 const STEP_LIST = [
-  { num: 1, name: "Thông tin cá nhân", isDone: true },
-  { num: 2, name: "Kinh nghiệm làm việc", isDone: false },
-  { num: 3, name: "Xác nhận thông tin", isDone: false },
+  { num: 1, path: "first-step", name: "Thông tin cá nhân", isDone: true },
+  { num: 2, path: "second-step", name: "Kinh nghiệm làm việc", isDone: false },
+  { num: 3, path: "third-step", name: "Xác nhận thông tin", isDone: false },
 ];
 const INPUT_TEXT = "input-text";
 const INPUT_DATE = "input-date";

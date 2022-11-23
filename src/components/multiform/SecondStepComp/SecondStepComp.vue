@@ -97,11 +97,11 @@ export default {
       this.isValid = validateSecondForm(this.secondStepForm);
       if (this.isValid) {
         this.saveSecondForm(this.secondStepForm);
-        this.$router.push({ path: "/3/3" });
+        this.$router.push({ name: "thirdStep" });
       }
     },
     previousStep() {
-      this.$router.push({ path: "/3/1" });
+      this.$router.push({ name: "firstStep" });
     },
   },
 };
@@ -152,6 +152,9 @@ export default {
 
     &:nth-child(2) {
       margin-left: 10px;
+      cursor: pointer;
+      color: #333333;
+      font-weight: 400;
     }
   }
   .btn-next {

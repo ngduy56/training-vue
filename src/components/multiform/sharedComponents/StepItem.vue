@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     toggleActive() {
-      this.$emit("toggleActive", this.index);
+      this.$emit("toggleActive", this.index, this.item.path);
     },
   },
 };

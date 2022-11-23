@@ -93,7 +93,7 @@ export default {
       this.isValid = validateFirstForm(this.firstStepForm);
       if (this.isValid) {
         this.saveFirstForm(this.firstStepForm);
-        this.$router.push({ path: "/3/2" });
+        this.$router.push({ name: "secondStep" });
       }
     },
   },

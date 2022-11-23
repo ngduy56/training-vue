@@ -32,24 +32,24 @@ export default {
   },
   watch: {
     $route() {
-      var parts = this.$route.fullPath.split("/");
-      var lastSegment = parts.pop();
+      const parts = this.$route.fullPath.split("/");
+      const lastSegment = parts.pop();
 
       let item = document.querySelectorAll(".step-num");
       item.forEach((i) => {
         i.classList.remove("active");
       });
-      item[lastSegment - 1].classList.add("active");
+      let index = this.stepList.findIndex((item) => item.path === lastSegment);
+      item[index].classList.add("active");
 
       let line = document.querySelector(".line");
-      line.style.width = `${140 * (lastSegment - 1)}px`;
+      line.style.width = `${140 * index}px`;
     },
   },
   methods: {
-    toggleActive(index) {
-      let pathTo = `/3/${index + 1}`;
-      if (this.$route.path !== pathTo && this.stepList[index].isDone) {
-        this.$router.push({ path: `/3/${index + 1}` });
+    toggleActive(index, path) {
+      if (this.$route.path !== path && this.stepList[index].isDone) {
+        this.$router.push({ path: path });
 
         let item = document.querySelectorAll(".step-num");
         item.forEach((i) => {
@@ -71,14 +71,12 @@ export default {
   width: 100%;
   height: 148px;
   margin-bottom: 20px;
-
   .title {
     font-size: 24px;
     font-weight: 400;
     line-height: 36px;
     letter-spacing: 0em;
   }
-
   .line {
     height: 2px;
     position: absolute;

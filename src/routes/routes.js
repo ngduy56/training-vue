@@ -9,15 +9,15 @@ import ThirdStepComp from "@/components/multiform/ThirdStepComp/ThirdStepComp.vu
 
 export const routes = [
   { path: "/", name: "HomePage", component: Homepage },
-  { path: "/1", name: "input-exam", component: InputPage },
-  { path: "/2", name: "dropzone", component: DropzonePage },
+  { path: "/input", name: "inputExam", component: InputPage },
+  { path: "/dropzone", name: "dropzone", component: DropzonePage },
   {
-    path: "/3",
+    path: "/multiform",
     component: MultiFormPage,
     children: [
-      { path: "1", name: "first-step", component: FirstStepComp },
-      { path: "2", name: "second-step", component: SecondStepComp },
-      { path: "3", name: "third-step", component: ThirdStepComp },
+      { path: "first-step", name: "firstStep", component: FirstStepComp },
+      { path: "second-step", name: "secondStep", component: SecondStepComp },
+      { path: "third-step", name: "thirdStep", component: ThirdStepComp },
     ],
   },
 ];

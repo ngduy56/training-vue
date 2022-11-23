@@ -4,7 +4,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <router-link
-          :to="{ name: 'input-exam' }"
+          :to="{ name: 'inputExam' }"
           class="nav-item"
           active-class="active"
           tag="li"
@@ -22,7 +22,7 @@
           <a class="nav-link">Exam 2</a>
         </router-link>
         <router-link
-          :to="{ name: 'first-step' }"
+          :to="{ name: 'firstStep' }"
           class="nav-item"
           active-class="active"
           tag="li"
