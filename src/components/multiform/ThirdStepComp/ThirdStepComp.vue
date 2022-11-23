@@ -77,6 +77,7 @@ export default {
 <style lang="scss" scoped>
 .third-block {
   width: 100%;
+  height: 346px;
   position: relative;
   display: flex;
   flex-direction: column;

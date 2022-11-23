@@ -62,13 +62,15 @@ export const validateSecondForm = (secondStepForm) => {
       );
       if (nextTimeElement) {
         nextStartDate = new Date(nextTimeElement[0].value.from).getTime();
-        console.log(nextStartDate);
       }
     }
 
     item.childrens.map((itemChild) => {
       if (itemChild.key === "position") {
-        if (itemChild.value.length > 100) {
+        if (itemChild.value == "") {
+          itemChild.error = "Vui lòng nhập vị trí làm việc";
+          isValid = false;
+        } else if (itemChild.value.length > 100) {
           itemChild.error = "Tối đa là 100 ký tự";
           isValid = false;
         }
@@ -96,8 +98,8 @@ export const validateSecondForm = (secondStepForm) => {
         }
       }
       if (itemChild.key === "about-work") {
-        if (itemChild.value.length > 5000) {
-          itemChild.error = "Tối đa là 5000 ký tự";
+        if (itemChild.value.length > 1000) {
+          itemChild.error = "Tối đa là 1000 ký tự";
           isValid = false;
         }
       }

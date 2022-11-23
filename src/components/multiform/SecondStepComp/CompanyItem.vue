@@ -3,7 +3,7 @@
     <div class="selection-block">
       <div class="selection">
         <DropdownList
-          v-if="item.view_type === 'input-dropdown'"
+          v-if="item.view_type === INPUT_DROPDOWN"
           v-model="valueLocal"
           :label="item.label"
           :error="error"
@@ -19,7 +19,7 @@
       class="content"
     >
       <InputField
-        v-if="child.view_type === 'input-text'"
+        v-if="child.view_type === INPUT_TEXT"
         :value="child.value"
         :label="child.label"
         :required="child.required"
@@ -27,7 +27,7 @@
         @input="(value) => onChangeChildren(value, indexChild)"
       />
       <TimeWorking
-        v-if="child.view_type === 'input-date'"
+        v-if="child.view_type === INPUT_DATE"
         :value="child.value"
         :label="child.label"
         :required="child.required"
@@ -35,7 +35,7 @@
         @input="(value) => onChangeChildren(value, indexChild)"
       />
       <WorkArea
-        v-if="child.view_type === 'input-area'"
+        v-if="child.view_type === INPUT_AREA"
         :value="child.value"
         :label="child.label"
         :required="child.required"
@@ -52,9 +52,20 @@ import TrashIcon from "@/components/icons/TrashIcon.vue";
 import TimeWorking from "./TimeWorking.vue";
 import DropdownList from "../FirstStepComp/DropdownList.vue";
 import WorkArea from "@/components/multiform/sharedComponents/TextArea.vue";
+import {
+  INPUT_TEXT,
+  INPUT_DATE,
+  INPUT_DROPDOWN,
+  INPUT_AREA,
+} from "@/constants/FormConstants";
 export default {
   data() {
     return {
+      INPUT_TEXT,
+      INPUT_DATE,
+      INPUT_DROPDOWN,
+      INPUT_AREA,
+
       valueLocal: "",
     };
   },

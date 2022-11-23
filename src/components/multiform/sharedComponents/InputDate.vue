@@ -40,8 +40,8 @@ export default {
     InputLabel,
   },
   methods: {
-    onChange(e) {
-      this.$emit("input", e.target.value);
+    onChange() {
+      this.$emit("input", this.valueLocal);
     },
   },
 };
@@ -55,7 +55,7 @@ export default {
   flex-direction: column;
 
   input {
-    width: 120px;
+    width: 130px;
     height: 40px;
     outline: none;
     background: #ffffff;

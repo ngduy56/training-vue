@@ -1,7 +1,7 @@
 <template>
   <div>
     <InputField
-      v-if="item.view_type === 'input-text'"
+      v-if="item.view_type === INPUT_TEXT"
       v-model="valueLocal"
       :label="item.label"
       :required="item.required"
@@ -9,7 +9,7 @@
       @input="onChange"
     />
     <InputDate
-      v-if="item.view_type === 'input-date'"
+      v-if="item.view_type === INPUT_DATE"
       v-model="valueLocal"
       :label="item.label"
       :required="item.required"
@@ -17,7 +17,7 @@
       @input="onChange"
     />
     <DropdownList
-      v-if="item.view_type === 'input-dropdown'"
+      v-if="item.view_type === INPUT_DROPDOWN"
       v-model="valueLocal"
       :label="item.label"
       :list="item.cityList"
@@ -25,7 +25,7 @@
       @input="onChange"
     />
     <PositionInput
-      v-if="item.view_type === 'input-dropdown-search'"
+      v-if="item.view_type === INPUT_DROPDOWN_SEARCH"
       :label="item.label"
       :required="item.required"
       :optionList="item.optionList"
@@ -34,7 +34,7 @@
       @onRemoveChosen="onRemoveChosen"
     />
     <AboutArea
-      v-if="item.view_type === 'input-area'"
+      v-if="item.view_type === INPUT_AREA"
       v-model="valueLocal"
       :label="item.label"
       :required="item.required"
@@ -42,7 +42,7 @@
       @input="onChange"
     />
     <DropzoneComp
-      v-if="item.view_type === 'img-dropzone'"
+      v-if="item.view_type === IMG_DROPZONE"
       :label="item.label"
       :required="item.required"
       :maxNumber="item.maxNumber"
@@ -63,10 +63,24 @@ import PositionInput from "./PositionInput.vue";
 import AboutArea from "@/components/multiform/sharedComponents/TextArea.vue";
 import DropzoneComp from "@/components/multiform/dropzone/DropzoneComp.vue";
 import { mapGetters } from "vuex";
+import {
+  INPUT_TEXT,
+  INPUT_DATE,
+  INPUT_DROPDOWN,
+  INPUT_DROPDOWN_SEARCH,
+  INPUT_AREA,
+  IMG_DROPZONE,
+} from "@/constants/FormConstants";
 
 export default {
   data() {
     return {
+      INPUT_TEXT,
+      INPUT_DATE,
+      INPUT_DROPDOWN,
+      INPUT_DROPDOWN_SEARCH,
+      INPUT_AREA,
+      IMG_DROPZONE,
       valueLocal: "",
       isValid: false,
     };
@@ -102,11 +116,7 @@ export default {
       fileList: "file/getFileList",
     }),
     getChosenList() {
-      return (
-        (this.item.optionList &&
-          this.item.optionList.filter((item) => item.isChosen)) ||
-        []
-      );
+      return this.item?.optionList?.filter((item) => item.isChosen) || [];
     },
   },
   methods: {

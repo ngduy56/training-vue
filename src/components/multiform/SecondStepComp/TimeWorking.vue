@@ -71,7 +71,7 @@ export default {
   margin: 14px 0 24px 0;
 
   input {
-    width: 120px;
+    width: 130px;
     height: 40px;
     outline: none;
     background: #ffffff;

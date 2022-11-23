@@ -1,7 +1,7 @@
 <template>
   <div>
     <TextArea
-      v-if="item.view_type === 'input-area'"
+      v-if="item.view_type === INPUT_AREA"
       v-model="valueLocal"
       :label="item.label"
       :required="item.required"
@@ -9,7 +9,7 @@
       @input="onChange"
     />
     <SalaryElement
-      v-if="item.view_type === 'input-text'"
+      v-if="item.view_type === INPUT_TEXT"
       v-model="valueLocal"
       :label="item.label"
       :required="item.required"
@@ -22,9 +22,13 @@
 <script>
 import TextArea from "@/components/multiform/sharedComponents/TextArea.vue";
 import SalaryElement from "@/components/multiform/ThirdStepComp/SalaryElement.vue";
+import { INPUT_TEXT, INPUT_AREA } from "@/constants/FormConstants";
 export default {
   data() {
     return {
+      INPUT_TEXT,
+      INPUT_AREA,
+
       valueLocal: "",
     };
   },

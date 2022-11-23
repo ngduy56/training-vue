@@ -4,7 +4,7 @@
     <div class="line"></div>
     <div class="step-list">
       <StepItem
-        v-for="(item, index) in list"
+        v-for="(item, index) in stepList"
         :key="item.num"
         :item="item"
         :index="index"
@@ -14,29 +14,52 @@
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import StepItem from "./StepItem.vue";
+
 export default {
-  data() {
-    return {
-      list: [
-        { num: 1, name: "Thông tin cá nhân" },
-        { num: 2, name: "Kinh nghiệm làm việc" },
-        { num: 3, name: "Xác nhận thông tin" },
-      ],
-    };
+  computed: {
+    ...mapGetters({
+      stepList: "form/getStepList",
+    }),
   },
   components: {
     StepItem,
   },
+  mounted() {
+    let item = document.querySelectorAll(".step-num");
+    item[0].classList.add("active");
+  },
+  watch: {
+    $route() {
+      var parts = this.$route.fullPath.split("/");
+      var lastSegment = parts.pop();
 
+      let item = document.querySelectorAll(".step-num");
+      item.forEach((i) => {
+        i.classList.remove("active");
+      });
+      item[lastSegment - 1].classList.add("active");
+
+      let line = document.querySelector(".line");
+      line.style.width = `${140 * (lastSegment - 1)}px`;
+    },
+  },
   methods: {
     toggleActive(index) {
       let pathTo = `/3/${index + 1}`;
-      if (this.$route.path !== pathTo) {
+      if (this.$route.path !== pathTo && this.stepList[index].isDone) {
         this.$router.push({ path: `/3/${index + 1}` });
+
+        let item = document.querySelectorAll(".step-num");
+        item.forEach((i) => {
+          i.classList.remove("active");
+        });
+        item[index].classList.add("active");
+
+        let line = document.querySelector(".line");
+        line.style.width = `${140 * index}px`;
       }
-      let item = document.querySelector(".line");
-      item.style.width = `${140 * index}px`;
     },
   },
 };
@@ -57,7 +80,6 @@ export default {
   }
 
   .line {
-    // width: 280px;
     height: 2px;
     position: absolute;
     top: 74px;

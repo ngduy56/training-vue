@@ -30,12 +30,6 @@ const POSITION_LIST = [
     isChosen: false,
   },
 ];
-const INPUT_TEXT = "input-text";
-const INPUT_DATE = "input-date";
-const INPUT_DROPDOWN = "input-dropdown";
-const INPUT_DROPDOWN_SEARCH = "input-dropdown-search";
-const INPUT_AREA = "input-area";
-const IMG_DROPZONE = "img-dropzone";
 const CITY_LIST = [
   {
     name: "Chọn thành phố",
@@ -84,14 +78,26 @@ const COMPANY_LIST = [
     value: "mor4",
   },
 ];
+const STEP_LIST = [
+  { num: 1, name: "Thông tin cá nhân", isDone: true },
+  { num: 2, name: "Kinh nghiệm làm việc", isDone: false },
+  { num: 3, name: "Xác nhận thông tin", isDone: false },
+];
+const INPUT_TEXT = "input-text";
+const INPUT_DATE = "input-date";
+const INPUT_DROPDOWN = "input-dropdown";
+const INPUT_DROPDOWN_SEARCH = "input-dropdown-search";
+const INPUT_AREA = "input-area";
+const IMG_DROPZONE = "img-dropzone";
 export {
   COMPANY_LIST,
   POSITION_LIST,
+  CITY_LIST,
+  STEP_LIST,
   INPUT_TEXT,
   INPUT_DATE,
   INPUT_DROPDOWN,
   INPUT_DROPDOWN_SEARCH,
   INPUT_AREA,
   IMG_DROPZONE,
-  CITY_LIST,
 };
