@@ -4,11 +4,11 @@
     <div class="line"></div>
     <div class="step-list">
       <StepItem
-        v-for="(item, index) in stepList"
+        v-for="(item, index) in multiForm"
         :key="item.num"
         :item="item"
         :index="index"
-        @toggleActive="toggleActive"
+        @input="onChange"
       />
     </div>
   </div>
@@ -16,8 +16,14 @@
 <script>
 import { mapGetters } from "vuex";
 import StepItem from "./StepItem.vue";
+import { multiForm } from "@/components/multiform/ThirdStepComp/thirdForm";
 
 export default {
+  data() {
+    return {
+      multiForm,
+    };
+  },
   computed: {
     ...mapGetters({
       stepList: "form/getStepList",
@@ -26,10 +32,10 @@ export default {
   components: {
     StepItem,
   },
-  mounted() {
-    let item = document.querySelectorAll(".step-num");
-    item[0].classList.add("active");
-  },
+  // mounted() {
+  //   let item = document.querySelectorAll(".step-num");
+  //   item[0].classList.add("active");
+  // },
   watch: {
     $route() {
       const parts = this.$route.fullPath.split("/");
@@ -42,8 +48,11 @@ export default {
       let index = this.stepList.findIndex((item) => item.path === lastSegment);
       item[index].classList.add("active");
 
-      let line = document.querySelector(".line");
-      line.style.width = `${140 * index}px`;
+      this.stepList.map((i, index) => {
+        if (i.isDone) {
+          item[index].classList.add("done");
+        }
+      });
     },
   },
   methods: {
@@ -56,10 +65,10 @@ export default {
           i.classList.remove("active");
         });
         item[index].classList.add("active");
-
-        let line = document.querySelector(".line");
-        line.style.width = `${140 * index}px`;
       }
+    },
+    onChange(num) {
+      this.$emit("input", num);
     },
   },
 };
@@ -78,7 +87,8 @@ export default {
     letter-spacing: 0em;
   }
   .line {
-    height: 2px;
+    width: 280px;
+    height: 1px;
     position: absolute;
     top: 74px;
     left: 74px;

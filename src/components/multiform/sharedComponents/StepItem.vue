@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     toggleActive() {
-      this.$emit("toggleActive", this.index, this.item.path);
+      this.$emit("input", this.item.num);
     },
   },
 };
@@ -59,6 +59,10 @@ export default {
     &:hover {
       cursor: pointer;
     }
+  }
+  .done {
+    background-color: #617d98;
+    scale: 1;
   }
 }
 </style>

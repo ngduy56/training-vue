@@ -1,19 +1,17 @@
 <template>
   <div class="second-block">
-    <div class="company-list">
-      <CompanyItem
-        v-for="(item, index) in secondStepForm"
-        :value="item.value"
-        :item="item"
-        :key="item.lastModified"
-        :error="item.error"
-        @input="(value) => onChange(value, index)"
-        @onChangeChildren="
-          (value, indexChild) => onChangeChildren(value, indexChild, index)
-        "
-        @onRemove="onRemove"
-      />
-    </div>
+    <CompanyItem
+      v-for="(item, index) in secondStepForm"
+      :value="item.value"
+      :item="item"
+      :key="item.lastModified"
+      :error="item.error"
+      @input="(value) => onChange(value, index)"
+      @onChangeChildren="
+        (value, indexChild) => onChangeChildren(value, indexChild, index)
+      "
+      @onRemove="onRemove"
+    />
     <div class="btn-add" @click="addCompany">
       <AddIcon />
       <span>Thêm công ty</span>
@@ -59,13 +57,9 @@ export default {
   watch: {
     secondStepForm: {
       handler() {
-        this.secondStepForm.map((item) => {
-          if (item.value) {
-            if (item.value === "") {
-              this.isComplete = false;
-            } else this.isComplete = true;
-          }
-        });
+        let newArr = this.secondStepForm.filter((item) => item.value === "");
+        if (newArr.length > 0) this.isComplete = false;
+        else this.isComplete = true;
       },
       deep: true,
       immediate: true,
@@ -135,6 +129,10 @@ export default {
     border-radius: 3px;
     outline: none;
     color: #48647f;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .navigate-block button {

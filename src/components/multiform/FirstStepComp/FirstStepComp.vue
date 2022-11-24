@@ -50,13 +50,9 @@ export default {
   watch: {
     firstStepForm: {
       handler() {
-        this.firstStepForm.map((item) => {
-          if (item.value) {
-            if (item.value === "") {
-              this.isComplete = false;
-            } else this.isComplete = true;
-          }
-        });
+        let newArr = this.firstStepForm.filter((item) => item.value === "");
+        if (newArr.length > 0) this.isComplete = false;
+        else this.isComplete = true;
       },
       deep: true,
       immediate: true,

@@ -79,11 +79,12 @@ const COMPANY_LIST = [
   },
 ];
 const STEP_LIST = [
-  { num: 1, path: "first-step", name: "Thông tin cá nhân", isDone: true },
+  { num: 1, path: "first-step", name: "Thông tin cá nhân", isDone: false },
   { num: 2, path: "second-step", name: "Kinh nghiệm làm việc", isDone: false },
   { num: 3, path: "third-step", name: "Xác nhận thông tin", isDone: false },
 ];
 const INPUT_TEXT = "input-text";
+const INPUT_SALARY = "input-salary";
 const INPUT_DATE = "input-date";
 const INPUT_DROPDOWN = "input-dropdown";
 const INPUT_DROPDOWN_SEARCH = "input-dropdown-search";
@@ -95,6 +96,7 @@ export {
   CITY_LIST,
   STEP_LIST,
   INPUT_TEXT,
+  INPUT_SALARY,
   INPUT_DATE,
   INPUT_DROPDOWN,
   INPUT_DROPDOWN_SEARCH,
