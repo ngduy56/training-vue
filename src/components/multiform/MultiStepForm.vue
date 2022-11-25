@@ -7,17 +7,38 @@
           v-model="item.value"
           :key="item.key"
           :item="item"
+          @onUploadFile="onUploadFile"
+          @onRemoveFile="onRemoveFile"
+          @onAddChosen="onAddChosen"
+          @onRemoveChosen="onRemoveChosen"
         />
       </div>
     </div>
-    <button class="btn-next">Tiếp</button>
+    <button
+      class="btn-next"
+      :class="{ active: isComplete }"
+      :disabled="!isComplete"
+      @click="nextStep"
+    >
+      Tiếp
+    </button>
   </div>
 </template>
 
 <script>
 import MultiInputView from "./MultiInputView.vue";
+import { firstForm } from "./FirstStepComp/firstForm";
+import { mapActions, mapGetters } from "vuex";
+import { validateFirstForm } from "@/utils/ValidateForm";
 
 export default {
+  data() {
+    return {
+      firstStepForm: firstForm,
+      isValid: false,
+      isComplete: false,
+    };
+  },
   props: {
     formData: {
       type: Array,
@@ -26,6 +47,57 @@ export default {
   },
   components: {
     MultiInputView,
+  },
+  mounted() {
+    if (this.firstFormStore.length) {
+      this.firstStepForm = this.firstFormStore;
+    }
+  },
+  watch: {
+    firstStepForm: {
+      handler() {
+        let newArr = this.firstStepForm.filter((item) => item.value === "");
+        if (newArr.length > 0) this.isComplete = false;
+        else this.isComplete = true;
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
+  computed: {
+    ...mapGetters({
+      firstFormStore: "form/getFirstForm",
+    }),
+  },
+  methods: {
+    ...mapActions({
+      addChosen: "position/addChosen",
+      removeChosen: "position/removeChosen",
+
+      uploadFile: "file/uploadFile",
+      removeFile: "file/removeFile",
+
+      saveFirstForm: "form/saveFirstForm",
+    }),
+    onUploadFile(files) {
+      this.uploadFile(files);
+    },
+    onRemoveFile(lastModified) {
+      this.removeFile(lastModified);
+    },
+    onAddChosen(option) {
+      this.addChosen(option);
+    },
+    onRemoveChosen(chosenItem) {
+      this.removeChosen(chosenItem);
+    },
+    nextStep() {
+      this.isValid = validateFirstForm(this.firstStepForm);
+      if (this.isValid) {
+        this.saveFirstForm(this.firstStepForm);
+        this.$emit("changeForm", 2);
+      }
+    },
   },
 };
 </script>

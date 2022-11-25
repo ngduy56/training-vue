@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <StepElement @input="onChange" />
-    <MultiStepForm :formData="chooseFormData" />
+    <MultiStepForm :formData="chooseFormData" @changeForm="onChange" />
     <!-- <router-view></router-view> -->
   </div>
 </template>
