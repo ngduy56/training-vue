@@ -18,7 +18,9 @@ export default {
   },
   methods: {
     toggleActive() {
-      this.$emit("input", this.item.num);
+      if (this.item.isDone) {
+        this.$emit("input", this.item.num);
+      }
     },
   },
 };

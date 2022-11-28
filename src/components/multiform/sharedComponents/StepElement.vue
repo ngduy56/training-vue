@@ -8,15 +8,14 @@
         :key="item.num"
         :item="item"
         :index="index"
-        @input="onChange"
+        @input="(num) => onChange(num, index)"
       />
     </div>
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
 import StepItem from "./StepItem.vue";
-import { multiForm } from "@/components/multiform/ThirdStepComp/thirdForm";
+import { multiForm } from "@/components/multiform/form";
 
 export default {
   data() {
@@ -24,51 +23,22 @@ export default {
       multiForm,
     };
   },
-  computed: {
-    ...mapGetters({
-      stepList: "form/getStepList",
-    }),
-  },
   components: {
     StepItem,
   },
-  // mounted() {
-  //   let item = document.querySelectorAll(".step-num");
-  //   item[0].classList.add("active");
-  // },
-  watch: {
-    $route() {
-      const parts = this.$route.fullPath.split("/");
-      const lastSegment = parts.pop();
+  mounted() {
+    let item = document.querySelectorAll(".step-num");
+    item[0].classList.add("active");
+  },
+  methods: {
+    onChange(num, index) {
+      this.$emit("input", num);
 
       let item = document.querySelectorAll(".step-num");
       item.forEach((i) => {
         i.classList.remove("active");
       });
-      let index = this.stepList.findIndex((item) => item.path === lastSegment);
       item[index].classList.add("active");
-
-      this.stepList.map((i, index) => {
-        if (i.isDone) {
-          item[index].classList.add("done");
-        }
-      });
-    },
-  },
-  methods: {
-    toggleActive(index, path) {
-      if (this.$route.path !== path && this.stepList[index].isDone) {
-        this.$router.push({ path: path });
-
-        let item = document.querySelectorAll(".step-num");
-        item.forEach((i) => {
-          i.classList.remove("active");
-        });
-        item[index].classList.add("active");
-      }
-    },
-    onChange(num) {
-      this.$emit("input", num);
     },
   },
 };

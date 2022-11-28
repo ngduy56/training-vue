@@ -22,7 +22,7 @@
           <a class="nav-link">Exam 2</a>
         </router-link>
         <router-link
-          :to="{ name: 'firstStep' }"
+          :to="{ name: 'multiform' }"
           class="nav-item"
           active-class="active"
           tag="li"

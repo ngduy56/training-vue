@@ -1,67 +1,65 @@
 <template>
   <div>
-    <div>
-      <InputField
-        v-if="item.view_type === INPUT_TEXT"
-        v-model="valueLocal"
-        :label="item.label"
-        :required="item.required"
-        :error="item.error"
-        @input="onChange"
-      />
-      <InputDate
-        v-if="item.view_type === INPUT_DATE"
-        v-model="valueLocal"
-        :label="item.label"
-        :required="item.required"
-        :error="item.error"
-        @input="onChange"
-      />
-      <DropdownList
-        v-if="item.view_type === INPUT_DROPDOWN"
-        v-model="valueLocal"
-        :label="item.label"
-        :list="item.cityList"
-        :required="item.required"
-        @input="onChange"
-      />
-      <PositionInput
-        v-if="item.view_type === INPUT_DROPDOWN_SEARCH"
-        :label="item.label"
-        :required="item.required"
-        :optionList="item.optionList"
-        :chosenList="getChosenList"
-        @onAddChosen="onAddChosen"
-        @onRemoveChosen="onRemoveChosen"
-      />
-      <AboutArea
-        v-if="item.view_type === INPUT_AREA"
-        v-model="valueLocal"
-        :label="item.label"
-        :required="item.required"
-        :error="item.error"
-        @input="onChange"
-      />
-      <DropzoneComp
-        v-if="item.view_type === IMG_DROPZONE"
-        :label="item.label"
-        :required="item.required"
-        :maxNumber="item.maxNumber"
-        :maxSize="item.maxSize"
-        :typeFile="item.typeFile"
-        :fileList="fileList"
-        @onRemove="onRemoveFile"
-        @onUpload="onUploadFile"
-      />
-      <SalaryElement
-        v-if="item.view_type === INPUT_SALARY"
-        v-model="valueLocal"
-        :label="item.label"
-        :required="item.required"
-        :error="item.error"
-        @input="onChange"
-      />
-    </div>
+    <InputField
+      v-if="item.view_type === INPUT_TEXT"
+      v-model="valueLocal"
+      :label="item.label"
+      :required="item.required"
+      :error="item.error"
+      @input="onChange"
+    />
+    <InputDate
+      v-if="item.view_type === INPUT_DATE"
+      v-model="valueLocal"
+      :label="item.label"
+      :required="item.required"
+      :error="item.error"
+      @input="onChange"
+    />
+    <DropdownList
+      v-if="item.view_type === INPUT_DROPDOWN"
+      v-model="valueLocal"
+      :label="item.label"
+      :list="item.cityList"
+      :required="item.required"
+      @input="onChange"
+    />
+    <PositionInput
+      v-if="item.view_type === INPUT_DROPDOWN_SEARCH"
+      :label="item.label"
+      :required="item.required"
+      :optionList="item.optionList"
+      :chosenList="getChosenList"
+      @onAddChosen="onAddChosen"
+      @onRemoveChosen="onRemoveChosen"
+    />
+    <AboutArea
+      v-if="item.view_type === INPUT_AREA"
+      v-model="valueLocal"
+      :label="item.label"
+      :required="item.required"
+      :error="item.error"
+      @input="onChange"
+    />
+    <DropzoneComp
+      v-if="item.view_type === IMG_DROPZONE"
+      :label="item.label"
+      :required="item.required"
+      :maxNumber="item.maxNumber"
+      :maxSize="item.maxSize"
+      :typeFile="item.typeFile"
+      :fileList="fileList"
+      @onRemove="onRemoveFile"
+      @onUpload="onUploadFile"
+    />
+    <SalaryElement
+      v-if="item.view_type === INPUT_SALARY"
+      v-model="valueLocal"
+      :label="item.label"
+      :required="item.required"
+      :error="item.error"
+      @input="onChange"
+    />
   </div>
 </template>
 
@@ -72,7 +70,7 @@ import InputDate from "./sharedComponents/InputDate.vue";
 import DropdownList from "./FirstStepComp/DropdownList.vue";
 import PositionInput from "./FirstStepComp/PositionInput.vue";
 import AboutArea from "@/components/multiform/sharedComponents/TextArea.vue";
-import DropzoneComp from "../dropzone/DropzoneComp.vue";
+import DropzoneComp from "./dropzone/DropzoneComp.vue";
 import { mapGetters } from "vuex";
 import {
   INPUT_TEXT,
@@ -95,7 +93,6 @@ export default {
       INPUT_AREA,
       IMG_DROPZONE,
       valueLocal: "",
-      isValid: false,
     };
   },
   components: {
@@ -114,6 +111,9 @@ export default {
     },
     value: {
       type: String,
+    },
+    numStep: {
+      type: Number,
     },
   },
   watch: {
@@ -153,4 +153,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped></style>

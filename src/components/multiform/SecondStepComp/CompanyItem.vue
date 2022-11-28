@@ -84,7 +84,7 @@ export default {
       required: true,
     },
     value: {
-      type: String,
+      type: [String, Object],
     },
     error: {
       type: String,
@@ -114,7 +114,7 @@ export default {
 <style lang="scss" scoped>
 .company-item {
   width: 100%;
-  height: 504px;
+  height: 520px;
   padding: 24px;
   border-radius: 4px;
   border: 1px solid #dcdcdc;
