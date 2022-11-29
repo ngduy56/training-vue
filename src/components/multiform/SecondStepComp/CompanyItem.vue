@@ -11,7 +11,7 @@
           @input="onChange"
         />
       </div>
-      <TrashIcon @click.native="onRemove" />
+      <TrashIcon @click.native="removeCompany" />
     </div>
     <div
       v-for="(child, indexChild) in item.childrens"
@@ -104,8 +104,8 @@ export default {
     onChangeChildren(value, indexChild) {
       this.$emit("onChangeChildren", value, indexChild);
     },
-    onRemove() {
-      this.$emit("onRemove", this.item.value);
+    removeCompany() {
+      this.$emit("removeCompany", this.item.value);
     },
   },
 };

@@ -26,7 +26,7 @@
         @onChangeChildren="
           (value, indexChild) => onChangeChildren(value, indexChild, index)
         "
-        @onRemove="onRemove"
+        @removeCompany="removeCompany"
       />
       <div class="btn-add" @click="addCompany">
         <AddIcon />
@@ -53,8 +53,6 @@
 import AddIcon from "@/components/icons/AddIcon.vue";
 import CompanyItem from "@/components/multiform/SecondStepComp/CompanyItem.vue";
 import MultiInputView from "./MultiInputView.vue";
-import { defaultElement, secondForm } from "./form";
-import { mapActions, mapGetters } from "vuex";
 import {
   validateFirstForm,
   validateSecondForm,
@@ -83,20 +81,11 @@ export default {
     AddIcon,
     CompanyItem,
   },
-  mounted() {
-    if (this.firstFormStore.length && this.isFirstForm) {
-      this.initialFormData = this.firstFormStore;
-    } else if (this.secondFormStore.length && this.isSecondForm) {
-      this.initialFormData = this.secondFormStore;
-    } else if (this.thirdFormStore.length && this.isThirdForm) {
-      this.initialFormData = this.thirdFormStore;
-    }
-  },
   watch: {
     formData: {
       handler(val) {
-        let newArr = val.filter((item) => item.value === "");
-        if (newArr.length > 0) this.isComplete = false;
+        let newArr = val?.filter((item) => item.value === "");
+        if (newArr?.length > 0) this.isComplete = false;
         else this.isComplete = true;
       },
       deep: true,
@@ -104,11 +93,6 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({
-      firstFormStore: "form/getFirstForm",
-      secondFormStore: "form/getSecondForm",
-      thirdFormStore: "form/getThirdForm",
-    }),
     isFirstForm() {
       return this.numStep === 1;
     },
@@ -120,44 +104,30 @@ export default {
     },
   },
   methods: {
-    ...mapActions({
-      addChosen: "position/addChosen",
-      removeChosen: "position/removeChosen",
-
-      uploadFile: "file/uploadFile",
-      removeFile: "file/removeFile",
-
-      saveFirstForm: "form/saveFirstForm",
-      saveSecondForm: "form/saveSecondForm",
-      saveThirdForm: "form/saveThirdForm",
-    }),
     onUploadFile(files) {
-      this.uploadFile(files);
+      this.$emit("onUploadFile", files);
     },
     onRemoveFile(lastModified) {
-      this.removeFile(lastModified);
+      this.$emit("onRemoveFile", lastModified);
     },
     onAddChosen(option) {
-      this.addChosen(option);
+      this.$emit("onAddChosen", option);
     },
     onRemoveChosen(chosenItem) {
-      this.removeChosen(chosenItem);
+      this.$emit("onRemoveChosen", chosenItem);
     },
-
     onChange(value, index) {
-      secondForm[index].value = value;
+      this.$emit("onChangeValue", value, index);
     },
     onChangeChildren(value, indexChild, index) {
-      secondForm[index].childrens[indexChild].value = value;
+      this.$emit("onChangeChildren", value, indexChild, index);
     },
     addCompany() {
-      secondForm.push(JSON.parse(JSON.stringify(defaultElement)));
+      this.$emit("addCompany");
     },
-    onRemove(value) {
-      let index = secondForm.findIndex((item) => item.value === value);
-      secondForm.splice(index, 1);
+    removeCompany(value) {
+      this.$emit("removeCompany", value);
     },
-
     nextStep() {
       if (this.isFirstForm) {
         this.isValid = validateFirstForm(this.formData);
@@ -166,22 +136,14 @@ export default {
       } else if (this.isThirdForm) {
         this.isValid = validateThirdForm(this.formData);
       }
-      if (this.isValid && this.isFirstForm) {
-        this.saveFirstForm(this.formData);
-        this.$emit("changeForm", this.numStep + 1);
+      if (this.isValid) {
+        this.$emit("nextStep", this.formData);
+        this.$emit("onChange", this.numStep + 1);
         this.$emit("doneStep", this.numStep);
-      } else if (this.isValid && this.isSecondForm) {
-        this.saveSecondForm(this.formData);
-        this.$emit("changeForm", this.numStep + 1);
-        this.$emit("doneStep", this.numStep);
-      } else if (this.isValid && this.isThirdForm) {
-        this.saveThirdForm(this.formData);
-        this.$emit("doneStep", this.numStep);
-        this.$router.push("/");
       }
     },
     previousStep() {
-      this.$emit("changeForm", this.numStep - 1);
+      this.$emit("onChange", this.numStep - 1);
     },
   },
 };

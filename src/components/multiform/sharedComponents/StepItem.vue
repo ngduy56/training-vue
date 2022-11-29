@@ -19,7 +19,7 @@ export default {
   methods: {
     toggleActive() {
       if (this.item.isDone) {
-        this.$emit("input", this.item.num);
+        this.$emit("input", this.item.num, this.index);
       }
     },
   },

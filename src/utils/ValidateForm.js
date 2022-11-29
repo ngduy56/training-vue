@@ -1,11 +1,11 @@
-export const validateFirstForm = (thirdStepForm) => {
-  thirdStepForm.map((item) => {
+export const validateFirstForm = (firstStepForm) => {
+  firstStepForm.map((item) => {
     item.error = "";
     return item;
   });
   let isValid = true;
 
-  const fullNameInput = thirdStepForm.filter((item) => item.key === "fullName");
+  const fullNameInput = firstStepForm.filter((item) => item.key === "fullName");
   let fullName = fullNameInput[0].value;
   if (!fullName) {
     fullNameInput[0].error = "Họ và tên là bắt buộc";
@@ -15,14 +15,14 @@ export const validateFirstForm = (thirdStepForm) => {
     isValid = false;
   }
 
-  const aboutInput = thirdStepForm.filter((item) => item.key === "about-me");
+  const aboutInput = firstStepForm.filter((item) => item.key === "about-me");
   let about = aboutInput[0].value;
   if (about.length > 1000) {
     aboutInput[0].error = "Tối đa là 1000 ký tự";
     isValid = false;
   }
 
-  const dateInput = thirdStepForm.filter((item) => item.key === "dob");
+  const dateInput = firstStepForm.filter((item) => item.key === "dob");
   let dob = dateInput[0].value;
   let dateTime = new Date(dob).getTime();
   let currentDate = new Date().getTime();
@@ -34,6 +34,7 @@ export const validateFirstForm = (thirdStepForm) => {
     dateInput[0].error = "Vui lòng chọn lại ngày";
     isValid = false;
   }
+
   return isValid;
 };
 

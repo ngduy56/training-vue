@@ -8,7 +8,7 @@
         :key="item.num"
         :item="item"
         :index="index"
-        @input="(num) => onChange(num, index)"
+        @input="onChange"
       />
     </div>
   </div>
@@ -27,18 +27,18 @@ export default {
     StepItem,
   },
   mounted() {
-    let item = document.querySelectorAll(".step-num");
-    item[0].classList.add("active");
+    let itemStep = document.querySelectorAll(".step-num");
+    itemStep[0].classList.add("active");
   },
   methods: {
     onChange(num, index) {
       this.$emit("input", num);
 
-      let item = document.querySelectorAll(".step-num");
-      item.forEach((i) => {
+      let itemStep = document.querySelectorAll(".step-num");
+      itemStep.forEach((i) => {
         i.classList.remove("active");
       });
-      item[index].classList.add("active");
+      itemStep[index].classList.add("active");
     },
   },
 };
