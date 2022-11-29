@@ -58,7 +58,7 @@
 <script>
 import InputField from "../sharedComponents/InputField.vue";
 import InputDate from "../sharedComponents/InputDate.vue";
-import DropdownList from "./DropdownList.vue";
+import DropdownList from "../sharedComponents/DropdownList.vue";
 import PositionInput from "./PositionInput.vue";
 import AboutArea from "@/components/multiform/sharedComponents/TextArea.vue";
 import DropzoneComp from "@/components/multiform/dropzone/DropzoneComp.vue";

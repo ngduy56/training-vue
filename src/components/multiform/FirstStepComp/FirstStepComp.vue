@@ -28,7 +28,7 @@
 <script>
 import InputView from "./InputView.vue";
 import { mapActions, mapGetters } from "vuex";
-import { firstForm } from "./firstForm.js";
+import { firstForm } from "../form";
 import { validateFirstForm } from "@/utils/ValidateForm";
 
 export default {

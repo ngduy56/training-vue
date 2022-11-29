@@ -33,7 +33,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import CompanyItem from "./CompanyItem.vue";
-import { defaultElement, secondForm } from "./secondForm";
+import { defaultElement, secondForm } from "../form";
 import AddIcon from "@/components/icons/AddIcon.vue";
 import { validateSecondForm } from "@/utils/ValidateForm";
 

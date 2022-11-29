@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { thirdForm } from "./thirdForm";
+import { thirdForm } from "../form";
 import InputView from "./InputView.vue";
 import { validateThirdForm } from "@/utils/ValidateForm";
 import { mapActions, mapGetters } from "vuex";
