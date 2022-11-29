@@ -29,7 +29,7 @@
       :label="item.label"
       :required="item.required"
       :optionList="item.optionList"
-      :chosenList="getChosenList"
+      :chosenList="item.value"
       @onAddChosen="onAddChosen"
       @onRemoveChosen="onRemoveChosen"
     />
@@ -110,7 +110,7 @@ export default {
       required: true,
     },
     value: {
-      type: String,
+      type: [String, Array],
     },
     numStep: {
       type: Number,
@@ -129,9 +129,6 @@ export default {
     ...mapGetters({
       fileList: "file/getFileList",
     }),
-    getChosenList() {
-      return this.item?.optionList?.filter((item) => item.isChosen) || [];
-    },
   },
   methods: {
     onChange(value) {

@@ -22,6 +22,8 @@
 <script>
 import StepElement from "@/components/multiform/sharedComponents/StepElement.vue";
 import MultiStepForm from "@/components/multiform/MultiStepForm.vue";
+import { POSITION_LIST } from "@/constants/FormConstants";
+
 import {
   multiForm,
   secondForm,
@@ -33,6 +35,7 @@ export default {
     return {
       numLocal: 1,
       multiForm,
+      positionList: POSITION_LIST,
     };
   },
   components: {
@@ -56,9 +59,6 @@ export default {
   },
   methods: {
     ...mapActions({
-      addChosen: "position/addChosen",
-      removeChosen: "position/removeChosen",
-
       uploadFile: "file/uploadFile",
       removeFile: "file/removeFile",
 
@@ -73,10 +73,31 @@ export default {
       this.removeFile(lastModified);
     },
     onAddChosen(option) {
-      this.addChosen(option);
+      this.positionList.map((pos) => {
+        if (pos.codename === option.codename) {
+          pos.isChosen = true;
+        }
+      });
+      this.formData.map((item) => {
+        if (item.key === "position") {
+          item.value.push(option);
+        }
+      });
     },
     onRemoveChosen(chosenItem) {
-      this.removeChosen(chosenItem);
+      this.positionList.map((pos) => {
+        if (pos.codename === chosenItem.codename) {
+          pos.isChosen = false;
+        }
+      });
+      this.formData.map((item) => {
+        if (item.key === "position") {
+          let index = item.value.findIndex((i) => {
+            i.codename === chosenItem.codename;
+          });
+          item.value.splice(index, 1);
+        }
+      });
     },
     onChangeValue(value, index) {
       secondForm[index].value = value;

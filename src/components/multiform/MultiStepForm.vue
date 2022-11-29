@@ -33,6 +33,7 @@
         <span>Thêm công ty</span>
       </div>
     </div>
+
     <div class="navigate-block">
       <button
         class="btn-next"
@@ -84,9 +85,27 @@ export default {
   watch: {
     formData: {
       handler(val) {
-        let newArr = val?.filter((item) => item.value === "");
-        if (newArr?.length > 0) this.isComplete = false;
-        else this.isComplete = true;
+        if (this.isFirstForm) {
+          val?.map((item) => {
+            if (item.key === "fullName" || item.key === "dob") {
+              if (item.value === "") {
+                this.isComplete = false;
+              } else this.isComplete = true;
+            }
+          });
+        } else if (this.isSecondForm) {
+          let newArr = val?.filter((item) => item.value === "");
+          if (newArr?.length > 0) this.isComplete = false;
+          else this.isComplete = true;
+        } else if (this.isThirdForm) {
+          val?.map((item) => {
+            if (item.key === "reason") {
+              if (item.value === "") {
+                this.isComplete = false;
+              } else this.isComplete = true;
+            }
+          });
+        }
       },
       deep: true,
       immediate: true,

@@ -4,9 +4,8 @@ import {
   MAX_NUMBER,
   TYPE_FILE_IMAGE,
 } from "@/constants/DropzoneConstants.js";
-import store from "@/store/store";
 import { CITY_LIST } from "@/constants/FormConstants";
-const optionList = store.getters["position/getPositionList"];
+import { POSITION_LIST } from "@/constants/FormConstants";
 
 const defaultElement = {
   label: "",
@@ -71,7 +70,8 @@ const firstForm = [
     view_type: "input-dropdown-search",
     required: false,
     key: "position",
-    optionList,
+    value: [],
+    optionList: POSITION_LIST,
   },
   {
     label: "Mô tả về bản thân",
@@ -85,7 +85,7 @@ const firstForm = [
     label: "Ảnh cá nhân",
     view_type: "img-dropzone",
     required: false,
-    fileList: "",
+    value: [],
     key: "ava-dropzone",
     maxSize: MAX_SIZE,
     maxNumber: MAX_NUMBER,
