@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="block">
     <InputField
       v-if="item.view_type === INPUT_TEXT"
-      v-model="valueLocal"
+      :value="valueLocal"
       :label="item.label"
       :required="item.required"
       :error="item.error"
@@ -10,20 +10,21 @@
     />
     <InputDate
       v-if="item.view_type === INPUT_DATE"
-      v-model="valueLocal"
+      :value="valueLocal"
       :label="item.label"
       :required="item.required"
       :error="item.error"
       @input="onChange"
     />
-    <DropdownList
-      v-if="item.view_type === INPUT_DROPDOWN"
-      v-model="valueLocal"
-      :label="item.label"
-      :list="item.cityList"
-      :required="item.required"
-      @input="onChange"
-    />
+    <div class="dropdown" v-if="item.view_type === INPUT_DROPDOWN">
+      <DropdownList
+        :value="valueLocal"
+        :label="item.label"
+        :list="item.cityList"
+        :required="item.required"
+        @input="onChange"
+      />
+    </div>
     <PositionInput
       v-if="item.view_type === INPUT_DROPDOWN_SEARCH"
       :label="item.label"
@@ -35,7 +36,7 @@
     />
     <AboutArea
       v-if="item.view_type === INPUT_AREA"
-      v-model="valueLocal"
+      :value="valueLocal"
       :label="item.label"
       :required="item.required"
       :error="item.error"
@@ -48,22 +49,31 @@
       :maxNumber="item.maxNumber"
       :maxSize="item.maxSize"
       :typeFile="item.typeFile"
-      :fileList="fileList"
+      :fileList="item.value"
       @onRemove="onRemoveFile"
       @onUpload="onUploadFile"
     />
     <SalaryElement
       v-if="item.view_type === INPUT_SALARY"
-      v-model="valueLocal"
+      :value="valueLocal"
       :label="item.label"
       :required="item.required"
       :error="item.error"
       @input="onChange"
     />
+    <CompanyItem
+      v-if="item.view_type === COMPANY_ITEM"
+      :item="item"
+      @onChangeChildren="
+        (value, indexChild) => onChangeChildren(value, indexChild, index)
+      "
+      @removeCompany="removeCompany"
+    />
   </div>
 </template>
 
 <script>
+import CompanyItem from "@/components/multiform/SecondStepComp/CompanyItem.vue";
 import SalaryElement from "@/components/multiform/ThirdStepComp/SalaryElement.vue";
 import InputField from "./sharedComponents/InputField.vue";
 import InputDate from "./sharedComponents/InputDate.vue";
@@ -71,7 +81,6 @@ import DropdownList from "./sharedComponents/DropdownList.vue";
 import PositionInput from "./FirstStepComp/PositionInput.vue";
 import AboutArea from "@/components/multiform/sharedComponents/TextArea.vue";
 import DropzoneComp from "./dropzone/DropzoneComp.vue";
-import { mapGetters } from "vuex";
 import {
   INPUT_TEXT,
   INPUT_SALARY,
@@ -80,6 +89,7 @@ import {
   INPUT_DROPDOWN_SEARCH,
   INPUT_AREA,
   IMG_DROPZONE,
+  COMPANY_ITEM,
 } from "@/constants/FormConstants";
 
 export default {
@@ -92,6 +102,8 @@ export default {
       INPUT_DROPDOWN_SEARCH,
       INPUT_AREA,
       IMG_DROPZONE,
+      COMPANY_ITEM,
+
       valueLocal: "",
     };
   },
@@ -103,6 +115,7 @@ export default {
     AboutArea,
     DropzoneComp,
     SalaryElement,
+    CompanyItem,
   },
   props: {
     item: {
@@ -112,7 +125,7 @@ export default {
     value: {
       type: [String, Array],
     },
-    numStep: {
+    index: {
       type: Number,
     },
   },
@@ -125,14 +138,12 @@ export default {
       immediate: true,
     },
   },
-  computed: {
-    ...mapGetters({
-      fileList: "file/getFileList",
-    }),
-  },
   methods: {
     onChange(value) {
       this.$emit("input", value);
+    },
+    onChangeChildren(value, indexChild, index) {
+      this.$emit("onChangeChildren", value, indexChild, index);
     },
     onUploadFile(files) {
       this.$emit("onUploadFile", files);
@@ -146,8 +157,19 @@ export default {
     onRemoveChosen(chosenItem) {
       this.$emit("onRemoveChosen", chosenItem);
     },
+    removeCompany() {
+      this.$emit("removeCompany", this.index);
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.block {
+  width: 100%;
+
+  .dropdown {
+    width: 528px;
+  }
+}
+</style>

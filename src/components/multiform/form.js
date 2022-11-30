@@ -1,19 +1,27 @@
-import { COMPANY_LIST } from "@/constants/FormConstants";
 import {
-  MAX_SIZE,
   MAX_NUMBER,
+  MAX_SIZE,
   TYPE_FILE_IMAGE,
 } from "@/constants/DropzoneConstants.js";
-import { CITY_LIST } from "@/constants/FormConstants";
-import { POSITION_LIST } from "@/constants/FormConstants";
+
+import {
+  CITY_LIST,
+  COMPANY_LIST,
+  POSITION_LIST,
+} from "@/constants/FormConstants";
 
 const defaultElement = {
-  label: "",
-  view_type: "input-dropdown",
-  value: "",
+  view_type: "company-item",
   companyList: COMPANY_LIST,
-  error: "",
   childrens: [
+    {
+      label: "",
+      view_type: "input-dropdown",
+      required: true,
+      value: "",
+      key: "company",
+      error: "",
+    },
     {
       label: "Vị trí từng làm",
       view_type: "input-text",
@@ -24,7 +32,7 @@ const defaultElement = {
     },
     {
       label: "Thời gian làm việc",
-      view_type: "input-date",
+      view_type: "input-date-zone",
       required: true,
       value: { from: "", to: "" },
       key: "time",
@@ -112,6 +120,7 @@ const thirdForm = [
     error: "",
   },
 ];
+
 const multiForm = [
   { id: 1, num: 1, data: firstForm, name: "Thông tin cá nhân", isDone: false },
   {

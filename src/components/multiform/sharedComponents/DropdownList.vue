@@ -1,14 +1,12 @@
 <template>
-  <div>
-    <div class="drop-down">
-      <InputLabel :label="label" :required="required" />
-      <select class="select" v-model="valueLocal" @change="onChange">
-        <option v-for="item in list" :key="item.value" :value="item.value">
-          {{ item.name }}
-        </option>
-      </select>
-      <span v-if="error" class="error-vali">{{ error }}</span>
-    </div>
+  <div class="drop-down">
+    <InputLabel :label="label" :required="required" />
+    <select class="select" v-model="valueLocal" @change="onChange">
+      <option v-for="item in list" :key="item.value" :value="item.value">
+        {{ item.name }}
+      </option>
+    </select>
+    <span v-if="error" class="error-vali">{{ error }}</span>
   </div>
 </template>
 

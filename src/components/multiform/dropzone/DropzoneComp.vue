@@ -60,7 +60,7 @@ export default {
 .main {
   width: 842px;
   max-width: 1000px;
-  margin: 2rem auto;
+  margin: 12px 0;
 }
 .btn-submit {
   margin: 10px 0;

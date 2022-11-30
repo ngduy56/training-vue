@@ -86,10 +86,12 @@ const STEP_LIST = [
 const INPUT_TEXT = "input-text";
 const INPUT_SALARY = "input-salary";
 const INPUT_DATE = "input-date";
+const INPUT_DATE_ZONE = "input-date-zone";
 const INPUT_DROPDOWN = "input-dropdown";
 const INPUT_DROPDOWN_SEARCH = "input-dropdown-search";
 const INPUT_AREA = "input-area";
 const IMG_DROPZONE = "img-dropzone";
+const COMPANY_ITEM = "company-item";
 export {
   COMPANY_LIST,
   POSITION_LIST,
@@ -98,8 +100,10 @@ export {
   INPUT_TEXT,
   INPUT_SALARY,
   INPUT_DATE,
+  INPUT_DATE_ZONE,
   INPUT_DROPDOWN,
   INPUT_DROPDOWN_SEARCH,
   INPUT_AREA,
   IMG_DROPZONE,
+  COMPANY_ITEM,
 };

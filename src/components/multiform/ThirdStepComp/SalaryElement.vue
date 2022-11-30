@@ -57,32 +57,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.salary-input {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  position: relative;
-  background: #ffffff;
-  border: 1px solid #dcdcdc;
-  border-radius: 4px;
-  font-size: 14px;
-  width: 140px;
-  height: 40px;
+.salary-block {
+  margin: 10px 0;
 
-  input {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    outline: none;
-    border: none;
-    padding: 10px 0 10px 8px;
+  .salary-input {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 140px;
+    height: 40px;
+
+    input {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      outline: none;
+      border: none;
+      padding: 10px 0 10px 8px;
+    }
+    span {
+      transform: translateX(-10px);
+    }
   }
-  span {
-    transform: translateX(-10px);
+  .error-vali {
+    color: red;
+    font-size: 14px;
   }
-}
-.error-vali {
-  color: red;
-  font-size: 14px;
 }
 </style>

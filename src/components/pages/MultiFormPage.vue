@@ -3,17 +3,16 @@
     <StepElement @input="onChange" />
     <MultiStepForm
       :formData="formData"
-      :numStep="numLocal"
+      :numStep="numStep"
       @onChange="onChange"
-      @doneStep="doneStep"
       @onUploadFile="onUploadFile"
       @onRemoveFile="onRemoveFile"
       @onAddChosen="onAddChosen"
       @onRemoveChosen="onRemoveChosen"
-      @onChangeValue="onChangeValue"
       @onChangeChildren="onChangeChildren"
       @addCompany="addCompany"
       @removeCompany="removeCompany"
+      @doneStep="doneStep"
       @nextStep="nextStep"
     />
   </div>
@@ -22,20 +21,13 @@
 <script>
 import StepElement from "@/components/multiform/sharedComponents/StepElement.vue";
 import MultiStepForm from "@/components/multiform/MultiStepForm.vue";
-import { POSITION_LIST } from "@/constants/FormConstants";
-
-import {
-  multiForm,
-  secondForm,
-  defaultElement,
-} from "@/components/multiform/form";
+import { multiForm, defaultElement } from "@/components/multiform/form";
 import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      numLocal: 1,
+      numStep: 1,
       multiForm,
-      positionList: POSITION_LIST,
     };
   },
   components: {
@@ -44,93 +36,85 @@ export default {
   },
   computed: {
     formData() {
-      let rs = this.multiForm.filter((item) => item.num === this.numLocal);
+      let rs = this.multiForm.filter((item) => item.num === this.numStep);
       return rs[0]?.data;
-    },
-    isFirstForm() {
-      return this.numLocal === 1;
-    },
-    isSecondForm() {
-      return this.numLocal === 2;
-    },
-    isThirdForm() {
-      return this.numLocal === 3;
     },
   },
   methods: {
     ...mapActions({
-      uploadFile: "file/uploadFile",
-      removeFile: "file/removeFile",
-
-      saveFirstForm: "form/saveFirstForm",
-      saveSecondForm: "form/saveSecondForm",
-      saveThirdForm: "form/saveThirdForm",
+      saveForm: "form/saveForm",
     }),
     onUploadFile(files) {
-      this.uploadFile(files);
-    },
-    onRemoveFile(lastModified) {
-      this.removeFile(lastModified);
-    },
-    onAddChosen(option) {
-      this.positionList.map((pos) => {
-        if (pos.codename === option.codename) {
-          pos.isChosen = true;
+      this.formData.map((item) => {
+        if (item.key === "ava-dropzone") {
+          item.value = item.value.concat(files);
         }
       });
+    },
+    onRemoveFile(lastModified) {
+      this.formData.map((item) => {
+        if (item.key === "ava-dropzone") {
+          const index = this.formData.findIndex(
+            (item) => item.lastModified === lastModified
+          );
+          item.value.splice(index, 1);
+        }
+      });
+    },
+    onAddChosen(option) {
       this.formData.map((item) => {
         if (item.key === "position") {
           item.value.push(option);
+
+          item.optionList.map((pos) => {
+            if (pos.codename === option.codename) {
+              pos.isChosen = true;
+            }
+          });
         }
       });
     },
     onRemoveChosen(chosenItem) {
-      this.positionList.map((pos) => {
-        if (pos.codename === chosenItem.codename) {
-          pos.isChosen = false;
-        }
-      });
       this.formData.map((item) => {
         if (item.key === "position") {
           let index = item.value.findIndex((i) => {
             i.codename === chosenItem.codename;
           });
           item.value.splice(index, 1);
+
+          item.optionList.map((pos) => {
+            if (pos.codename === chosenItem.codename) {
+              pos.isChosen = false;
+            }
+          });
         }
       });
     },
-    onChangeValue(value, index) {
-      secondForm[index].value = value;
-    },
     onChangeChildren(value, indexChild, index) {
-      secondForm[index].childrens[indexChild].value = value;
+      this.formData[index].childrens[indexChild].value = value;
     },
     addCompany() {
-      secondForm.push(JSON.parse(JSON.stringify(defaultElement)));
+      this.formData.push(JSON.parse(JSON.stringify(defaultElement)));
     },
-    removeCompany(value) {
-      let index = secondForm.findIndex((item) => item.value === value);
-      secondForm.splice(index, 1);
+    removeCompany(index) {
+      this.formData.splice(index, 1);
     },
-    nextStep(formData) {
-      if (this.isFirstForm) {
-        this.saveFirstForm(formData);
-      } else if (this.isSecondForm) {
-        this.saveSecondForm(formData);
-      } else if (this.isThirdForm) {
-        this.saveThirdForm(formData);
+    nextStep() {
+      this.saveForm({ formData: this.formData, numForm: this.numStep });
+
+      if (this.numStep === this.multiForm.length) {
         this.$router.push({ path: "/" });
       }
     },
     onChange(num) {
-      if (num < this.numLocal) {
+      if (num < this.numStep) {
         let itemStep = document.querySelectorAll(".step-num");
         let index = this.multiForm.findIndex((item) => item.num === num + 1);
         itemStep[index]?.classList.remove("active");
         itemStep[index]?.classList.remove("done");
         itemStep[index - 1]?.classList.add("active");
       }
-      this.numLocal = num;
+      this.numStep = num;
     },
     doneStep(num) {
       this.multiForm.map((item) => {

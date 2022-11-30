@@ -84,6 +84,7 @@ export default {
 <style scoped>
 .main {
   padding: 0;
+  width: 528px;
 }
 .search-block {
   position: relative;

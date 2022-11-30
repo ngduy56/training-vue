@@ -15,25 +15,19 @@ const getters = {
   },
 };
 const mutations = {
-  SAVE_FIRST_FORM(state, payload) {
-    state.firstForm = payload;
-  },
-  SAVE_SECOND_FORM(state, payload) {
-    state.secondForm = payload;
-  },
-  SAVE_THIRD_FORM(state, payload) {
-    state.thirdForm = payload;
+  SAVE_FORM(state, payload) {
+    if (payload.numForm === 1) {
+      state.firstForm = payload.formData;
+    } else if (payload.numForm === 2) {
+      state.secondForm = payload.formData;
+    } else if (payload.numForm === 3) {
+      state.thirdForm = payload.formData;
+    }
   },
 };
 const actions = {
-  saveFirstForm({ commit }, payload) {
-    commit("SAVE_FIRST_FORM", payload);
-  },
-  saveSecondForm({ commit }, payload) {
-    commit("SAVE_SECOND_FORM", payload);
-  },
-  saveThirdForm({ commit }, payload) {
-    commit("SAVE_THIRD_FORM", payload);
+  saveForm({ commit }, payload) {
+    commit("SAVE_FORM", payload);
   },
 };
 

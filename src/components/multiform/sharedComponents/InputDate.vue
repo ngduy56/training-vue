@@ -49,13 +49,13 @@ export default {
 
 <style lang="scss" scoped>
 .input-date {
-  width: 100%;
+  width: 130px;
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
 
   input {
-    width: 130px;
+    width: 100%;
     height: 40px;
     outline: none;
     background: #ffffff;

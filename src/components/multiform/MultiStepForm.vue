@@ -1,37 +1,24 @@
 <template>
   <div>
-    <div v-if="!isSecondForm" class="container">
-      <div class="content">
-        <MultiInputView
-          v-for="item in formData"
-          v-model="item.value"
-          :key="item.key"
-          :item="item"
-          :numStep="numStep"
-          @onUploadFile="onUploadFile"
-          @onRemoveFile="onRemoveFile"
-          @onAddChosen="onAddChosen"
-          @onRemoveChosen="onRemoveChosen"
-        />
-      </div>
-    </div>
-    <div v-if="isSecondForm" class="second-block">
-      <CompanyItem
+    <div :class="{ container: !isSecondForm }">
+      <MultiInputView
         v-for="(item, index) in formData"
-        :value="item.value"
+        v-model="item.value"
+        :index="index"
+        :key="item.key"
         :item="item"
-        :key="item.lastModified"
-        :error="item.error"
-        @input="(value) => onChange(value, index)"
-        @onChangeChildren="
-          (value, indexChild) => onChangeChildren(value, indexChild, index)
-        "
+        @onUploadFile="onUploadFile"
+        @onRemoveFile="onRemoveFile"
+        @onAddChosen="onAddChosen"
+        @onRemoveChosen="onRemoveChosen"
+        @onChangeChildren="onChangeChildren"
         @removeCompany="removeCompany"
       />
-      <div class="btn-add" @click="addCompany">
-        <AddIcon />
-        <span>Thêm công ty</span>
-      </div>
+    </div>
+
+    <div v-if="isSecondForm" class="btn-add" @click="addCompany">
+      <AddIcon />
+      <span>Thêm công ty</span>
     </div>
 
     <div class="navigate-block">
@@ -41,9 +28,13 @@
         :disabled="!isComplete"
         @click="nextStep"
       >
-        {{ isThirdForm ? "Hoàn thành" : "Tiếp" }}
+        {{ isLastForm ? "Hoàn thành" : "Tiếp" }}
       </button>
-      <button v-if="isSecondForm" class="btn-prev" @click="previousStep">
+      <button
+        v-if="!isFirstForm && !isLastForm"
+        class="btn-prev"
+        @click="previousStep"
+      >
         Quay lại
       </button>
     </div>
@@ -52,8 +43,9 @@
 
 <script>
 import AddIcon from "@/components/icons/AddIcon.vue";
-import CompanyItem from "@/components/multiform/SecondStepComp/CompanyItem.vue";
 import MultiInputView from "./MultiInputView.vue";
+import { multiForm } from "@/components/multiform/form";
+
 import {
   validateFirstForm,
   validateSecondForm,
@@ -65,7 +57,7 @@ export default {
     return {
       isValid: false,
       isComplete: false,
-      initialFormData: this.formData,
+      multiForm,
     };
   },
   props: {
@@ -80,7 +72,6 @@ export default {
   components: {
     MultiInputView,
     AddIcon,
-    CompanyItem,
   },
   watch: {
     formData: {
@@ -94,9 +85,15 @@ export default {
             }
           });
         } else if (this.isSecondForm) {
-          let newArr = val?.filter((item) => item.value === "");
-          if (newArr?.length > 0) this.isComplete = false;
-          else this.isComplete = true;
+          val?.map((item) => {
+            item.childrens.map((child) => {
+              if (child.key === "company" || child.key === "position") {
+                if (child.value === "") {
+                  this.isComplete = false;
+                } else this.isComplete = true;
+              }
+            });
+          });
         } else if (this.isThirdForm) {
           val?.map((item) => {
             if (item.key === "reason") {
@@ -121,6 +118,9 @@ export default {
     isThirdForm() {
       return this.numStep === 3;
     },
+    isLastForm() {
+      return this.numStep === this.multiForm.length;
+    },
   },
   methods: {
     onUploadFile(files) {
@@ -135,17 +135,14 @@ export default {
     onRemoveChosen(chosenItem) {
       this.$emit("onRemoveChosen", chosenItem);
     },
-    onChange(value, index) {
-      this.$emit("onChangeValue", value, index);
-    },
     onChangeChildren(value, indexChild, index) {
       this.$emit("onChangeChildren", value, indexChild, index);
     },
     addCompany() {
       this.$emit("addCompany");
     },
-    removeCompany(value) {
-      this.$emit("removeCompany", value);
+    removeCompany(index) {
+      this.$emit("removeCompany", index);
     },
     nextStep() {
       if (this.isFirstForm) {
@@ -177,14 +174,9 @@ export default {
   flex-direction: column;
   align-items: flex-start;
   padding: 20px 50px 0 32px;
-  gap: 10px;
   background: #ffffff;
   border: 1px solid #dcdcdc;
   border-radius: 4px;
-
-  .content {
-    width: 528px;
-  }
 }
 .btn-next {
   width: 102px;
@@ -226,25 +218,25 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+.btn-add {
+  width: 150px;
+  height: 40px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 24px;
+  background: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-radius: 3px;
+  outline: none;
+  color: #48647f;
 
-  .btn-add {
-    width: 150px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    line-height: 24px;
-    background: #ffffff;
-    border: 1px solid #dcdcdc;
-    border-radius: 3px;
-    outline: none;
-    color: #48647f;
-
-    &:hover {
-      cursor: pointer;
-    }
+  &:hover {
+    cursor: pointer;
   }
 }
 </style>

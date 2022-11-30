@@ -51,7 +51,7 @@ export default {
 
 <style lang="scss" scoped>
 .input-field {
-  width: 100%;
+  width: 528px;
   margin-bottom: 10px;
 
   input {

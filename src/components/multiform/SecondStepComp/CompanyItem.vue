@@ -1,23 +1,22 @@
 <template>
   <div class="company-item">
-    <div class="selection-block">
-      <div class="selection">
-        <DropdownList
-          v-if="item.view_type === INPUT_DROPDOWN"
-          v-model="valueLocal"
-          :label="item.label"
-          :error="error"
-          :list="item.companyList"
-          @input="onChange"
-        />
-      </div>
-      <TrashIcon @click.native="removeCompany" />
-    </div>
     <div
       v-for="(child, indexChild) in item.childrens"
       :key="child.key"
       class="content"
     >
+      <div class="selection-block" v-if="child.view_type === INPUT_DROPDOWN">
+        <div class="selection">
+          <DropdownList
+            :value="child.value"
+            :label="child.label"
+            :error="child.error"
+            :list="item.companyList"
+            @input="(value) => onChangeChildren(value, indexChild)"
+          />
+        </div>
+        <TrashIcon @click.native="removeCompany" />
+      </div>
       <InputField
         v-if="child.view_type === INPUT_TEXT"
         :value="child.value"
@@ -27,7 +26,7 @@
         @input="(value) => onChangeChildren(value, indexChild)"
       />
       <TimeWorking
-        v-if="child.view_type === INPUT_DATE"
+        v-if="child.view_type === INPUT_DATE_ZONE"
         :value="child.value"
         :label="child.label"
         :required="child.required"
@@ -54,7 +53,7 @@ import DropdownList from "../sharedComponents/DropdownList.vue";
 import WorkArea from "@/components/multiform/sharedComponents/TextArea.vue";
 import {
   INPUT_TEXT,
-  INPUT_DATE,
+  INPUT_DATE_ZONE,
   INPUT_DROPDOWN,
   INPUT_AREA,
 } from "@/constants/FormConstants";
@@ -62,29 +61,15 @@ export default {
   data() {
     return {
       INPUT_TEXT,
-      INPUT_DATE,
+      INPUT_DATE_ZONE,
       INPUT_DROPDOWN,
       INPUT_AREA,
-
-      valueLocal: "",
     };
-  },
-  watch: {
-    value: {
-      handler(val) {
-        this.valueLocal = val;
-      },
-      deep: true,
-      immediate: true,
-    },
   },
   props: {
     item: {
       type: Object,
       required: true,
-    },
-    value: {
-      type: [String, Object],
     },
     error: {
       type: String,
@@ -98,14 +83,11 @@ export default {
     DropdownList,
   },
   methods: {
-    onChange() {
-      this.$emit("input", this.valueLocal);
-    },
     onChangeChildren(value, indexChild) {
       this.$emit("onChangeChildren", value, indexChild);
     },
     removeCompany() {
-      this.$emit("removeCompany", this.item.value);
+      this.$emit("removeCompany");
     },
   },
 };
@@ -134,7 +116,6 @@ export default {
     .selection {
       width: 94%;
     }
-
     select {
       border-radius: 4px;
       width: 100%;
@@ -147,7 +128,7 @@ export default {
     }
   }
   .content {
-    width: 528px;
+    width: 100%;
   }
 }
 </style>
