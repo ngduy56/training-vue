@@ -92,6 +92,7 @@ const INPUT_DROPDOWN_SEARCH = "input-dropdown-search";
 const INPUT_AREA = "input-area";
 const IMG_DROPZONE = "img-dropzone";
 const COMPANY_ITEM = "company-item";
+const NUMBER_REGEX = /^\d+$/;
 export {
   COMPANY_LIST,
   POSITION_LIST,
@@ -106,4 +107,5 @@ export {
   INPUT_AREA,
   IMG_DROPZONE,
   COMPANY_ITEM,
+  NUMBER_REGEX,
 };

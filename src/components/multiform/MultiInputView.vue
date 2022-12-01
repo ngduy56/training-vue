@@ -53,7 +53,7 @@
       @onRemove="onRemoveFile"
       @onUpload="onUploadFile"
     />
-    <SalaryElement
+    <SalaryInput
       v-if="item.view_type === INPUT_SALARY"
       :value="valueLocal"
       :label="item.label"
@@ -74,7 +74,7 @@
 
 <script>
 import CompanyItem from "@/components/multiform/SecondStepComp/CompanyItem.vue";
-import SalaryElement from "@/components/multiform/ThirdStepComp/SalaryElement.vue";
+import SalaryInput from "@/components/multiform/ThirdStepComp/SalaryElement.vue";
 import InputField from "./sharedComponents/InputField.vue";
 import InputDate from "./sharedComponents/InputDate.vue";
 import DropdownList from "./sharedComponents/DropdownList.vue";
@@ -114,7 +114,7 @@ export default {
     PositionInput,
     AboutArea,
     DropzoneComp,
-    SalaryElement,
+    SalaryInput,
     CompanyItem,
   },
   props: {

@@ -1,7 +1,7 @@
+import { NUMBER_REGEX } from "@/constants/FormConstants";
 export const validateFirstForm = (firstStepForm) => {
   firstStepForm.map((item) => {
     item.error = "";
-    return item;
   });
   let isValid = true;
 
@@ -46,12 +46,7 @@ export const validateSecondForm = (secondStepForm) => {
       itemChild.error = "";
     });
   });
-  secondStepForm.map((item) => {
-    if (item.value === "default") {
-      item.error = "Vui lòng chọn công ty";
-      isValid = false;
-    } else item.error = "";
-  });
+
   secondStepForm.map((item, index, element) => {
     let nextElement = element[index + 1];
     let nextTimeElement = "";
@@ -67,8 +62,14 @@ export const validateSecondForm = (secondStepForm) => {
     }
 
     item.childrens.map((itemChild) => {
+      if (itemChild.key === "company") {
+        if (itemChild.value === "") {
+          itemChild.error = "Vui lòng chọn công ty";
+          isValid = false;
+        }
+      }
       if (itemChild.key === "position") {
-        if (itemChild.value == "") {
+        if (itemChild.value === "") {
           itemChild.error = "Vui lòng nhập vị trí làm việc";
           isValid = false;
         } else if (itemChild.value.length > 100) {
@@ -126,8 +127,8 @@ export const validateThirdForm = (thirdStepForm) => {
   }
   const salaryInput = thirdStepForm.filter((item) => item.key === "salary");
   let salary = salaryInput[0].value;
-  var reg = /^\d+$/;
-  if (!reg.test(salary)) {
+
+  if (!NUMBER_REGEX.test(salary)) {
     salaryInput[0].error = "Mức lương phải là số";
     isValid = false;
   }

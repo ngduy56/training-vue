@@ -49,13 +49,13 @@ export default {
 
 <style lang="scss" scoped>
 .input-date {
-  width: 130px;
+  width: 200px;
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
 
   input {
-    width: 100%;
+    width: 130px;
     height: 40px;
     outline: none;
     background: #ffffff;
@@ -71,6 +71,7 @@ export default {
   .error-vali {
     color: red;
     font-size: 14px;
+    width: 100%;
   }
 }
 </style>

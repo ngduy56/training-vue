@@ -67,6 +67,7 @@ export default {
   .error-vali {
     color: red;
     font-size: 14px;
+    width: 100%;
   }
 }
 </style>
