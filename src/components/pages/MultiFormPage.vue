@@ -1,19 +1,20 @@
 <template>
   <div class="main">
-    <StepElement @input="onChange" />
+    <StepElement @changeForm="changeForm" />
     <MultiStepForm
       :formData="formData"
       :numStep="numStep"
-      @onChange="onChange"
+      @changeForm="changeForm"
       @onUploadFile="onUploadFile"
       @onRemoveFile="onRemoveFile"
       @onAddChosen="onAddChosen"
       @onRemoveChosen="onRemoveChosen"
+      @input="onChangeValue"
       @onChangeChildren="onChangeChildren"
       @addCompany="addCompany"
       @removeCompany="removeCompany"
-      @doneStep="doneStep"
       @nextStep="nextStep"
+      @doneStep="doneStep"
     />
   </div>
 </template>
@@ -35,15 +36,37 @@ export default {
     MultiStepForm,
   },
   computed: {
+    isFirstForm() {
+      return this.numStep === 1;
+    },
+    isSecondForm() {
+      return this.numStep === 2;
+    },
+    isThirdForm() {
+      return this.numStep === 3;
+    },
     formData() {
+      // if (this.isFirstForm && this.firstForm.length > 0) {
+      //   return this.firstForm;
+      // } else if (this.isSecondForm && this.secondForm.length > 0) {
+      //   return this.secondForm;
+      // } else if (this.isThirdForm && this.thirdForm.length > 0) {
+      //   return this.thirdForm;
+      // } else {
       let rs = this.multiForm.filter((item) => item.num === this.numStep);
       return rs[0]?.data;
+      // }
     },
   },
   methods: {
     ...mapActions({
+      firstForm: "form/getFirstForm",
+      secondForm: "form/getSecondForm",
+      thirdForm: "form/getThirdForm",
+
       saveForm: "form/saveForm",
     }),
+
     onUploadFile(files) {
       this.formData.map((item) => {
         if (item.key === "ava-dropzone") {
@@ -90,6 +113,9 @@ export default {
         }
       });
     },
+    onChangeValue(value, index) {
+      this.formData[index].value = value;
+    },
     onChangeChildren(value, indexChild, index) {
       this.formData[index].childrens[indexChild].value = value;
     },
@@ -101,12 +127,11 @@ export default {
     },
     nextStep() {
       this.saveForm({ formData: this.formData, numForm: this.numStep });
-
       if (this.numStep === this.multiForm.length) {
         this.$router.push({ path: "/" });
       }
     },
-    onChange(num) {
+    changeForm(num) {
       if (num < this.numStep) {
         let itemStep = document.querySelectorAll(".step-num");
         let index = this.multiForm.findIndex((item) => item.num === num + 1);

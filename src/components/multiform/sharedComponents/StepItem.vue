@@ -1,6 +1,6 @@
 <template>
   <div class="step-item">
-    <span @click="toggleActive" class="step-num">{{ item.num }} </span>
+    <span @click="changeForm" class="step-num">{{ item.num }} </span>
     <div class="step-title">{{ item.name }}</div>
   </div>
 </template>
@@ -17,9 +17,9 @@ export default {
     },
   },
   methods: {
-    toggleActive() {
+    changeForm() {
       if (this.item.isDone) {
-        this.$emit("input", this.item.num, this.index);
+        this.$emit("changeForm", this.item.num, this.index);
       }
     },
   },

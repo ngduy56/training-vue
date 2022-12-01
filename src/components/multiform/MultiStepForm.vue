@@ -3,16 +3,18 @@
     <div :class="{ container: !isSecondForm }">
       <MultiInputView
         v-for="(item, index) in formData"
-        v-model="item.value"
-        :index="index"
+        :value="item.value"
         :key="item.key"
         :item="item"
         @onUploadFile="onUploadFile"
         @onRemoveFile="onRemoveFile"
         @onAddChosen="onAddChosen"
         @onRemoveChosen="onRemoveChosen"
-        @onChangeChildren="onChangeChildren"
         @removeCompany="removeCompany"
+        @input="(value) => onChangeValue(value, index)"
+        @onChangeChildren="
+          (value, indexChild) => onChangeChildren(value, indexChild, index)
+        "
       />
     </div>
 
@@ -123,6 +125,9 @@ export default {
     },
   },
   methods: {
+    onChangeValue(value, index) {
+      this.$emit("input", value, index);
+    },
     onUploadFile(files) {
       this.$emit("onUploadFile", files);
     },
@@ -154,12 +159,12 @@ export default {
       }
       if (this.isValid) {
         this.$emit("nextStep", this.formData);
-        this.$emit("onChange", this.numStep + 1);
+        this.$emit("changeForm", this.numStep + 1);
         this.$emit("doneStep", this.numStep);
       }
     },
     previousStep() {
-      this.$emit("onChange", this.numStep - 1);
+      this.$emit("changeForm", this.numStep - 1);
     },
   },
 };

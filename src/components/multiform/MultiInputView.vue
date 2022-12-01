@@ -64,9 +64,7 @@
     <CompanyItem
       v-if="item.view_type === COMPANY_ITEM"
       :item="item"
-      @onChangeChildren="
-        (value, indexChild) => onChangeChildren(value, indexChild, index)
-      "
+      @onChangeChildren="onChangeChildren"
       @removeCompany="removeCompany"
     />
   </div>
@@ -125,9 +123,6 @@ export default {
     value: {
       type: [String, Array],
     },
-    index: {
-      type: Number,
-    },
   },
   watch: {
     value: {
@@ -142,8 +137,8 @@ export default {
     onChange(value) {
       this.$emit("input", value);
     },
-    onChangeChildren(value, indexChild, index) {
-      this.$emit("onChangeChildren", value, indexChild, index);
+    onChangeChildren(value, indexChild) {
+      this.$emit("onChangeChildren", value, indexChild);
     },
     onUploadFile(files) {
       this.$emit("onUploadFile", files);

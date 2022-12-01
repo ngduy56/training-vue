@@ -8,7 +8,7 @@
         :key="item.num"
         :item="item"
         :index="index"
-        @input="onChange"
+        @changeForm="changeForm"
       />
     </div>
   </div>
@@ -31,8 +31,8 @@ export default {
     itemStep[0].classList.add("active");
   },
   methods: {
-    onChange(num, index) {
-      this.$emit("input", num);
+    changeForm(num, index) {
+      this.$emit("changeForm", num);
 
       let itemStep = document.querySelectorAll(".step-num");
       itemStep.forEach((i) => {
