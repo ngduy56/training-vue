@@ -94,11 +94,16 @@ export default {
                   this.isComplete = false;
                 } else this.isComplete = true;
               }
+              if (child.key === "time") {
+                if (child.value.from === "" || child.value.to === "") {
+                  this.isComplete = false;
+                } else this.isComplete = true;
+              }
             });
           });
         } else if (this.isThirdForm) {
           val?.map((item) => {
-            if (item.key === "reason") {
+            if (item.key === "reason" || item.key === "salary") {
               if (item.value === "") {
                 this.isComplete = false;
               } else this.isComplete = true;

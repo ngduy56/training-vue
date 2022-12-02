@@ -23,7 +23,7 @@
 import StepElement from "@/components/multiform/sharedComponents/StepElement.vue";
 import MultiStepForm from "@/components/multiform/MultiStepForm.vue";
 import { multiForm, defaultElement } from "@/components/multiform/form";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -36,6 +36,11 @@ export default {
     MultiStepForm,
   },
   computed: {
+    ...mapGetters({
+      firstForm: "form/getFirstForm",
+      secondForm: "form/getSecondForm",
+      thirdForm: "form/getThirdForm",
+    }),
     isFirstForm() {
       return this.numStep === 1;
     },
@@ -46,27 +51,48 @@ export default {
       return this.numStep === 3;
     },
     formData() {
-      // if (this.isFirstForm && this.firstForm.length > 0) {
-      //   return this.firstForm;
-      // } else if (this.isSecondForm && this.secondForm.length > 0) {
-      //   return this.secondForm;
-      // } else if (this.isThirdForm && this.thirdForm.length > 0) {
-      //   return this.thirdForm;
-      // } else {
-      let rs = this.multiForm.filter((item) => item.num === this.numStep);
+      const rs = this.multiForm.filter((item) => item.num === this.numStep);
       return rs[0]?.data;
-      // }
+    },
+  },
+  mounted() {
+    if (this.firstForm.length > 0) {
+      this.multiForm.map((item) => {
+        if (item.num === this.numStep) {
+          item.data = JSON.parse(JSON.stringify(this.firstForm));
+        }
+      });
+    }
+  },
+  watch: {
+    numStep: {
+      handler(val) {
+        if (this.isFirstForm && this.firstForm.length > 0) {
+          this.multiForm.map((item) => {
+            if (item.num === val) {
+              item.data = JSON.parse(JSON.stringify(this.firstForm));
+            }
+          });
+        } else if (this.isSecondForm && this.secondForm.length > 0) {
+          this.multiForm.map((item) => {
+            if (item.num === val) {
+              item.data = JSON.parse(JSON.stringify(this.secondForm));
+            }
+          });
+        } else if (this.isThirdForm && this.thirdForm.length > 0) {
+          this.multiForm.map((item) => {
+            if (item.num === val) {
+              item.data = JSON.parse(JSON.stringify(this.thirdForm));
+            }
+          });
+        }
+      },
     },
   },
   methods: {
     ...mapActions({
-      firstForm: "form/getFirstForm",
-      secondForm: "form/getSecondForm",
-      thirdForm: "form/getThirdForm",
-
       saveForm: "form/saveForm",
     }),
-
     onUploadFile(files) {
       this.formData.map((item) => {
         if (item.key === "ava-dropzone") {
@@ -126,7 +152,10 @@ export default {
       this.formData.splice(index, 1);
     },
     nextStep() {
-      this.saveForm({ formData: this.formData, numForm: this.numStep });
+      this.saveForm({
+        formData: this.formData,
+        numForm: this.numStep,
+      });
       if (this.numStep === this.multiForm.length) {
         this.$router.push({ path: "/" });
       }

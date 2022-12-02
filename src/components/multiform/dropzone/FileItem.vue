@@ -45,17 +45,17 @@ export default {
       return Math.ceil(this.size / NUM_BYTE);
     },
     showDocIcon() {
-      return this.name.includes(".docx") || this.name.includes(".doc");
+      return this.name?.includes(".docx") || this.name?.includes(".doc");
     },
     showExcelIcon() {
       return (
-        this.name.includes(".pub") ||
-        this.name.includes(".xlsx") ||
-        this.name.includes(".xls")
+        this.name?.includes(".pub") ||
+        this.name?.includes(".xlsx") ||
+        this.name?.includes(".xls")
       );
     },
     showPdfIcon() {
-      return this.name.includes(".pdf");
+      return this.name?.includes(".pdf");
     },
   },
   methods: {

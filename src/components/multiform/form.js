@@ -100,8 +100,6 @@ const firstForm = [
     typeFile: TYPE_FILE_IMAGE,
   },
 ];
-const secondForm = [JSON.parse(JSON.stringify(defaultElement))];
-
 const thirdForm = [
   {
     label: "Lý do muốn ứng tuyển vào công ty",
@@ -120,9 +118,16 @@ const thirdForm = [
     error: "",
   },
 ];
+const secondForm = [JSON.parse(JSON.stringify(defaultElement))];
 
 const multiForm = [
-  { id: 1, num: 1, data: firstForm, name: "Thông tin cá nhân", isDone: false },
+  {
+    id: 1,
+    num: 1,
+    data: firstForm,
+    name: "Thông tin cá nhân",
+    isDone: false,
+  },
   {
     id: 2,
     num: 2,
@@ -130,6 +135,12 @@ const multiForm = [
     name: "Kinh nghiệm làm việc",
     isDone: false,
   },
-  { id: 3, num: 3, data: thirdForm, name: "Xác nhận thông tin", isDone: false },
+  {
+    id: 3,
+    num: 3,
+    data: thirdForm,
+    name: "Xác nhận thông tin",
+    isDone: false,
+  },
 ];
-export { multiForm, firstForm, secondForm, thirdForm, defaultElement };
+export { multiForm, defaultElement };
