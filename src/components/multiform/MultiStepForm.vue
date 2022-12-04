@@ -10,7 +10,7 @@
         @onRemoveFile="onRemoveFile"
         @onAddChosen="onAddChosen"
         @onRemoveChosen="onRemoveChosen"
-        @removeCompany="removeCompany"
+        @removeCompany="() => removeCompany(index)"
         @input="(value) => onChangeValue(value, index)"
         @onChangeChildren="
           (value, indexChild) => onChangeChildren(value, indexChild, index)
@@ -79,36 +79,42 @@ export default {
     formData: {
       handler(val) {
         if (this.isFirstForm) {
-          val?.map((item) => {
-            if (item.key === "fullName" || item.key === "dob") {
-              if (item.value === "") {
+          for (let i = 0; i < val.length; i++) {
+            if (val[i].key === "fullName" || val[i].key === "dob") {
+              if (val[i].value === "") {
                 this.isComplete = false;
+                break;
               } else this.isComplete = true;
             }
-          });
+          }
         } else if (this.isSecondForm) {
-          val?.map((item) => {
-            item.childrens.map((child) => {
-              if (child.key === "company" || child.key === "position") {
-                if (child.value === "") {
+          for (let i = 0; i < val.length; i++) {
+            for (let j = 0; j < val[i].childrens.length; j++) {
+              if (
+                val[i].childrens[j].key === "company" ||
+                val[i].childrens[j].key === "position" ||
+                val[i].childrens[j].key === "time"
+              ) {
+                if (
+                  val[i].childrens[j].value === "" ||
+                  val[i].childrens[j].value.from === "" ||
+                  val[i].childrens[j].value.to === ""
+                ) {
                   this.isComplete = false;
+                  break;
                 } else this.isComplete = true;
               }
-              if (child.key === "time") {
-                if (child.value.from === "" || child.value.to === "") {
-                  this.isComplete = false;
-                } else this.isComplete = true;
-              }
-            });
-          });
+            }
+          }
         } else if (this.isThirdForm) {
-          val?.map((item) => {
-            if (item.key === "reason" || item.key === "salary") {
-              if (item.value === "") {
+          for (let i = 0; i < val.length; i++) {
+            if (val[i].key === "reason" || val[i].key === "salary") {
+              if (val[i].value === "") {
                 this.isComplete = false;
+                break;
               } else this.isComplete = true;
             }
-          });
+          }
         }
       },
       deep: true,

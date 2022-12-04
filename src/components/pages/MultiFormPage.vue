@@ -56,23 +56,36 @@ export default {
     },
   },
   mounted() {
-    if (this.firstForm.length > 0) {
-      this.multiForm.map((item) => {
-        if (item.num === this.numStep) {
-          item.data = JSON.parse(JSON.stringify(this.firstForm));
-        }
-      });
+    let fileValue;
+    if (this.isFirstForm && this.firstForm.length > 0) {
+      this.mutationForm(
+        this.multiForm,
+        this.firstForm,
+        fileValue,
+        this.numStep
+      );
+      // fileValue = this.firstForm.filter(
+      //   (item) => item.key === "ava-dropzone"
+      // )[0].value;
+
+      // this.multiForm.map((item) => {
+      //   if (item.num === this.numStep) {
+      //     item.data = JSON.parse(JSON.stringify(this.firstForm));
+      //     item.data.map((child) => {
+      //       if (child.key === "ava-dropzone") {
+      //         child.value = [...fileValue];
+      //       }
+      //     });
+      //   }
+      // });
     }
   },
   watch: {
     numStep: {
       handler(val) {
+        let fileValue;
         if (this.isFirstForm && this.firstForm.length > 0) {
-          this.multiForm.map((item) => {
-            if (item.num === val) {
-              item.data = JSON.parse(JSON.stringify(this.firstForm));
-            }
-          });
+          this.mutationForm(this.multiForm, this.firstForm, fileValue, val);
         } else if (this.isSecondForm && this.secondForm.length > 0) {
           this.multiForm.map((item) => {
             if (item.num === val) {
@@ -93,6 +106,20 @@ export default {
     ...mapActions({
       saveForm: "form/saveForm",
     }),
+    mutationForm(multiForm, formData, fileValue, stepNum) {
+      fileValue = formData.filter((item) => item.key === "ava-dropzone")[0]
+        .value;
+      multiForm.map((item) => {
+        if (item.num === stepNum) {
+          item.data = JSON.parse(JSON.stringify(this.firstForm));
+          item.data.map((child) => {
+            if (child.key === "ava-dropzone") {
+              child.value = [...fileValue];
+            }
+          });
+        }
+      });
+    },
     onUploadFile(files) {
       this.formData.map((item) => {
         if (item.key === "ava-dropzone") {

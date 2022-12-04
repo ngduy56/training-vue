@@ -153,7 +153,7 @@ export default {
       this.$emit("onRemoveChosen", chosenItem);
     },
     removeCompany() {
-      this.$emit("removeCompany", this.index);
+      this.$emit("removeCompany");
     },
   },
 };
