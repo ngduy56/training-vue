@@ -29,6 +29,12 @@ export default {
   mounted() {
     let itemStep = document.querySelectorAll(".step-num");
     itemStep[0].classList.add("active");
+
+    this.multiForm.map((item) => {
+      if (item.isDone) {
+        itemStep[item.num - 1].classList.add("done");
+      }
+    });
   },
   methods: {
     changeForm(num, index) {

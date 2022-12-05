@@ -111,7 +111,7 @@ export default {
         .value;
       multiForm.map((item) => {
         if (item.num === stepNum) {
-          item.data = JSON.parse(JSON.stringify(this.firstForm));
+          item.data = JSON.parse(JSON.stringify(formData));
           item.data.map((child) => {
             if (child.key === "ava-dropzone") {
               child.value = [...fileValue];
@@ -193,6 +193,11 @@ export default {
         let index = this.multiForm.findIndex((item) => item.num === num + 1);
         itemStep[index]?.classList.remove("active");
         itemStep[index]?.classList.remove("done");
+        this.multiForm.map((item) => {
+          if (item.isDone) {
+            itemStep[index]?.classList.add("done");
+          }
+        });
         itemStep[index - 1]?.classList.add("active");
       }
       this.numStep = num;
@@ -205,8 +210,8 @@ export default {
       });
       let itemStep = document.querySelectorAll(".step-num");
       let index = this.multiForm.findIndex((item) => item.num === num);
-      itemStep[index]?.classList.add("done");
       itemStep[index]?.classList.remove("active");
+      itemStep[index]?.classList.add("done");
       itemStep[index + 1]?.classList.add("active");
     },
   },

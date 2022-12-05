@@ -3,8 +3,10 @@
     <InputLabel :label="label" :required="required" />
     <textarea v-model="valueLocal" @input="onChange"></textarea>
     <div class="validate-block">
-      <span>{{ length }}/1000</span>
-      <span v-if="error" class="error-vali">{{ error }}</span>
+      <span :class="{ 'error-length': showLengthError }"
+        >{{ length }}/{{ maxLength }}</span
+      >
+      <span v-if="showError" class="error-vali">{{ error }}</span>
     </div>
   </div>
 </template>
@@ -43,10 +45,16 @@ export default {
     value: {
       type: String,
     },
+    maxLength: {
+      type: Number,
+    },
   },
   computed: {
     showError() {
       return this.error.length > 0;
+    },
+    showLengthError() {
+      return this.length > this.maxLength;
     },
     length() {
       return this.valueLocal ? this.valueLocal.length : 0;
@@ -92,6 +100,9 @@ export default {
       margin-left: 10px;
       color: red;
       font-size: 14px;
+    }
+    .error-length {
+      color: red;
     }
   }
 }

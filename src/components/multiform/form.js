@@ -3,7 +3,6 @@ import {
   MAX_SIZE,
   TYPE_FILE_IMAGE,
 } from "@/constants/DropzoneConstants.js";
-
 import {
   CITY_LIST,
   COMPANY_LIST,
@@ -128,7 +127,6 @@ const thirdForm = [
   },
 ];
 const secondForm = [JSON.parse(JSON.stringify(defaultElement))];
-
 const multiForm = [
   {
     id: 1,

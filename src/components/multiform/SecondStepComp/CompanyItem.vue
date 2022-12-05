@@ -39,6 +39,7 @@
         :label="child.label"
         :required="child.required"
         :error="child.error"
+        :maxLength="child.maxLength"
         @input="(value) => onChangeChildren(value, indexChild)"
       />
     </div>

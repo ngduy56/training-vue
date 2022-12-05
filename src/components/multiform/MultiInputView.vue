@@ -40,6 +40,7 @@
       :label="item.label"
       :required="item.required"
       :error="item.error"
+      :maxLength="item.maxLength"
       @input="onChange"
     />
     <DropzoneComp

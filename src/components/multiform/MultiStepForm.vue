@@ -168,7 +168,7 @@ export default {
       } else if (this.isThirdForm) {
         this.isValid = validateThirdForm(this.formData);
       }
-      if (this.isValid) {
+      if (this.isValid && this.formData.length > 0) {
         this.$emit("nextStep", this.formData);
         this.$emit("changeForm", this.numStep + 1);
         this.$emit("doneStep", this.numStep);
