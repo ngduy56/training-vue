@@ -8,6 +8,9 @@ import {
   CITY_LIST,
   COMPANY_LIST,
   POSITION_LIST,
+  MAX_LENGTH,
+  MAX_LENGTH_AREA,
+  MAX_LENGTH_NUMBER,
 } from "@/constants/FormConstants";
 
 const defaultElement = {
@@ -29,6 +32,7 @@ const defaultElement = {
       value: "",
       key: "position",
       error: "",
+      maxLength: MAX_LENGTH,
     },
     {
       label: "Thời gian làm việc",
@@ -45,6 +49,7 @@ const defaultElement = {
       value: "",
       key: "about-work",
       error: "",
+      maxLength: MAX_LENGTH_AREA,
     },
   ],
 };
@@ -56,6 +61,7 @@ const firstForm = [
     value: "",
     key: "fullName",
     error: "",
+    maxLength: MAX_LENGTH,
   },
   {
     label: "Ngày sinh",
@@ -88,6 +94,7 @@ const firstForm = [
     value: "",
     key: "about-me",
     error: "",
+    maxLength: MAX_LENGTH_AREA,
   },
   {
     label: "Ảnh cá nhân",
@@ -108,6 +115,7 @@ const thirdForm = [
     value: "",
     key: "reason",
     error: "",
+    maxLength: MAX_LENGTH_AREA,
   },
   {
     label: "Mức lương mong muốn",
@@ -116,6 +124,7 @@ const thirdForm = [
     value: "",
     key: "salary",
     error: "",
+    maxLength: MAX_LENGTH_NUMBER,
   },
 ];
 const secondForm = [JSON.parse(JSON.stringify(defaultElement))];

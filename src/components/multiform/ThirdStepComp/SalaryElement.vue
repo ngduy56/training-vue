@@ -25,7 +25,7 @@ export default {
       type: Boolean,
     },
     value: {
-      type: String,
+      type: [String, Number],
     },
     error: {
       type: String,
@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     onChange() {
-      this.$emit("input", this.valueLocal);
+      this.$emit("input", Number(this.valueLocal));
     },
   },
 };

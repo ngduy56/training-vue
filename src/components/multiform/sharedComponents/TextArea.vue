@@ -4,7 +4,7 @@
     <textarea v-model="valueLocal" @input="onChange"></textarea>
     <div class="validate-block">
       <span>{{ length }}/1000</span>
-      <span v-if="showError" class="error-vali">{{ error }}</span>
+      <span v-if="error" class="error-vali">{{ error }}</span>
     </div>
   </div>
 </template>
@@ -46,7 +46,7 @@ export default {
   },
   computed: {
     showError() {
-      return this.error;
+      return this.error.length > 0;
     },
     length() {
       return this.valueLocal ? this.valueLocal.length : 0;
