@@ -3,7 +3,7 @@
     v-model="filterName"
     :optionList="filterOptions"
     :chosenList="chosenList"
-    @inputAdd="handleAddOption"
+    @inputAdd="handleAddChosen"
     @inputRemove="handleRemoveChosen"
   ></InputExam>
 </template>
@@ -22,11 +22,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      optionListCity: "city/getCities",
+      optionList: "city/getCities",
       chosenList: "city/getChosenList",
     }),
     filterOptions() {
-      return this.optionListCity.filter((option) => {
+      return this.optionList.filter((option) => {
         return option.name.match(this.filterName);
       });
     },
@@ -40,7 +40,7 @@ export default {
     getCityList() {
       this.getCities();
     },
-    handleAddOption(option) {
+    handleAddChosen(option) {
       this.addChosen(option);
     },
     handleRemoveChosen(chosenItem) {

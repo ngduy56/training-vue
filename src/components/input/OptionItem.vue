@@ -1,7 +1,7 @@
 <template>
   <div
     class="option-item"
-    :class="{ 'is-chosen': option.isChosen }"
+    :class="{ 'is-chosen': optionItem.isChosen }"
     @click="addOption"
   >
     {{ name }}
@@ -11,25 +11,25 @@
 <script>
 export default {
   props: {
-    option: {
+    optionItem: {
       type: Object,
       required: true,
     },
   },
   data() {
     return {
-      name: this.option.name,
+      name: this.optionItem.name,
     };
   },
   methods: {
     addOption() {
-      this.$emit("input", this.option);
+      this.$emit("input", this.optionItem);
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .option-item {
   font-family: "Noto Sans JP";
   display: flex;

@@ -30,7 +30,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .chosen-item {
   font-family: Noto Sans;
   font-size: 14px;
