@@ -16,12 +16,13 @@ export default {
 </template>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap");
 * {
   box-sizing: border-box;
 }
 
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: "Noto Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
