@@ -26,8 +26,8 @@
     <div class="navigate-block">
       <button
         class="btn-next"
-        :class="{ active: isComplete }"
-        :disabled="!isComplete"
+        :class="{ active: isEnable }"
+        :disabled="!isEnable"
         @click="nextStep"
       >
         {{ isLastForm ? "Hoàn thành" : "Tiếp" }}
@@ -134,6 +134,12 @@ export default {
     isLastForm() {
       return this.numStep === this.multiForm.length;
     },
+    formLength() {
+      return this.formData.length > 0;
+    },
+    isEnable() {
+      return this.formLength && this.isComplete;
+    },
   },
   methods: {
     onChangeValue(value, index) {
@@ -168,7 +174,7 @@ export default {
       } else if (this.isThirdForm) {
         this.isValid = validateThirdForm(this.formData);
       }
-      if (this.isValid && this.formData.length > 0) {
+      if (this.isValid) {
         this.$emit("nextStep", this.formData);
         this.$emit("changeForm", this.numStep + 1);
         this.$emit("doneStep", this.numStep);

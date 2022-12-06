@@ -30,9 +30,9 @@ export default {
     let itemStep = document.querySelectorAll(".step-num");
     itemStep[0].classList.add("active");
 
-    this.multiForm.map((item) => {
+    this.multiForm.map((item, index) => {
       if (item.isDone) {
-        itemStep[item.num - 1].classList.add("done");
+        itemStep[index].classList.add("done");
       }
     });
   },

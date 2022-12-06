@@ -50,6 +50,9 @@ export default {
     isThirdForm() {
       return this.numStep === 3;
     },
+    isLastForm() {
+      return this.numStep === this.multiForm.length;
+    },
     formData() {
       const rs = this.multiForm.filter((item) => item.num === this.numStep);
       return rs[0]?.data;
@@ -64,20 +67,6 @@ export default {
         fileValue,
         this.numStep
       );
-      // fileValue = this.firstForm.filter(
-      //   (item) => item.key === "ava-dropzone"
-      // )[0].value;
-
-      // this.multiForm.map((item) => {
-      //   if (item.num === this.numStep) {
-      //     item.data = JSON.parse(JSON.stringify(this.firstForm));
-      //     item.data.map((child) => {
-      //       if (child.key === "ava-dropzone") {
-      //         child.value = [...fileValue];
-      //       }
-      //     });
-      //   }
-      // });
     }
   },
   watch: {
@@ -124,14 +113,15 @@ export default {
       this.formData.map((item) => {
         if (item.key === "ava-dropzone") {
           item.value = item.value.concat(files);
+          // item.value = [...item.value, ...files];
         }
       });
     },
     onRemoveFile(lastModified) {
       this.formData.map((item) => {
         if (item.key === "ava-dropzone") {
-          const index = this.formData.findIndex(
-            (item) => item.lastModified === lastModified
+          const index = item.value.findIndex(
+            (child) => child.lastModified === lastModified
           );
           item.value.splice(index, 1);
         }
@@ -183,22 +173,22 @@ export default {
         formData: this.formData,
         numForm: this.numStep,
       });
-      if (this.numStep === this.multiForm.length) {
+      if (this.isLastForm) {
         this.$router.push({ path: "/" });
       }
     },
     changeForm(num) {
       if (num < this.numStep) {
         let itemStep = document.querySelectorAll(".step-num");
-        let index = this.multiForm.findIndex((item) => item.num === num + 1);
-        itemStep[index]?.classList.remove("active");
-        itemStep[index]?.classList.remove("done");
-        this.multiForm.map((item) => {
+        let index = this.multiForm.findIndex((item) => item.num === num);
+        itemStep[index + 1]?.classList.remove("active");
+        itemStep[index]?.classList.add("active");
+
+        this.multiForm.map((item, index) => {
           if (item.isDone) {
             itemStep[index]?.classList.add("done");
           }
         });
-        itemStep[index - 1]?.classList.add("active");
       }
       this.numStep = num;
     },
