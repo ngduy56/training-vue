@@ -13,5 +13,11 @@ export const TYPE_FILE =
     ".jpeg",
     ".jpg",
 ];
+export const TYPE_FILE_IMAGE = 
+[
+    ".png",
+    ".jpeg",
+    ".jpg",
+];
 export const NUM_BYTE = 1024;
 export const REGEX_FILE_EXTENSION = /\.[0-9a-z]+$/i;

@@ -20,7 +20,9 @@ export default {
 * {
   box-sizing: border-box;
 }
-
+body {
+  overflow-y: scroll;
+}
 #app {
   font-family: "Noto Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
