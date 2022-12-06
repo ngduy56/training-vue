@@ -1,10 +1,10 @@
 <template>
   <input
-    v-model="value"
-    @input="$emit('input', $event.target.value)"
-    @focus="$emit('focus')"
     class="input-search"
+    v-model="value"
     :placeholder="placeholder"
+    @input="$emit('input', $event.target.value)"
+    @focus="$emit('focusInput')"
   />
 </template>
 

@@ -34,9 +34,9 @@
 
 <script>
 import SearchIcon from "../icons/SearchIcon.vue";
-import ChosenItem from "../input/ChosenItem.vue";
-import OptionItem from "../input/OptionItem.vue";
-import SearchInput from "../input/SearchInput.vue";
+import ChosenItem from "./ChosenItem.vue";
+import OptionItem from "./OptionItem.vue";
+import SearchInput from "./SearchInput.vue";
 export default {
   name: "InputExam",
   data() {
@@ -60,11 +60,6 @@ export default {
     ChosenItem,
     OptionItem,
     SearchInput,
-  },
-  watch: {
-    chosenList() {
-      this.isFocused = true;
-    },
   },
   methods: {
     addChosen(optionItem) {
