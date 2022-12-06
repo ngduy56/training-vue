@@ -186,7 +186,7 @@ export default {
 
         this.multiForm.map((item, index) => {
           if (item.isDone) {
-            itemStep[index]?.classList.add("done");
+            itemStep[index].classList.add("done");
           }
         });
       }

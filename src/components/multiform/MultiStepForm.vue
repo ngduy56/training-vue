@@ -45,7 +45,7 @@
 
 <script>
 import AddIcon from "@/components/icons/AddIcon.vue";
-import MultiInputView from "./MultiInputView.vue";
+import MultiInputView from "@/components/multiform/MultiInputView.vue";
 import { multiForm } from "@/components/multiform/form";
 
 import {

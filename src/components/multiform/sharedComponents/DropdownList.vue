@@ -1,6 +1,6 @@
 <template>
-  <div class="drop-down">
-    <InputLabel :label="label" :required="required" />
+  <div class="dropdown">
+    <InputLabel v-if="label" :label="label" :required="required" />
     <select class="select" v-model="valueLocal" @change="onChange">
       <option v-for="item in list" :key="item.value" :value="item.value">
         {{ item.name }}
@@ -56,7 +56,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.drop-down {
+.dropdown {
   width: 100%;
   margin-bottom: 10px;
   position: relative;

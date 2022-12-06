@@ -16,15 +16,14 @@
       :error="item.error"
       @input="onChange"
     />
-    <div class="dropdown" v-if="item.view_type === INPUT_DROPDOWN">
-      <DropdownList
-        :value="valueLocal"
-        :label="item.label"
-        :list="item.cityList"
-        :required="item.required"
-        @input="onChange"
-      />
-    </div>
+    <DropdownList
+      v-if="item.view_type === INPUT_DROPDOWN"
+      :value="valueLocal"
+      :label="item.label"
+      :list="item.cityList"
+      :required="item.required"
+      @input="onChange"
+    />
     <PositionInput
       v-if="item.view_type === INPUT_DROPDOWN_SEARCH"
       :label="item.label"
@@ -74,11 +73,13 @@
 <script>
 import CompanyItem from "@/components/multiform/SecondStepComp/CompanyItem.vue";
 import SalaryInput from "@/components/multiform/ThirdStepComp/SalaryElement.vue";
-import InputField from "./sharedComponents/InputField.vue";
-import InputDate from "./sharedComponents/InputDate.vue";
-import DropdownList from "./sharedComponents/DropdownList.vue";
-import PositionInput from "./FirstStepComp/PositionInput.vue";
+import InputField from "@/components/multiform/sharedComponents/InputField.vue";
+import InputDate from "@/components/multiform/sharedComponents/InputDate.vue";
+import DropdownList from "@/components/multiform/sharedComponents/DropdownList.vue";
+import PositionInput from "@/components/multiform/FirstStepComp/PositionInput.vue";
 import AboutArea from "@/components/multiform/sharedComponents/TextArea.vue";
+
+// import DropzoneComp from "@/components/dropzone/DropzoneComp.vue";
 import DropzoneComp from "./dropzone/DropzoneComp.vue";
 import {
   INPUT_TEXT,
@@ -163,9 +164,8 @@ export default {
 <style lang="scss" scoped>
 .block {
   width: 100%;
-
-  .dropdown {
-    width: 528px;
-  }
+}
+::v-deep .dropdown {
+  width: 528px;
 }
 </style>

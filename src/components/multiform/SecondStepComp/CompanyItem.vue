@@ -6,15 +6,13 @@
       class="content"
     >
       <div class="selection-block" v-if="child.view_type === INPUT_DROPDOWN">
-        <div class="selection">
-          <DropdownList
-            :value="child.value"
-            :label="child.label"
-            :error="child.error"
-            :list="item.companyList"
-            @input="(value) => onChangeChildren(value, indexChild)"
-          />
-        </div>
+        <DropdownList
+          :value="child.value"
+          :label="child.label"
+          :error="child.error"
+          :list="item.companyList"
+          @input="(value) => onChangeChildren(value, indexChild)"
+        />
         <TrashIcon @click.native="removeCompany" />
       </div>
       <InputField
@@ -111,12 +109,9 @@ export default {
     align-items: center;
     height: 60px;
     border-radius: 4px;
-    padding: 10px 18px 10px 16px;
+    padding: 10px 14px 10px 16px;
     margin-bottom: 24px;
 
-    .selection {
-      width: 94%;
-    }
     select {
       border-radius: 4px;
       width: 100%;
@@ -131,5 +126,9 @@ export default {
   .content {
     width: 100%;
   }
+}
+::v-deep .dropdown {
+  margin: 0;
+  width: 95% !important;
 }
 </style>

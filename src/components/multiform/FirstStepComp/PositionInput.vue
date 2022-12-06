@@ -14,6 +14,7 @@
 <script>
 import InputLabel from "@/components/multiform/sharedComponents/InputLabel.vue";
 import InputExam from "@/components/multiform/input/InputExam.vue";
+// import InputExam from "@/components/input/InputExam.vue";
 export default {
   data() {
     return {
@@ -72,4 +73,11 @@ export default {
   line-height: 20px;
   color: #666666;
 }
+// ::v-deep .main {
+//   width: 528px;
+//   margin: 0;
+// }
+// ::v-deep .search-block {
+//   min-height: 40px !important;
+// }
 </style>
