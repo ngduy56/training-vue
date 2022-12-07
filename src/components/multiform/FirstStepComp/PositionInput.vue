@@ -13,8 +13,7 @@
 </template>
 <script>
 import InputLabel from "@/components/multiform/sharedComponents/InputLabel.vue";
-import InputExam from "@/components/multiform/input/InputExam.vue";
-// import InputExam from "@/components/input/InputExam.vue";
+import InputExam from "@/components/input/InputExam.vue";
 export default {
   data() {
     return {
@@ -73,11 +72,28 @@ export default {
   line-height: 20px;
   color: #666666;
 }
-// ::v-deep .main {
-//   width: 528px;
-//   margin: 0;
-// }
-// ::v-deep .search-block {
-//   min-height: 40px !important;
-// }
+::v-deep {
+  .main {
+    width: 528px;
+    margin: 0;
+  }
+  .search-block {
+    min-height: 40px !important;
+    background-color: #ffffff;
+  }
+  .option-block {
+    width: 100%;
+    max-width: none;
+    background-color: #ffffff;
+  }
+  .chosen-list {
+    padding: 3px 0 4px 3px;
+  }
+  .chosen-item {
+    height: 28px;
+  }
+  .input-search {
+    padding: 6px 10px 6px 0;
+  }
+}
 </style>

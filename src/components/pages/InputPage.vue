@@ -3,8 +3,8 @@
     v-model="filterName"
     :optionList="filterOptions"
     :chosenList="chosenList"
-    @inputAdd="handleAddOption"
-    @inputRemove="handleRemoveChosen"
+    @onAdd="handleAddOption"
+    @onRemove="handleRemoveChosen"
   ></InputExam>
 </template>
 

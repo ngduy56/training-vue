@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import DeleteIcon from "../icons/DeleteIcon.vue";
+import DeleteIcon from "@/components/icons/DeleteIcon.vue";
 export default {
   name: "ChosenItem",
   props: {
@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     removeChosen() {
-      this.$emit("input", this.chosenItem);
+      this.$emit("onRemove", this.chosenItem);
     },
   },
 };
@@ -32,7 +32,6 @@ export default {
 
 <style>
 .chosen-item {
-  font-family: Noto Sans;
   font-size: 14px;
   height: 32px;
   min-width: 83px;

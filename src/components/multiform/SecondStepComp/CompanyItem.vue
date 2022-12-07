@@ -48,7 +48,7 @@
 import InputField from "@/components/multiform/sharedComponents/InputField.vue";
 import TrashIcon from "@/components/icons/TrashIcon.vue";
 import TimeWorking from "./TimeWorking.vue";
-import DropdownList from "../sharedComponents/DropdownList.vue";
+import DropdownList from "@/components/multiform/sharedComponents/DropdownList.vue";
 import WorkArea from "@/components/multiform/sharedComponents/TextArea.vue";
 import {
   INPUT_TEXT,

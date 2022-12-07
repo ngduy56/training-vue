@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <InputLabel v-if="label" :label="label" :required="required" />
     <DropzoneElement
       @onUpload="uploadFile"
       :maxSize="maxSize"
@@ -7,17 +8,21 @@
       :typeFile="typeFile"
     />
     <FileElement :fileList="fileList" @onRemove="removeFile" />
-    <button v-if="showUploadButton" class="btn-submit" @click="submitUpload">
-      Upload
-    </button>
   </div>
 </template>
 
 <script>
+import InputLabel from "@/components/multiform/sharedComponents/InputLabel.vue";
 import DropzoneElement from "./DropzoneElement.vue";
 import FileElement from "./FileElement.vue";
 export default {
   props: {
+    label: {
+      type: [String, undefined],
+    },
+    required: {
+      type: Boolean,
+    },
     fileList: {
       type: Array,
       required: true,
@@ -35,14 +40,10 @@ export default {
       required: true,
     },
   },
-  computed: {
-    showUploadButton() {
-      return this.fileList.length > 0;
-    },
-  },
   components: {
     DropzoneElement,
     FileElement,
+    InputLabel,
   },
   methods: {
     uploadFile(files) {
@@ -50,9 +51,6 @@ export default {
     },
     removeFile(lastModified) {
       this.$emit("onRemove", lastModified);
-    },
-    submitUpload(files) {
-      this.$emit("onSubmit", files);
     },
   },
 };
@@ -62,7 +60,7 @@ export default {
 .main {
   width: 842px;
   max-width: 1000px;
-  margin: 2rem auto;
+  margin: 1rem auto;
 }
 .btn-submit {
   margin: 10px 0;

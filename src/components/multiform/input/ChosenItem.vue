@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import DeleteIcon from "../../icons/DeleteIcon.vue";
+import DeleteIcon from "@/components/icons/DeleteIcon.vue";
 export default {
   name: "ChosenItem",
   props: {

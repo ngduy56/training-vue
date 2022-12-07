@@ -78,9 +78,8 @@ import InputDate from "@/components/multiform/sharedComponents/InputDate.vue";
 import DropdownList from "@/components/multiform/sharedComponents/DropdownList.vue";
 import PositionInput from "@/components/multiform/FirstStepComp/PositionInput.vue";
 import AboutArea from "@/components/multiform/sharedComponents/TextArea.vue";
+import DropzoneComp from "@/components/dropzone/DropzoneComp.vue";
 
-// import DropzoneComp from "@/components/dropzone/DropzoneComp.vue";
-import DropzoneComp from "./dropzone/DropzoneComp.vue";
 import {
   INPUT_TEXT,
   INPUT_SALARY,
@@ -165,7 +164,9 @@ export default {
 .block {
   width: 100%;
 }
-::v-deep .dropdown {
-  width: 528px;
+::v-deep {
+  .dropdown {
+    width: 528px;
+  }
 }
 </style>

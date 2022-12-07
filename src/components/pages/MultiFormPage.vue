@@ -54,8 +54,8 @@ export default {
       return this.numStep === this.multiForm.length;
     },
     formData() {
-      const rs = this.multiForm.filter((item) => item.num === this.numStep);
-      return rs[0]?.data;
+      const rs = this.multiForm.filter((item) => item.num === this.numStep)[0];
+      return rs.data;
     },
   },
   mounted() {
@@ -130,22 +130,27 @@ export default {
     onAddChosen(option) {
       this.formData.map((item) => {
         if (item.key === "position") {
-          item.value.push(option);
+          let currentValue = item.value.filter(
+            (child) => child.codename === option.codename
+          );
+          if (currentValue.length <= 0) {
+            item.value.push(option);
 
-          item.optionList.map((pos) => {
-            if (pos.codename === option.codename) {
-              pos.isChosen = true;
-            }
-          });
+            item.optionList.map((pos) => {
+              if (pos.codename === option.codename) {
+                pos.isChosen = true;
+              }
+            });
+          }
         }
       });
     },
     onRemoveChosen(chosenItem) {
       this.formData.map((item) => {
         if (item.key === "position") {
-          let index = item.value.findIndex((i) => {
-            i.codename === chosenItem.codename;
-          });
+          const index = item.value.findIndex(
+            (child) => child.codename === chosenItem.codename
+          );
           item.value.splice(index, 1);
 
           item.optionList.map((pos) => {

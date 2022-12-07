@@ -1,38 +1,39 @@
 <template>
-  <div class="main" @click="show" v-click-outside="hide">
-    <div class="search-block" :class="{ 'is-focused': isFocused }">
-      <SearchIcon />
-      <div class="chosen-list">
-        <ChosenItem
-          v-click-outside="show"
-          v-for="chosenItem in chosenList"
-          :key="chosenItem.code"
-          :chosenItem="chosenItem"
-          @input="removeChosen"
-        />
-        <SearchInput
-          v-model="value"
-          :placeholder="'Nhập tên để tìm kiếm'"
-          @input="changeFilterName"
-          @focusInput="show"
-        />
+  <div class="main">
+    <div @click="showDropdown" v-click-outside="hideDropdown">
+      <div class="search-block" :class="{ 'is-focused': isFocused }">
+        <SearchIcon />
+        <div class="chosen-list">
+          <ChosenItem
+            v-for="chosenItem in chosenList"
+            :key="chosenItem.code"
+            :chosenItem="chosenItem"
+            @onRemove="removeChosen"
+          />
+          <SearchInput
+            v-model="value"
+            :placeholder="'Nhập tên để tìm kiếm'"
+            @input="changeFilterName"
+            @focusInput="showDropdown"
+          />
+        </div>
       </div>
-    </div>
-    <div class="option-block">
-      <div v-if="isFocused" class="option-list">
-        <OptionItem
-          v-for="option in optionList"
-          :key="option.code"
-          :option="option"
-          @input="addOption"
-        />
+      <div class="option-block">
+        <div v-if="isFocused" class="option-list">
+          <OptionItem
+            v-for="optionItem in optionList"
+            :key="optionItem.code"
+            :optionItem="optionItem"
+            @onAdd="addChosen"
+          />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import SearchIcon from "../icons/SearchIcon.vue";
+import SearchIcon from "@/components/icons/SearchIcon.vue";
 import ChosenItem from "./ChosenItem.vue";
 import OptionItem from "./OptionItem.vue";
 import SearchInput from "./SearchInput.vue";
@@ -61,19 +62,19 @@ export default {
     SearchInput,
   },
   methods: {
-    addOption(option) {
-      this.$emit("inputAdd", option);
+    addChosen(optionItem) {
+      this.$emit("onAdd", optionItem);
     },
     removeChosen(chosenItem) {
-      this.$emit("inputRemove", chosenItem);
+      this.$emit("onRemove", chosenItem);
     },
     changeFilterName() {
       this.$emit("input", this.value);
     },
-    show() {
+    showDropdown() {
       this.isFocused = true;
     },
-    hide() {
+    hideDropdown() {
       this.isFocused = false;
     },
   },
@@ -99,8 +100,6 @@ export default {
   border: 1px solid #dbdbdb;
   background-color: #e5f9ff33;
   border-radius: 4px;
-  font-family: Noto Sans;
-  font-style: normal;
 }
 .is-focused {
   border-color: #1991d2;

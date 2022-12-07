@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import SearchIcon from "../../icons/SearchIcon.vue";
+import SearchIcon from "@/components/icons/SearchIcon.vue";
 import ChosenItem from "./ChosenItem.vue";
 import OptionItem from "./OptionItem.vue";
 import SearchInput from "./SearchInput.vue";
