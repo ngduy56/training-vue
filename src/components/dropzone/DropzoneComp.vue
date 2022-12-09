@@ -2,12 +2,12 @@
   <div class="main">
     <InputLabel v-if="label" :label="label" :required="required" />
     <DropzoneElement
-      @onUpload="uploadFile"
+      @onUpload="onUpload"
       :maxSize="maxSize"
       :maxNumber="maxNumber"
       :typeFile="typeFile"
     />
-    <FileElement :fileList="fileList" @onRemove="removeFile" />
+    <FileElement :fileList="fileList" @onRemove="onRemove" />
   </div>
 </template>
 
@@ -46,10 +46,10 @@ export default {
     InputLabel,
   },
   methods: {
-    uploadFile(files) {
+    onUpload(files) {
       this.$emit("onUpload", files);
     },
-    removeFile(lastModified) {
+    onRemove(lastModified) {
       this.$emit("onRemove", lastModified);
     },
   },

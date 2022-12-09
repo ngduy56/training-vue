@@ -2,7 +2,7 @@
   <div
     class="option-item"
     :class="{ 'is-chosen': optionItem.isChosen }"
-    @click="addOption"
+    @click="addChosen"
   >
     {{ name }}
   </div>
@@ -22,8 +22,8 @@ export default {
     };
   },
   methods: {
-    addOption() {
-      this.$emit("onAdd", this.optionItem);
+    addChosen() {
+      this.$emit("addChosen", this.optionItem);
     },
   },
 };

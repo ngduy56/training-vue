@@ -1,10 +1,10 @@
 <template>
   <input
     class="input-search"
-    v-model="value"
+    v-model="filterName"
     :placeholder="placeholder"
-    @input="$emit('input', $event.target.value)"
-    @focus="$emit('focusInput')"
+    @input="onChange"
+    @focus="onFocus"
   />
 </template>
 
@@ -12,12 +12,20 @@
 export default {
   data() {
     return {
-      value: "",
+      filterName: "",
     };
   },
   props: {
     placeholder: {
       type: String,
+    },
+  },
+  methods: {
+    onChange() {
+      this.$emit("input", this.filterName);
+    },
+    onFocus() {
+      this.$emit("focusInput");
     },
   },
 };

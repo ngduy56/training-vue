@@ -4,14 +4,14 @@
     :maxNumber="maxNumber"
     :maxSize="maxSize"
     :typeFile="typeFile"
-    @onRemove="handleRemoveFile"
-    @onUpload="handleUploadFile"
-    @onSubmit="handleSubmitFile"
+    @onUpload="onUploadFile"
+    @onRemove="onRemoveFile"
+    @onSubmit="onSubmitFile"
   />
 </template>
 
 <script>
-import DropzoneComp from "../dropzone/DropzoneComp.vue";
+import DropzoneComp from "@/components/dropzone/DropzoneComp.vue";
 import { mapActions, mapGetters } from "vuex";
 import {
   MAX_SIZE,
@@ -39,13 +39,13 @@ export default {
       removeFile: "file/removeFile",
       submitFile: "file/submitFile",
     }),
-    handleUploadFile(files) {
+    onUploadFile(files) {
       this.uploadFile(files);
     },
-    handleRemoveFile(lastModified) {
+    onRemoveFile(lastModified) {
       this.removeFile(lastModified);
     },
-    handleSubmitFile() {
+    onSubmitFile() {
       this.submitFile();
     },
   },

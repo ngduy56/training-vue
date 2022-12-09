@@ -2,7 +2,7 @@
   <div>
     <div
       class="drag-block"
-      :class="{ 'in-valid': inValid }"
+      :class="{ 'in-valid': !isValid }"
       @dragover.prevent
       @drop.prevent="uploadFile"
       @click="selectFile"
@@ -63,7 +63,7 @@ export default {
         size: "",
         type: "",
       },
-      inValid: false,
+      isValid: true,
     };
   },
   methods: {
@@ -78,7 +78,7 @@ export default {
       };
       let files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
-      this.inValid = Validate(
+      this.isValid = Validate(
         files,
         this.typeFile,
         this.errors,
@@ -86,7 +86,7 @@ export default {
         this.maxSize
       );
       let newFileList = Array.from(files);
-      if (!this.inValid) {
+      if (this.isValid) {
         this.$emit("onUpload", newFileList);
       }
     },

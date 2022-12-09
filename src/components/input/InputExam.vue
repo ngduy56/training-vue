@@ -8,10 +8,9 @@
             v-for="chosenItem in chosenList"
             :key="chosenItem.code"
             :chosenItem="chosenItem"
-            @onRemove="removeChosen"
+            @removeChosen="removeChosen"
           />
           <SearchInput
-            v-model="value"
             :placeholder="'Nhập tên để tìm kiếm'"
             @input="changeFilterName"
             @focusInput="showDropdown"
@@ -24,7 +23,7 @@
             v-for="optionItem in optionList"
             :key="optionItem.code"
             :optionItem="optionItem"
-            @onAdd="addChosen"
+            @addChosen="addChosen"
           />
         </div>
       </div>
@@ -41,7 +40,6 @@ export default {
   name: "InputExam",
   data() {
     return {
-      value: "",
       isFocused: false,
     };
   },
@@ -63,13 +61,13 @@ export default {
   },
   methods: {
     addChosen(optionItem) {
-      this.$emit("onAdd", optionItem);
+      this.$emit("addChosen", optionItem);
     },
     removeChosen(chosenItem) {
-      this.$emit("onRemove", chosenItem);
+      this.$emit("removeChosen", chosenItem);
     },
-    changeFilterName() {
-      this.$emit("input", this.value);
+    changeFilterName(filterName) {
+      this.$emit("input", filterName);
     },
     showDropdown() {
       this.isFocused = true;

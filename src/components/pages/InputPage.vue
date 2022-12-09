@@ -1,16 +1,16 @@
 <template>
   <InputExam
-    v-model="filterName"
     :optionList="filterOptions"
     :chosenList="chosenList"
-    @onAdd="handleAddOption"
-    @onRemove="handleRemoveChosen"
-  ></InputExam>
+    @input="changeFilterName"
+    @addChosen="handleAddChosen"
+    @removeChosen="handleRemoveChosen"
+  />
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import InputExam from "../input/InputExam.vue";
+import InputExam from "@/components/input/InputExam.vue";
 export default {
   data() {
     return {
@@ -40,7 +40,10 @@ export default {
     getCityList() {
       this.getCities();
     },
-    handleAddOption(option) {
+    changeFilterName(filterName) {
+      this.filterName = filterName;
+    },
+    handleAddChosen(option) {
       this.addChosen(option);
     },
     handleRemoveChosen(chosenItem) {

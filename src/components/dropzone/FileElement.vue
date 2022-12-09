@@ -16,7 +16,7 @@
 
 <script>
 import FileItem from "./FileItem.vue";
-import NextIcon from "../icons/NextIcon.vue";
+import NextIcon from "@/components/icons/NextIcon.vue";
 export default {
   props: {
     fileList: {

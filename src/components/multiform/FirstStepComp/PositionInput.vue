@@ -3,11 +3,11 @@
     <InputLabel :label="label" :required="required" />
     <span class="note">Có thể chọn nhiều vị trí mà bạn muốn làm việc</span>
     <InputExam
-      v-model="filterName"
       :optionList="filterOptions"
       :chosenList="chosenList"
-      @onAdd="onAddChosen"
-      @onRemove="onRemoveChosen"
+      @input="changeFilterName"
+      @addChosen="onAddChosen"
+      @removeChosen="onRemoveChosen"
     />
   </div>
 </template>
@@ -48,14 +48,14 @@ export default {
     },
   },
   methods: {
+    changeFilterName(filterName) {
+      this.filterName = filterName;
+    },
     onAddChosen(option) {
       this.$emit("onAddChosen", option);
     },
     onRemoveChosen(chosenItem) {
       this.$emit("onRemoveChosen", chosenItem);
-    },
-    changeFilterName() {
-      this.$emit("input", this.value);
     },
   },
 };

@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     removeChosen() {
-      this.$emit("onRemove", this.chosenItem);
+      this.$emit("removeChosen", this.chosenItem);
     },
   },
 };
