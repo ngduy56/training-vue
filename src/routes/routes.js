@@ -1,7 +1,8 @@
-import Homepage from "../components/pages/Homepage.vue";
-import InputPage from "../components/pages/InputPage.vue";
-import DropzonePage from "../components/pages/DropzonePage.vue";
-import MultiFormPage from "../components/pages/MultiFormPage.vue";
+import Homepage from "@/components/pages/Homepage.vue";
+import InputPage from "@/components/pages/InputPage.vue";
+import DropzonePage from "@/components/pages/DropzonePage.vue";
+import MultiFormPage from "@/components/pages/MultiFormPage.vue";
+import DatePickerPage from "@/components/pages/DatePickerPage.vue";
 
 // import FirstStepComp from "@/components/multiform/FirstStepComp/FirstStepComp.vue";
 // import SecondStepComp from "@/components/multiform/SecondStepComp/SecondStepComp.vue";
@@ -21,4 +22,5 @@ export const routes = [
     //   { path: "third-step", name: "thirdStep", component: ThirdStepComp },
     // ],
   },
+  { path: "/datepicker", name: "datepicker", component: DatePickerPage },
 ];

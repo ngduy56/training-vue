@@ -30,6 +30,15 @@
         >
           <a class="nav-link">Exam 3</a>
         </router-link>
+        <router-link
+          :to="{ name: 'datepicker' }"
+          class="nav-item"
+          active-class="active"
+          tag="li"
+          exact
+        >
+          <a class="nav-link">Exam 4</a>
+        </router-link>
       </ul>
     </div>
   </nav>
