@@ -1,7 +1,12 @@
 <template>
   <div class="input-date">
     <InputLabel :label="label" :required="required" />
-    <input type="date" v-model="valueLocal" @input="onChange" />
+    <input
+      :class="{ 'in-valid': error }"
+      type="date"
+      v-model="valueLocal"
+      @input="onChange"
+    />
     <span v-if="error" class="error-vali">{{ error }}</span>
   </div>
 </template>
@@ -68,7 +73,11 @@ export default {
     line-height: 40px;
     padding: 0 8px 0 6px;
   }
+  .in-valid {
+    border-color: red;
+  }
   .error-vali {
+    margin-top: 2px;
     color: red;
     font-size: 14px;
     width: 100%;

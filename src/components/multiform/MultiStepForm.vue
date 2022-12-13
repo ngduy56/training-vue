@@ -76,50 +76,77 @@ export default {
     AddIcon,
   },
   watch: {
-    formData: {
-      handler(val) {
-        if (this.isFirstForm) {
-          for (let i = 0; i < val.length; i++) {
-            if (val[i].key === "fullName" || val[i].key === "dob") {
-              if (val[i].value === "") {
-                this.isComplete = false;
-                break;
-              } else this.isComplete = true;
-            }
-          }
-        } else if (this.isSecondForm) {
-          for (let i = 0; i < val.length; i++) {
-            for (let j = 0; j < val[i].childrens.length; j++) {
-              if (
-                val[i].childrens[j].key === "company" ||
-                val[i].childrens[j].key === "position" ||
-                val[i].childrens[j].key === "time"
-              ) {
-                if (
-                  val[i].childrens[j].value === "" ||
-                  val[i].childrens[j].value.from === "" ||
-                  val[i].childrens[j].value.to === ""
-                ) {
-                  this.isComplete = false;
-                  break;
-                } else this.isComplete = true;
-              }
-            }
-          }
-        } else if (this.isThirdForm) {
-          for (let i = 0; i < val.length; i++) {
-            if (val[i].key === "reason" || val[i].key === "salary") {
-              if (val[i].value === "") {
-                this.isComplete = false;
-                break;
-              } else this.isComplete = true;
-            }
-          }
-        }
-      },
-      deep: true,
-      immediate: true,
-    },
+    // formData: {
+    //   handler(val) {
+    //     for (let i = 0; i < val.length; i++) {
+    //       if (
+    //         (val[i].key === "fullName" ||
+    //           val[i].key === "dob" ||
+    //           val[i].key === "reason" ||
+    //           val[i].key === "salary") &&
+    //         val[i].value === ""
+    //       ) {
+    //         this.isComplete = false;
+    //         break;
+    //       } else this.isComplete = true;
+    //       if (val[i].childrens && val[i].childrens.length > 0) {
+    //         for (let j = 0; j < val[i].childrens.length; j++) {
+    //           if (
+    //             (val[i].childrens[j].key === "company" ||
+    //               val[i].childrens[j].key === "position" ||
+    //               val[i].childrens[j].key === "time") &&
+    //             (val[i].childrens[j].value === "" ||
+    //               val[i].childrens[j].value.from === "" ||
+    //               val[i].childrens[j].value.to === "")
+    //           ) {
+    //             this.isComplete = false;
+    //             break;
+    //           } else this.isComplete = true;
+    //         }
+    //       }
+    //     }
+    //     // if (this.isFirstForm) {
+    //     //   for (let i = 0; i < val.length; i++) {
+    //     //     if (val[i].key === "fullName" || val[i].key === "dob") {
+    //     //       if (val[i].value === "") {
+    //     //         this.isComplete = false;
+    //     //         break;
+    //     //       } else this.isComplete = true;
+    //     //     }
+    //     //   }
+    //     // } else if (this.isSecondForm) {
+    //     //   for (let i = 0; i < val.length; i++) {
+    //     //     for (let j = 0; j < val[i].childrens.length; j++) {
+    //     //       if (
+    //     //         val[i].childrens[j].key === "company" ||
+    //     //         val[i].childrens[j].key === "position" ||
+    //     //         val[i].childrens[j].key === "time"
+    //     //       ) {
+    //     //         if (
+    //     //           val[i].childrens[j].value === "" ||
+    //     //           val[i].childrens[j].value.from === "" ||
+    //     //           val[i].childrens[j].value.to === ""
+    //     //         ) {
+    //     //           this.isComplete = false;
+    //     //           break;
+    //     //         } else this.isComplete = true;
+    //     //       }
+    //     //     }
+    //     //   }
+    //     // } else if (this.isThirdForm) {
+    //     //   for (let i = 0; i < val.length; i++) {
+    //     //     if (val[i].key === "reason" || val[i].key === "salary") {
+    //     //       if (val[i].value === "") {
+    //     //         this.isComplete = false;
+    //     //         break;
+    //     //       } else this.isComplete = true;
+    //     //     }
+    //     //   }
+    //     // }
+    //   },
+    //   deep: true,
+    //   immediate: true,
+    // },
   },
   computed: {
     isFirstForm() {
@@ -138,7 +165,7 @@ export default {
       return this.formData.length > 0;
     },
     isEnable() {
-      return this.formLength && this.isComplete;
+      return this.formLength;
     },
   },
   methods: {

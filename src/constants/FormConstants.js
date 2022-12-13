@@ -93,6 +93,7 @@ const INPUT_AREA = "input-area";
 const IMG_DROPZONE = "img-dropzone";
 const COMPANY_ITEM = "company-item";
 const NUMBER_REGEX = /^\d+$/;
+const ZERO_REGEX = /^0+/;
 const MAX_LENGTH = 100;
 const MAX_LENGTH_AREA = 1000;
 const MAX_LENGTH_NUMBER = 10;
@@ -111,6 +112,7 @@ export {
   IMG_DROPZONE,
   COMPANY_ITEM,
   NUMBER_REGEX,
+  ZERO_REGEX,
   MAX_LENGTH,
   MAX_LENGTH_AREA,
   MAX_LENGTH_NUMBER,

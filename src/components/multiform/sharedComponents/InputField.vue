@@ -1,7 +1,12 @@
 <template>
   <div class="input-field">
     <InputLabel :label="label" :required="required" />
-    <input type="text" v-model="valueLocal" @input="onChange" />
+    <input
+      :class="{ 'in-valid': error }"
+      type="text"
+      v-model="valueLocal"
+      @input="onChange"
+    />
     <span v-if="error" class="error-vali">{{ error }}</span>
   </div>
 </template>
@@ -18,12 +23,20 @@ export default {
     value: {
       handler(val) {
         this.valueLocal = val;
+        // if (val.length > this.maxLength) {
+        //   this.error = `${this.label} có độ dài tối đa là ${this.maxLength} ký tự`;
+        // } else if (val.length === 0) {
+        //   this.error = "";
+        // }
       },
       deep: true,
       immediate: true,
     },
   },
   props: {
+    // maxLength: {
+    //   type: Number,
+    // },
     label: {
       type: String,
       required: true,
@@ -43,6 +56,7 @@ export default {
   },
   methods: {
     onChange() {
+      console.log(this.maxLength);
       this.$emit("input", this.valueLocal);
     },
   },
@@ -63,6 +77,9 @@ export default {
     border-radius: 4px;
     padding: 0 10px;
     font-size: 14px;
+  }
+  .in-valid {
+    border-color: red;
   }
   .error-vali {
     color: red;

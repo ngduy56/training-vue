@@ -13,7 +13,7 @@ export const validateFirstForm = (firstStepForm) => {
     fullNameInput.error = `${fullNameInput.label} là bắt buộc`;
     isValid = false;
   } else if (fullName.length > fullNameInput.maxLength) {
-    fullNameInput.error = `${fullNameInput.label} tối đa là ${fullNameInput.maxLength} ký tự`;
+    fullNameInput.error = `${fullNameInput.label} có độ dài tối đa là ${fullNameInput.maxLength} ký tự`;
     isValid = false;
   }
 

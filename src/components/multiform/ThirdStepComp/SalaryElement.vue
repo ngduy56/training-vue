@@ -11,6 +11,7 @@
 
 <script>
 import InputLabel from "@/components/multiform/sharedComponents/InputLabel.vue";
+import { ZERO_REGEX } from "@/constants/FormConstants";
 export default {
   data() {
     return {
@@ -50,7 +51,8 @@ export default {
   },
   methods: {
     onChange() {
-      this.$emit("input", Number(this.valueLocal));
+      this.valueLocal = this.valueLocal.replace(ZERO_REGEX, "");
+      this.$emit("input", this.valueLocal);
     },
   },
 };

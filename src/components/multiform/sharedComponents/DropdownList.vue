@@ -1,7 +1,12 @@
 <template>
   <div class="dropdown">
     <InputLabel v-if="label" :label="label" :required="required" />
-    <select class="select" v-model="valueLocal" @change="onChange">
+    <select
+      class="select"
+      :class="{ 'in-valid': error }"
+      v-model="valueLocal"
+      @change="onChange"
+    >
       <option v-for="item in list" :key="item.value" :value="item.value">
         {{ item.name }}
       </option>
@@ -79,12 +84,15 @@ export default {
       color: #333333;
     }
   }
+  .in-valid {
+    border-color: red;
+  }
 }
 .error-vali {
   position: absolute;
   color: red;
   left: -15px;
-  top: 58px;
+  top: 50px;
   font-size: 14px;
 }
 </style>

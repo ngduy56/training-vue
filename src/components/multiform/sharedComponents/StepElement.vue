@@ -1,7 +1,7 @@
 <template>
   <div class="step-block">
     <h5 class="title">Đơn ứng tuyển</h5>
-    <div class="line"></div>
+    <div class="line" :style="{ width: lineWidth }"></div>
     <div class="step-list">
       <StepItem
         v-for="(item, index) in multiForm"
@@ -36,6 +36,11 @@ export default {
       }
     });
   },
+  computed: {
+    lineWidth() {
+      return (this.multiForm.length - 1) * 150 + "px";
+    },
+  },
   methods: {
     changeForm(num, index) {
       this.$emit("changeForm", num);
@@ -63,7 +68,6 @@ export default {
     letter-spacing: 0em;
   }
   .line {
-    width: 280px;
     height: 1px;
     position: absolute;
     top: 74px;

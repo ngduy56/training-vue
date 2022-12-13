@@ -95,7 +95,7 @@ export default {
 <style lang="scss" scoped>
 .company-item {
   width: 100%;
-  height: 520px;
+  height: 560px;
   padding: 24px;
   border-radius: 4px;
   border: 1px solid #dcdcdc;
@@ -110,7 +110,7 @@ export default {
     height: 60px;
     border-radius: 4px;
     padding: 10px 14px 10px 16px;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
 
     select {
       border-radius: 4px;

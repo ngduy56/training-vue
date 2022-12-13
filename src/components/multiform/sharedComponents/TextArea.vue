@@ -1,12 +1,16 @@
 <template>
   <div class="area-block">
     <InputLabel :label="label" :required="required" />
-    <textarea v-model="valueLocal" @input="onChange"></textarea>
+    <textarea
+      :class="{ 'in-valid': showLengthError }"
+      v-model="valueLocal"
+      @input="onChange"
+    ></textarea>
     <div class="validate-block">
       <span :class="{ 'error-length': showLengthError }"
         >{{ length }}/{{ maxLength }}</span
       >
-      <span v-if="showError" class="error-vali">{{ error }}</span>
+      <span v-if="error" class="error-vali">{{ error }}</span>
     </div>
   </div>
 </template>
@@ -86,6 +90,9 @@ export default {
     padding: 8px 10px;
     resize: none;
   }
+  .in-valid {
+    border-color: red;
+  }
   .validate-block {
     display: flex;
     justify-content: flex-start;
@@ -96,6 +103,7 @@ export default {
       line-height: 24px;
       color: #666666;
     }
+
     .error-vali {
       margin-left: 10px;
       color: red;
