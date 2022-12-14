@@ -22,16 +22,27 @@ export default {
   data() {
     return {
       valueLocal: "",
+      errorLocal: "",
     };
   },
   watch: {
     value: {
       handler(val) {
         this.valueLocal = val;
+        // if (this.showLengthError) {
+        //   this.errorLocal = `${this.label} tối đa là ${this.maxLength} ký tự`;
+        // } else this.errorLocal = "";
       },
       deep: true,
       immediate: true,
     },
+    // error: {
+    //   handler(val) {
+    //     this.errorLocal = val;
+    //   },
+    //   deep: true,
+    //   immediate: true,
+    // },
   },
   components: {
     InputLabel,

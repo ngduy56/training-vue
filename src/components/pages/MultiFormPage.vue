@@ -55,7 +55,7 @@ export default {
     },
     formData() {
       const rs = this.multiForm.filter((item) => item.num === this.numStep)[0];
-      return rs.data;
+      return rs?.data;
     },
   },
   mounted() {
@@ -89,13 +89,12 @@ export default {
       saveForm: "form/saveForm",
     }),
     mutationForm(multiForm, formData, stepNum) {
-      let fileValue = formData.filter((item) => item.key === "ava-dropzone")[0]
-        .value;
+      let fileValue = formData.filter((item) => item.key === "avatar")[0].value;
       multiForm.map((item) => {
         if (item.num === stepNum) {
           item.data = JSON.parse(JSON.stringify(formData));
           item.data.map((child) => {
-            if (child.key === "ava-dropzone") {
+            if (child.key === "avatar") {
               child.value = [...fileValue];
             }
           });
@@ -115,7 +114,7 @@ export default {
     },
     onUploadFile(files) {
       this.formData.map((item) => {
-        if (item.key === "ava-dropzone") {
+        if (item.key === "avatar") {
           let isValid = this.checkFileValue(files, item.value);
           if (isValid) {
             item.value = item.value.concat(files);
@@ -125,7 +124,7 @@ export default {
     },
     onRemoveFile(lastModified) {
       this.formData.map((item) => {
-        if (item.key === "ava-dropzone") {
+        if (item.key === "avatar") {
           const index = item.value.findIndex(
             (child) => child.lastModified === lastModified
           );
@@ -169,9 +168,11 @@ export default {
     },
     onChangeValue(value, index) {
       this.formData[index].value = value;
+      this.formData[index].error = "";
     },
     onChangeChildren(value, indexChild, index) {
       this.formData[index].childrens[indexChild].value = value;
+      this.formData[index].childrens[indexChild].error = "";
     },
     addCompany() {
       this.formData.push(JSON.parse(JSON.stringify(defaultElement)));
@@ -179,26 +180,34 @@ export default {
     removeCompany(index) {
       this.formData.splice(index, 1);
     },
+    filterValue(form) {
+      let obj = {};
+      let childValue = {};
+      form.forEach((item) => {
+        if (item.key) {
+          obj[item.key] = [];
+        }
+        item.data.forEach((child) => {
+          if (child.childrens && child.childrens.length > 0) {
+            child.childrens.forEach((i) => {
+              childValue[i.key] = i.value;
+            });
+            obj[item.key].push(childValue);
+          } else {
+            obj[child.key] = child.value;
+          }
+        });
+      });
+      return obj;
+    },
     nextStep() {
       this.saveForm({
         formData: this.formData,
         numForm: this.numStep,
       });
       if (this.isLastForm) {
-        console.log(this.firstForm, this.secondForm, this.thirdForm);
-        let obj = {};
-        this.firstForm.forEach((item) => {
-          obj[item.key] = item.value;
-        });
-        this.secondForm.forEach((item) => {
-          item.childrens.forEach((child) => {
-            obj[child.key] = child.value;
-          });
-        });
-        this.thirdForm.forEach((item) => {
-          obj[item.key] = item.value;
-        });
-        console.log(obj);
+        const data = this.filterValue(this.multiForm);
+        console.log(data);
         this.$router.push({ path: "/" });
       }
     },

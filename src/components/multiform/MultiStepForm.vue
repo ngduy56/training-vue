@@ -58,8 +58,9 @@ export default {
   data() {
     return {
       isValid: false,
-      isComplete: false,
       multiForm,
+      element: null,
+      position: { x: null, y: null },
     };
   },
   props: {
@@ -75,79 +76,7 @@ export default {
     MultiInputView,
     AddIcon,
   },
-  watch: {
-    // formData: {
-    //   handler(val) {
-    //     for (let i = 0; i < val.length; i++) {
-    //       if (
-    //         (val[i].key === "fullName" ||
-    //           val[i].key === "dob" ||
-    //           val[i].key === "reason" ||
-    //           val[i].key === "salary") &&
-    //         val[i].value === ""
-    //       ) {
-    //         this.isComplete = false;
-    //         break;
-    //       } else this.isComplete = true;
-    //       if (val[i].childrens && val[i].childrens.length > 0) {
-    //         for (let j = 0; j < val[i].childrens.length; j++) {
-    //           if (
-    //             (val[i].childrens[j].key === "company" ||
-    //               val[i].childrens[j].key === "position" ||
-    //               val[i].childrens[j].key === "time") &&
-    //             (val[i].childrens[j].value === "" ||
-    //               val[i].childrens[j].value.from === "" ||
-    //               val[i].childrens[j].value.to === "")
-    //           ) {
-    //             this.isComplete = false;
-    //             break;
-    //           } else this.isComplete = true;
-    //         }
-    //       }
-    //     }
-    //     // if (this.isFirstForm) {
-    //     //   for (let i = 0; i < val.length; i++) {
-    //     //     if (val[i].key === "fullName" || val[i].key === "dob") {
-    //     //       if (val[i].value === "") {
-    //     //         this.isComplete = false;
-    //     //         break;
-    //     //       } else this.isComplete = true;
-    //     //     }
-    //     //   }
-    //     // } else if (this.isSecondForm) {
-    //     //   for (let i = 0; i < val.length; i++) {
-    //     //     for (let j = 0; j < val[i].childrens.length; j++) {
-    //     //       if (
-    //     //         val[i].childrens[j].key === "company" ||
-    //     //         val[i].childrens[j].key === "position" ||
-    //     //         val[i].childrens[j].key === "time"
-    //     //       ) {
-    //     //         if (
-    //     //           val[i].childrens[j].value === "" ||
-    //     //           val[i].childrens[j].value.from === "" ||
-    //     //           val[i].childrens[j].value.to === ""
-    //     //         ) {
-    //     //           this.isComplete = false;
-    //     //           break;
-    //     //         } else this.isComplete = true;
-    //     //       }
-    //     //     }
-    //     //   }
-    //     // } else if (this.isThirdForm) {
-    //     //   for (let i = 0; i < val.length; i++) {
-    //     //     if (val[i].key === "reason" || val[i].key === "salary") {
-    //     //       if (val[i].value === "") {
-    //     //         this.isComplete = false;
-    //     //         break;
-    //     //       } else this.isComplete = true;
-    //     //     }
-    //     //   }
-    //     // }
-    //   },
-    //   deep: true,
-    //   immediate: true,
-    // },
-  },
+  watch: {},
   computed: {
     isFirstForm() {
       return this.numStep === 1;
@@ -194,8 +123,12 @@ export default {
       this.$emit("removeCompany", index);
     },
     nextStep() {
+      let element = null;
+
       if (this.isFirstForm) {
         this.isValid = validateFirstForm(this.formData);
+        element = document.querySelector(".error-vali");
+        console.log(element);
       } else if (this.isSecondForm) {
         this.isValid = validateSecondForm(this.formData);
       } else if (this.isThirdForm) {
@@ -205,6 +138,10 @@ export default {
         this.$emit("nextStep", this.formData);
         this.$emit("changeForm", this.numStep + 1);
         this.$emit("doneStep", this.numStep);
+      } else {
+        this.position.x = element?.getBoundingClientRect().x;
+        this.position.y = element?.getBoundingClientRect().y;
+        window.scrollTo(this.position.x, this.position.y);
       }
     },
     previousStep() {

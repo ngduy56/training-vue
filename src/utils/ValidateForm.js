@@ -30,7 +30,7 @@ export const validateFirstForm = (firstStepForm) => {
   let dateTime = new Date(dob).getTime();
   let currentDate = new Date().getTime();
   if (!dob) {
-    dateInput.error = "Vui lòng chọn ngày sinh";
+    dateInput.error = `${dateInput.label} là bắt buộc`;
     isValid = false;
   }
   if (dateTime > currentDate) {
@@ -71,7 +71,8 @@ export const validateSecondForm = (secondStepForm) => {
       }
       if (itemChild.key === "position") {
         if (itemChild.value === "") {
-          itemChild.error = "Vui lòng nhập vị trí làm việc";
+          itemChild.error = `${itemChild.label} là bắt buộc`;
+          // itemChild.error = "Vui lòng nhập vị trí làm việc";
           isValid = false;
         } else if (itemChild.value.length > itemChild.maxLength) {
           itemChild.error = `${itemChild.label} tối đa là ${itemChild.maxLength} ký tự`;
@@ -88,15 +89,15 @@ export const validateSecondForm = (secondStepForm) => {
           isValid = false;
         }
         if (endDate > currentDate || startDate > currentDate) {
-          itemChild.error = `${itemChild.label} không hợp lý`;
+          itemChild.error = `${itemChild.label} không hợp lệ`;
           isValid = false;
         }
         if (startDate > endDate) {
-          itemChild.error = `${itemChild.label} không hợp lý`;
+          itemChild.error = `${itemChild.label} không hợp lệ`;
           isValid = false;
         }
         if (startDate > nextStartDate || endDate > nextStartDate) {
-          itemChild.error = `${itemChild.label} không hợp lý`;
+          itemChild.error = `${itemChild.label} không hợp lệ`;
           isValid = false;
         }
       }
