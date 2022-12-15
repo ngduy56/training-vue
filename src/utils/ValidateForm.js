@@ -41,7 +41,6 @@ export const validateFirstForm = (firstStepForm) => {
 };
 export const validateSecondForm = (secondStepForm) => {
   let isValid = true;
-
   secondStepForm.map((item) => {
     item.childrens.map((itemChild) => {
       itemChild.error = "";
@@ -72,7 +71,6 @@ export const validateSecondForm = (secondStepForm) => {
       if (itemChild.key === "position") {
         if (itemChild.value === "") {
           itemChild.error = `${itemChild.label} là bắt buộc`;
-          // itemChild.error = "Vui lòng nhập vị trí làm việc";
           isValid = false;
         } else if (itemChild.value.length > itemChild.maxLength) {
           itemChild.error = `${itemChild.label} tối đa là ${itemChild.maxLength} ký tự`;
@@ -98,6 +96,7 @@ export const validateSecondForm = (secondStepForm) => {
         }
         if (startDate > nextStartDate || endDate > nextStartDate) {
           itemChild.error = `${itemChild.label} không hợp lệ`;
+          nextTimeElement.error = `${nextTimeElement.label} không hợp lệ`;
           isValid = false;
         }
       }
@@ -128,8 +127,11 @@ export const validateThirdForm = (thirdStepForm) => {
   }
   const salaryInput = thirdStepForm.filter((item) => item.key === "salary")[0];
   let salary = salaryInput.value;
-
-  if (!NUMBER_REGEX.test(salary)) {
+  if (salary?.toString().length === 0) {
+    salaryInput.error = `${salaryInput.label} là bắt buộc`;
+    isValid = false;
+  }
+  if (salary?.toString().length > 0 && !NUMBER_REGEX.test(salary)) {
     salaryInput.error = `${salaryInput.label} phải là số`;
     isValid = false;
   }

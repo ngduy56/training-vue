@@ -16,33 +16,19 @@ import InputLabel from "./InputLabel.vue";
 export default {
   data() {
     return {
-      // error: "",
       valueLocal: "",
     };
   },
-  // mounted() {
-  //   this.error = "";
-  // },
   watch: {
     value: {
       handler(val) {
         this.valueLocal = val;
-        // if (val.length > this.maxLength) {
-        //   this.error = `${this.label} có độ dài tối đa là ${this.maxLength} ký tự`;
-        // } else if (val.length === 0) {
-        //   this.error = `${this.label} là bắt buộc`;
-        // } else {
-        //   this.error = "";
-        // }
       },
       deep: true,
       immediate: true,
     },
   },
   props: {
-    // maxLength: {
-    //   type: Number,
-    // },
     label: {
       type: String,
       required: true,

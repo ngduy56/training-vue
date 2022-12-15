@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <StepElement @changeForm="changeForm" />
+    <StepElement :multiForm="multiForm" @changeForm="changeForm" />
     <MultiStepForm
       :formData="formData"
       :numStep="numStep"
@@ -55,7 +55,16 @@ export default {
     },
     formData() {
       const rs = this.multiForm.filter((item) => item.num === this.numStep)[0];
-      return rs?.data;
+      rs.data.map((item) => {
+        if (item.childrens && item.childrens.length > 0) {
+          item.childrens.forEach((child) => {
+            child.error = "";
+          });
+        } else {
+          item.error = "";
+        }
+      });
+      return rs.data;
     },
   },
   mounted() {
@@ -181,24 +190,25 @@ export default {
       this.formData.splice(index, 1);
     },
     filterValue(form) {
-      let obj = {};
+      let data = {};
       let childValue = {};
       form.forEach((item) => {
         if (item.key) {
-          obj[item.key] = [];
+          data[item.key] = [];
         }
         item.data.forEach((child) => {
+          childValue = {};
           if (child.childrens && child.childrens.length > 0) {
             child.childrens.forEach((i) => {
               childValue[i.key] = i.value;
             });
-            obj[item.key].push(childValue);
+            data[item.key].push(childValue);
           } else {
-            obj[child.key] = child.value;
+            data[child.key] = child.value;
           }
         });
       });
-      return obj;
+      return data;
     },
     nextStep() {
       this.saveForm({

@@ -59,8 +59,6 @@ export default {
     return {
       isValid: false,
       multiForm,
-      element: null,
-      position: { x: null, y: null },
     };
   },
   props: {
@@ -76,7 +74,6 @@ export default {
     MultiInputView,
     AddIcon,
   },
-  watch: {},
   computed: {
     isFirstForm() {
       return this.numStep === 1;
@@ -123,12 +120,8 @@ export default {
       this.$emit("removeCompany", index);
     },
     nextStep() {
-      let element = null;
-
       if (this.isFirstForm) {
         this.isValid = validateFirstForm(this.formData);
-        element = document.querySelector(".error-vali");
-        console.log(element);
       } else if (this.isSecondForm) {
         this.isValid = validateSecondForm(this.formData);
       } else if (this.isThirdForm) {
@@ -139,9 +132,14 @@ export default {
         this.$emit("changeForm", this.numStep + 1);
         this.$emit("doneStep", this.numStep);
       } else {
-        this.position.x = element?.getBoundingClientRect().x;
-        this.position.y = element?.getBoundingClientRect().y;
-        window.scrollTo(this.position.x, this.position.y);
+        setTimeout(() => {
+          const element = document.querySelectorAll(".error-vali")[0];
+          const x = element?.getBoundingClientRect().x;
+          const y = element?.getBoundingClientRect().y;
+          window.scrollTo(x, y);
+          console.log(element);
+          alert(element.innerHTML);
+        }, 0);
       }
     },
     previousStep() {

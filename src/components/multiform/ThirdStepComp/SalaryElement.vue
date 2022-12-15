@@ -1,11 +1,11 @@
 <template>
   <div class="salary-block">
     <InputLabel :label="label" :required="required" />
-    <div class="salary-input">
+    <div class="salary-input" :class="{ 'in-valid': error }">
       <input type="text" v-model="valueLocal" @input="onChange" />
       <span>VND</span>
     </div>
-    <span v-if="showError" class="error-vali">{{ error }}</span>
+    <span v-if="error" class="error-vali">{{ error }}</span>
   </div>
 </template>
 
@@ -44,11 +44,6 @@ export default {
   components: {
     InputLabel,
   },
-  computed: {
-    showError() {
-      return this.error;
-    },
-  },
   methods: {
     onChange() {
       this.valueLocal = this.valueLocal.replace(ZERO_REGEX, "");
@@ -82,9 +77,13 @@ export default {
       border: none;
       padding: 10px 0 10px 8px;
     }
+
     span {
       transform: translateX(-10px);
     }
+  }
+  .in-valid {
+    border-color: red;
   }
   .error-vali {
     color: red;

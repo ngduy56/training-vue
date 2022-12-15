@@ -18,7 +18,8 @@ export default {
   },
   methods: {
     changeForm() {
-      if (this.item.isDone) {
+      let error = document.querySelectorAll(".error-vali");
+      if (this.item.isDone && error.length <= 0) {
         this.$emit("changeForm", this.item.num, this.index);
       }
     },

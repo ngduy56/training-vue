@@ -15,13 +15,13 @@
 </template>
 <script>
 import StepItem from "./StepItem.vue";
-import { multiForm } from "@/components/multiform/form";
 
 export default {
-  data() {
-    return {
-      multiForm,
-    };
+  props: {
+    multiForm: {
+      type: Array,
+      required: true,
+    },
   },
   components: {
     StepItem,
