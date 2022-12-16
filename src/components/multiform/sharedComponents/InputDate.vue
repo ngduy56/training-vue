@@ -2,6 +2,7 @@
   <div class="input-date">
     <InputLabel :label="label" :required="required" />
     <input
+      class="input"
       :class="{ 'in-valid': error }"
       type="date"
       v-model="valueLocal"
@@ -48,6 +49,11 @@ export default {
     onChange() {
       this.$emit("input", this.valueLocal);
     },
+    formatDate() {
+      const date = this.valueLocal.replace(/(\d*)-(\d*)-(\d*)/, "$3-$2-$1");
+      console.log(date);
+      return date;
+    },
   },
 };
 </script>
@@ -59,7 +65,7 @@ export default {
   display: flex;
   flex-direction: column;
 
-  input {
+  .input {
     width: 130px;
     height: 40px;
     outline: none;

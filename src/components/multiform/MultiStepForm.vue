@@ -133,13 +133,15 @@ export default {
         this.$emit("doneStep", this.numStep);
       } else {
         setTimeout(() => {
-          const element = document.querySelectorAll(".error-vali")[0];
-          const x = element?.getBoundingClientRect().x;
-          const y = element?.getBoundingClientRect().y;
-          window.scrollTo(x, y);
-          console.log(element);
+          const element = document.querySelector(".error-vali");
+          const y = element?.offsetTop || 0;
+          console.log(y);
+          window.scroll({
+            top: y,
+            behavior: "smooth",
+          });
           alert(element.innerHTML);
-        }, 0);
+        }, 100);
       }
     },
     previousStep() {

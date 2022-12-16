@@ -4,43 +4,27 @@ export const validateFirstForm = (firstStepForm) => {
     item.error = "";
   });
   let isValid = true;
+  const fullNameInput = firstStepForm.find((item) => item.key === "fullName");
+  let isValidInput = checkTextField(fullNameInput);
+  const dateInput = firstStepForm.find((item) => item.key === "dob");
+  let isValidTime = checkTime(dateInput);
+  const aboutArea = firstStepForm.find((item) => item.key === "about-me");
+  let isValidArea = checkTextField(aboutArea);
+  isValid = isValidInput && isValidTime && isValidArea;
 
-  const fullNameInput = firstStepForm.filter(
-    (item) => item.key === "fullName"
-  )[0];
-  let fullName = fullNameInput.value;
-  if (!fullName) {
-    fullNameInput.error = `${fullNameInput.label} là bắt buộc`;
-    isValid = false;
-  } else if (fullName.length > fullNameInput.maxLength) {
-    fullNameInput.error = `${fullNameInput.label} có độ dài tối đa là ${fullNameInput.maxLength} ký tự`;
-    isValid = false;
-  }
-
-  const aboutInput = firstStepForm.filter((item) => item.key === "about-me")[0];
-  let about = aboutInput.value;
-  let maxLength = aboutInput.maxLength;
-  if (about.length > maxLength) {
-    aboutInput.error = `${aboutInput.label} tối đa là ${maxLength} ký tự`;
-    isValid = false;
-  }
-
-  const dateInput = firstStepForm.filter((item) => item.key === "dob")[0];
-  let dob = dateInput.value;
-  let dateTime = new Date(dob).getTime();
-  let currentDate = new Date().getTime();
-  if (!dob) {
-    dateInput.error = `${dateInput.label} là bắt buộc`;
-    isValid = false;
-  }
-  if (dateTime > currentDate) {
-    dateInput.error = `${dateInput.label} không hợp lệ`;
-    isValid = false;
-  }
   return isValid;
 };
 export const validateSecondForm = (secondStepForm) => {
   let isValid = true;
+  let isValidCompany = true;
+  let isValidTime = true;
+  let isValidPosition = true;
+  let isValidAboutWord = true;
+
+  let nextElement = {};
+  let nextTimeElement = {};
+  let nextStartDate;
+
   secondStepForm.map((item) => {
     item.childrens.map((itemChild) => {
       itemChild.error = "";
@@ -48,66 +32,34 @@ export const validateSecondForm = (secondStepForm) => {
   });
 
   secondStepForm.map((item, index, element) => {
-    let nextElement = element[index + 1];
-    let nextTimeElement = "";
-    let nextStartDate;
-
-    if (nextElement) {
-      nextTimeElement = nextElement.childrens.filter(
+    nextElement = element[index + 1];
+    if (nextElement !== {}) {
+      nextTimeElement = nextElement?.childrens.find(
         (child) => child.key === "time"
-      )[0];
+      );
       if (nextTimeElement) {
         nextStartDate = new Date(nextTimeElement.value.from).getTime();
       }
     }
-
     item.childrens.map((itemChild) => {
-      if (itemChild.key === "company") {
-        if (itemChild.value === "") {
-          itemChild.error = "Vui lòng chọn công ty";
-          isValid = false;
-        }
+      if (itemChild.key === "company" && itemChild.value === "") {
+        itemChild.error = "Vui lòng chọn công ty";
+        isValidCompany = false;
       }
       if (itemChild.key === "position") {
-        if (itemChild.value === "") {
-          itemChild.error = `${itemChild.label} là bắt buộc`;
-          isValid = false;
-        } else if (itemChild.value.length > itemChild.maxLength) {
-          itemChild.error = `${itemChild.label} tối đa là ${itemChild.maxLength} ký tự`;
-          isValid = false;
-        }
+        isValidPosition = checkTextField(itemChild);
       }
       if (itemChild.key === "time") {
-        const currentDate = new Date().getTime();
-        let startDate = new Date(itemChild.value.from).getTime();
-        let endDate = new Date(itemChild.value.to).getTime();
-
-        if (!itemChild.value.from || !itemChild.value.to) {
-          itemChild.error = "Vui lòng chọn thời gian làm việc";
-          isValid = false;
-        }
-        if (endDate > currentDate || startDate > currentDate) {
-          itemChild.error = `${itemChild.label} không hợp lệ`;
-          isValid = false;
-        }
-        if (startDate > endDate) {
-          itemChild.error = `${itemChild.label} không hợp lệ`;
-          isValid = false;
-        }
-        if (startDate > nextStartDate || endDate > nextStartDate) {
-          itemChild.error = `${itemChild.label} không hợp lệ`;
-          nextTimeElement.error = `${nextTimeElement.label} không hợp lệ`;
-          isValid = false;
-        }
+        isValidTime = checkTimezone(itemChild, nextTimeElement, nextStartDate);
       }
       if (itemChild.key === "about-work") {
-        if (itemChild.value.length > itemChild.maxLength) {
-          itemChild.error = `${itemChild.label} tối đa là ${itemChild.maxLength} ký tự`;
-          isValid = false;
-        }
+        isValidAboutWord = checkTextField(itemChild);
       }
     });
   });
+  isValid =
+    isValidCompany && isValidPosition && isValidTime && isValidAboutWord;
+
   return isValid;
 };
 export const validateThirdForm = (thirdStepForm) => {
@@ -115,28 +67,80 @@ export const validateThirdForm = (thirdStepForm) => {
     item.error = "";
   });
   let isValid = true;
+  const reasonInput = thirdStepForm.find((item) => item.key === "reason");
+  let isValidReason = checkTextField(reasonInput);
+  const salaryInput = thirdStepForm.find((item) => item.key === "salary");
+  let isValidSalary = checkSalary(salaryInput);
+  isValid = isValidReason && isValidSalary;
 
-  const reasonInput = thirdStepForm.filter((item) => item.key === "reason")[0];
-  let reason = reasonInput.value;
-  if (!reason) {
-    reasonInput.error = `${reasonInput.label} là bắt buộc`;
-    isValid = false;
-  } else if (reason.length > reasonInput.maxLength) {
-    reasonInput.error = `${reasonInput.label} tối đa là ${reasonInput.maxLength} ký tự`;
+  return isValid;
+};
+const checkTimezone = (item, nextTimeElement, nextStartDate) => {
+  let isValid = true;
+  const currentDate = new Date().getTime();
+  let startDate = new Date(item.value.from).getTime();
+  let endDate = new Date(item.value.to).getTime();
+
+  if (!item.value.from || !item.value.to) {
+    item.error = "Vui lòng chọn thời gian làm việc";
     isValid = false;
   }
-  const salaryInput = thirdStepForm.filter((item) => item.key === "salary")[0];
-  let salary = salaryInput.value;
+  if (endDate > currentDate || startDate > currentDate) {
+    item.error = `${item.label} không hợp lệ`;
+    isValid = false;
+  }
+  if (startDate > endDate) {
+    item.error = `${item.label} không hợp lệ`;
+    isValid = false;
+  }
+  if (startDate > nextStartDate || endDate > nextStartDate) {
+    item.error = `${item.label} không hợp lệ`;
+    if (nextTimeElement !== undefined) {
+      nextTimeElement.error = `${nextTimeElement?.label} không hợp lệ`;
+    }
+    isValid = false;
+  }
+  return isValid;
+};
+const checkTextField = (item) => {
+  let isValid = true;
+  if (item.required && item.value === "") {
+    item.error = `${item.label} là bắt buộc`;
+    isValid = false;
+  }
+  if (item.value.length > item.maxLength) {
+    item.error = `${item.label} tối đa là ${item.maxLength} ký tự`;
+    isValid = false;
+  }
+  return isValid;
+};
+const checkTime = (item) => {
+  let isValid = true;
+  let dateTime = new Date(item.value).getTime();
+  let currentDate = new Date().getTime();
+  if (item.value === "") {
+    item.error = `${item.label} là bắt buộc`;
+    isValid = false;
+  }
+  if (dateTime > currentDate) {
+    item.error = `${item.label} không hợp lệ`;
+    isValid = false;
+  }
+  return isValid;
+};
+const checkSalary = (item) => {
+  let isValid = true;
+  let salary = item.value;
   if (salary?.toString().length === 0) {
-    salaryInput.error = `${salaryInput.label} là bắt buộc`;
+    item.error = `${item.label} là bắt buộc`;
     isValid = false;
   }
   if (salary?.toString().length > 0 && !NUMBER_REGEX.test(salary)) {
-    salaryInput.error = `${salaryInput.label} phải là số`;
+    item.error = `${item.label} phải là số`;
     isValid = false;
   }
-  if (salary?.toString().length > salaryInput.maxLength) {
-    salaryInput.error = `${salaryInput.label} tối đa là ${salaryInput.maxLength} chữ số`;
+  if (salary?.toString().length > item.maxLength) {
+    item.error = `${item.label} tối đa là ${item.maxLength} chữ số`;
     isValid = false;
   }
   return isValid;
