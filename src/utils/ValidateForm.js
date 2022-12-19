@@ -16,50 +16,88 @@ export const validateFirstForm = (firstStepForm) => {
 };
 export const validateSecondForm = (secondStepForm) => {
   let isValid = true;
-  let isValidCompany = true;
-  let isValidTime = true;
-  let isValidPosition = true;
-  let isValidAboutWord = true;
-
   let nextElement = {};
-  let nextTimeElement = {};
-  let nextStartDate;
 
   secondStepForm.map((item) => {
     item.childrens.map((itemChild) => {
       itemChild.error = "";
     });
   });
-
   secondStepForm.map((item, index, element) => {
     nextElement = element[index + 1];
-    if (nextElement !== {}) {
-      nextTimeElement = nextElement?.childrens.find(
-        (child) => child.key === "time"
-      );
-      if (nextTimeElement) {
-        nextStartDate = new Date(nextTimeElement.value.from).getTime();
-      }
-    }
+
     item.childrens.map((itemChild) => {
       if (itemChild.key === "company" && itemChild.value === "") {
         itemChild.error = "Vui lòng chọn công ty";
-        isValidCompany = false;
+        isValid = false;
+      }
+      if (nextElement !== undefined && itemChild.key === "company") {
+        const compa = itemChild.value;
+        const nextCompa = nextElement.childrens.find(
+          (item) => item.key === "company"
+        );
+        console.log(nextCompa);
+        if (compa === nextCompa.value) {
+          itemChild.error = "Công ty bị trùng";
+          nextCompa.error = "Công ty bị trùng";
+          isValid = false;
+        }
       }
       if (itemChild.key === "position") {
-        isValidPosition = checkTextField(itemChild);
+        if (itemChild.required && itemChild.value === "") {
+          itemChild.error = `${itemChild.label} là bắt buộc`;
+          isValid = false;
+        }
+        if (itemChild.value.length > itemChild.maxLength) {
+          itemChild.error = `${itemChild.label} tối đa là ${itemChild.maxLength} ký tự`;
+          isValid = false;
+        }
       }
       if (itemChild.key === "time") {
-        isValidTime = checkTimezone(itemChild, nextTimeElement, nextStartDate);
+        const currentDate = new Date().getTime();
+        let startDate = new Date(itemChild.value.from).getTime();
+        let endDate = new Date(itemChild.value.to).getTime();
+        let nextTimeElement = {};
+        let nextStartDate = 0;
+
+        if (!itemChild.value.from || !itemChild.value.to) {
+          itemChild.error = "Vui lòng chọn thời gian làm việc";
+          isValid = false;
+        }
+        if (endDate > currentDate || startDate > currentDate) {
+          itemChild.error = `${itemChild.label} không hợp lệ`;
+          isValid = false;
+        }
+        if (startDate > endDate) {
+          itemChild.error = `${itemChild.label} không hợp lệ`;
+          isValid = false;
+        }
+        if (nextElement !== undefined) {
+          nextTimeElement = nextElement.childrens.find(
+            (child) => child.key === "time"
+          );
+          nextStartDate = new Date(nextTimeElement.value.from).getTime();
+
+          if (startDate > nextStartDate || endDate > nextStartDate) {
+            itemChild.error = `${itemChild.label} không hợp lệ`;
+            nextTimeElement.error = `${nextTimeElement?.label} không hợp lệ`;
+            isValid = false;
+          }
+        }
+        return isValid;
       }
       if (itemChild.key === "about-work") {
-        isValidAboutWord = checkTextField(itemChild);
+        if (itemChild.required && itemChild.value === "") {
+          itemChild.error = `${itemChild.label} là bắt buộc`;
+          isValid = false;
+        }
+        if (itemChild.value.length > itemChild.maxLength) {
+          itemChild.error = `${itemChild.label} tối đa là ${itemChild.maxLength} ký tự`;
+          isValid = false;
+        }
       }
     });
   });
-  isValid =
-    isValidCompany && isValidPosition && isValidTime && isValidAboutWord;
-
   return isValid;
 };
 export const validateThirdForm = (thirdStepForm) => {
@@ -73,33 +111,6 @@ export const validateThirdForm = (thirdStepForm) => {
   let isValidSalary = checkSalary(salaryInput);
   isValid = isValidReason && isValidSalary;
 
-  return isValid;
-};
-const checkTimezone = (item, nextTimeElement, nextStartDate) => {
-  let isValid = true;
-  const currentDate = new Date().getTime();
-  let startDate = new Date(item.value.from).getTime();
-  let endDate = new Date(item.value.to).getTime();
-
-  if (!item.value.from || !item.value.to) {
-    item.error = "Vui lòng chọn thời gian làm việc";
-    isValid = false;
-  }
-  if (endDate > currentDate || startDate > currentDate) {
-    item.error = `${item.label} không hợp lệ`;
-    isValid = false;
-  }
-  if (startDate > endDate) {
-    item.error = `${item.label} không hợp lệ`;
-    isValid = false;
-  }
-  if (startDate > nextStartDate || endDate > nextStartDate) {
-    item.error = `${item.label} không hợp lệ`;
-    if (nextTimeElement !== undefined) {
-      nextTimeElement.error = `${nextTimeElement?.label} không hợp lệ`;
-    }
-    isValid = false;
-  }
   return isValid;
 };
 const checkTextField = (item) => {

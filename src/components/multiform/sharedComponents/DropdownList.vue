@@ -64,7 +64,6 @@ export default {
 .dropdown {
   width: 100%;
   margin-bottom: 10px;
-  position: relative;
 
   .select {
     width: 100%;

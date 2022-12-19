@@ -66,7 +66,6 @@ export default {
 
 <style lang="scss" scoped>
 .time-working {
-  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;

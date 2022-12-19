@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="form">
     <div :class="{ container: !isSecondForm }">
       <MultiInputView
         v-for="(item, index) in formData"
@@ -134,10 +134,9 @@ export default {
       } else {
         setTimeout(() => {
           const element = document.querySelector(".error-vali");
-          const y = element?.offsetTop || 0;
-          console.log(y);
-          window.scroll({
-            top: y,
+          const y = element.getBoundingClientRect().y || 0;
+          window.scrollBy({
+            top: y - 200,
             behavior: "smooth",
           });
           alert(element.innerHTML);
@@ -152,10 +151,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.form {
+  position: relative;
+}
 .container {
   width: 100%;
   min-height: 346px;
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

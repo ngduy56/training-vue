@@ -75,7 +75,6 @@ export default {
 <style lang="scss" scoped>
 .area-block {
   width: 528px;
-  position: relative;
   margin-bottom: 10px;
   color: #000000;
 

@@ -73,6 +73,7 @@ export default {
     border-color: red;
   }
   .error-vali {
+    display: inline-block;
     color: red;
     font-size: 14px;
     width: 100%;
