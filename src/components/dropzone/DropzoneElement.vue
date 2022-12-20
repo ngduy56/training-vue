@@ -88,6 +88,13 @@ export default {
       let newFileList = Array.from(files);
       if (this.isValid) {
         this.$emit("onUpload", newFileList);
+      } else {
+        this.$toast.open({
+          message: this.errors.number || this.errors.size || this.errors.type,
+          type: "error",
+          position: "top-right",
+          duration: 2000,
+        });
       }
     },
   },
@@ -111,7 +118,7 @@ export default {
   height: 20px;
   font-weight: 400;
   font-size: 14px;
-  color: #ed5d5d;
+  color: red;
   line-height: 20px;
 }
 .success-vali {
@@ -126,7 +133,7 @@ export default {
   margin-top: 30px;
 }
 .in-valid {
-  border-color: #ed5d5d;
+  border-color: red;
 }
 .drag-block:hover {
   cursor: pointer;

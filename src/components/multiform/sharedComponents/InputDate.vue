@@ -49,11 +49,6 @@ export default {
     onChange() {
       this.$emit("input", this.valueLocal);
     },
-    formatDate() {
-      const date = this.valueLocal.replace(/(\d*)-(\d*)-(\d*)/, "$3-$2-$1");
-      console.log(date);
-      return date;
-    },
   },
 };
 </script>

@@ -37,7 +37,11 @@ export const validateSecondForm = (secondStepForm) => {
           (item) => item.key === "company"
         );
         console.log(nextCompa);
-        if (compa === nextCompa.value) {
+        if (
+          compa === nextCompa.value &&
+          compa !== "" &&
+          nextCompa.value !== ""
+        ) {
           itemChild.error = "Công ty bị trùng";
           nextCompa.error = "Công ty bị trùng";
           isValid = false;

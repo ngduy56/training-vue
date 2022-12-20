@@ -120,6 +120,7 @@ export default {
       this.$emit("removeCompany", index);
     },
     nextStep() {
+      let error;
       if (this.isFirstForm) {
         this.isValid = validateFirstForm(this.formData);
       } else if (this.isSecondForm) {
@@ -127,19 +128,25 @@ export default {
       } else if (this.isThirdForm) {
         this.isValid = validateThirdForm(this.formData);
       }
-      if (this.isValid) {
+      error = document.querySelector(".error-vali");
+      if (this.isValid && !error) {
         this.$emit("nextStep", this.formData);
         this.$emit("changeForm", this.numStep + 1);
         this.$emit("doneStep", this.numStep);
       } else {
         setTimeout(() => {
-          const element = document.querySelector(".error-vali");
-          const y = element.getBoundingClientRect().y || 0;
+          error = document.querySelector(".error-vali");
+          const y = error.getBoundingClientRect().y || 0;
+          this.$toast.open({
+            message: error.innerHTML,
+            type: "error",
+            position: "top-right",
+            duration: 2000,
+          });
           window.scrollBy({
             top: y - 200,
             behavior: "smooth",
           });
-          alert(element.innerHTML);
         }, 100);
       }
     },

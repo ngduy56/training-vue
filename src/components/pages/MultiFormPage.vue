@@ -218,6 +218,12 @@ export default {
       if (this.isLastForm) {
         const data = this.filterValue(this.multiForm);
         console.log(data);
+        this.$toast.open({
+          message: "Ứng tuyển thành công",
+          type: "success",
+          position: "top-right",
+          duration: 2000,
+        });
         this.$router.push({ path: "/" });
       }
     },
