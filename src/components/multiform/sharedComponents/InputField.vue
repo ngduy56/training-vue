@@ -7,7 +7,6 @@
       v-model="valueLocal"
       @input="onChange"
     />
-    <span v-if="error" class="error-vali">{{ error }}</span>
   </div>
 </template>
 

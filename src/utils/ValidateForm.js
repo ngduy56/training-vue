@@ -5,13 +5,11 @@ export const validateFirstForm = (firstStepForm) => {
   });
   let isValid = true;
   const fullNameInput = firstStepForm.find((item) => item.key === "fullName");
-  let isValidInput = checkTextField(fullNameInput);
+  isValid = checkTextField(fullNameInput, isValid);
   const dateInput = firstStepForm.find((item) => item.key === "dob");
-  let isValidTime = checkTime(dateInput);
+  isValid = checkTime(dateInput, isValid);
   const aboutArea = firstStepForm.find((item) => item.key === "about-me");
-  let isValidArea = checkTextField(aboutArea);
-  isValid = isValidInput && isValidTime && isValidArea;
-
+  isValid = checkTextField(aboutArea, isValid);
   return isValid;
 };
 export const validateSecondForm = (secondStepForm) => {
@@ -25,37 +23,12 @@ export const validateSecondForm = (secondStepForm) => {
   });
   secondStepForm.map((item, index, element) => {
     nextElement = element[index + 1];
-
     item.childrens.map((itemChild) => {
-      if (itemChild.key === "company" && itemChild.value === "") {
-        itemChild.error = "Vui lòng chọn công ty";
-        isValid = false;
-      }
-      if (nextElement !== undefined && itemChild.key === "company") {
-        const compa = itemChild.value;
-        const nextCompa = nextElement.childrens.find(
-          (item) => item.key === "company"
-        );
-        console.log(nextCompa);
-        if (
-          compa === nextCompa.value &&
-          compa !== "" &&
-          nextCompa.value !== ""
-        ) {
-          itemChild.error = "Công ty bị trùng";
-          nextCompa.error = "Công ty bị trùng";
-          isValid = false;
-        }
+      if (itemChild.key === "company") {
+        isValid = checkCompany(itemChild, nextElement, isValid);
       }
       if (itemChild.key === "position") {
-        if (itemChild.required && itemChild.value === "") {
-          itemChild.error = `${itemChild.label} là bắt buộc`;
-          isValid = false;
-        }
-        if (itemChild.value.length > itemChild.maxLength) {
-          itemChild.error = `${itemChild.label} tối đa là ${itemChild.maxLength} ký tự`;
-          isValid = false;
-        }
+        isValid = checkTextField(itemChild, isValid);
       }
       if (itemChild.key === "time") {
         const currentDate = new Date().getTime();
@@ -88,17 +61,9 @@ export const validateSecondForm = (secondStepForm) => {
             isValid = false;
           }
         }
-        return isValid;
       }
       if (itemChild.key === "about-work") {
-        if (itemChild.required && itemChild.value === "") {
-          itemChild.error = `${itemChild.label} là bắt buộc`;
-          isValid = false;
-        }
-        if (itemChild.value.length > itemChild.maxLength) {
-          itemChild.error = `${itemChild.label} tối đa là ${itemChild.maxLength} ký tự`;
-          isValid = false;
-        }
+        isValid = checkTextField(itemChild, isValid);
       }
     });
   });
@@ -110,15 +75,31 @@ export const validateThirdForm = (thirdStepForm) => {
   });
   let isValid = true;
   const reasonInput = thirdStepForm.find((item) => item.key === "reason");
-  let isValidReason = checkTextField(reasonInput);
+  isValid = checkTextField(reasonInput, isValid);
   const salaryInput = thirdStepForm.find((item) => item.key === "salary");
-  let isValidSalary = checkSalary(salaryInput);
-  isValid = isValidReason && isValidSalary;
+  isValid = checkSalary(salaryInput);
 
   return isValid;
 };
-const checkTextField = (item) => {
-  let isValid = true;
+const checkCompany = (item, nextElement, isValid) => {
+  if (item.value === "") {
+    item.error = "Vui lòng chọn công ty";
+    isValid = false;
+  }
+  if (nextElement !== undefined) {
+    const compa = item.value;
+    const nextCompa = nextElement.childrens.find(
+      (item) => item.key === "company"
+    );
+    if (compa === nextCompa.value && compa !== "" && nextCompa.value !== "") {
+      item.error = "Công ty bị trùng";
+      nextCompa.error = "Công ty bị trùng";
+      isValid = false;
+    }
+  }
+  return isValid;
+};
+const checkTextField = (item, isValid) => {
   if (item.required && item.value === "") {
     item.error = `${item.label} là bắt buộc`;
     isValid = false;
@@ -129,8 +110,7 @@ const checkTextField = (item) => {
   }
   return isValid;
 };
-const checkTime = (item) => {
-  let isValid = true;
+const checkTime = (item, isValid) => {
   let dateTime = new Date(item.value).getTime();
   let currentDate = new Date().getTime();
   if (item.value === "") {
@@ -159,4 +139,38 @@ const checkSalary = (item) => {
     isValid = false;
   }
   return isValid;
+};
+////////////////////////////////////////////////
+const checkRequired = (item) => {
+  if (item.required && !item.value) {
+    item.error = `${item.label} là bắt buộc`;
+  }
+};
+const checkLength = (item) => {
+  if (item.value.length > item.maxLength) {
+    item.error = `${item.label} tối đa là ${item.maxLength} ký tự`;
+  }
+};
+const checkDate = (item) => {
+  const dateTime = new Date(item.value).getTime();
+  const currentDate = new Date().getTime();
+  if (dateTime > currentDate) {
+    item.error = `${item.label} không hợp lệ`;
+  }
+};
+const checkInputField = (item) => {
+  checkRequired(item);
+  checkLength(item);
+};
+const checkInputDate = (item) => {
+  checkRequired(item);
+  checkDate(item);
+};
+
+export {
+  checkRequired,
+  checkLength,
+  checkDate,
+  checkInputField,
+  checkInputDate,
 };

@@ -68,6 +68,7 @@
       @onChangeChildren="onChangeChildren"
       @removeCompany="removeCompany"
     />
+    <span v-if="item.error" class="error-vali">{{ item.error }}</span>
   </div>
 </template>
 
@@ -91,6 +92,7 @@ import {
   IMG_DROPZONE,
   COMPANY_ITEM,
 } from "@/constants/FormConstants";
+import { checkInputDate, checkInputField } from "@/utils/ValidateForm";
 
 export default {
   data() {
@@ -126,13 +128,19 @@ export default {
       type: [String, Array, Number],
     },
   },
+
   watch: {
     value: {
       handler(val) {
         this.valueLocal = val;
+        if (this.item.view_type === INPUT_TEXT) {
+          checkInputField(this.item);
+        }
+        if (this.item.view_type === INPUT_DATE) {
+          checkInputDate(this.item);
+        }
       },
       deep: true,
-      immediate: true,
     },
   },
   methods: {
@@ -164,6 +172,15 @@ export default {
 <style lang="scss" scoped>
 .block {
   width: 100%;
+  position: relative;
+
+  .error-vali {
+    display: inline-block;
+    transform: translateY(-10px);
+    width: 100%;
+    color: red;
+    font-size: 14px;
+  }
 }
 ::v-deep {
   .dropdown {

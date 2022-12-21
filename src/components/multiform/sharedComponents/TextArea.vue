@@ -10,7 +10,6 @@
       <span :class="{ 'error-length': showLengthError }"
         >{{ length }}/{{ maxLength }}</span
       >
-      <span v-if="error" class="error-vali">{{ error }}</span>
     </div>
   </div>
 </template>
@@ -98,7 +97,7 @@ export default {
     align-items: center;
     span {
       font-weight: 400;
-      font-size: 16px;
+      font-size: 14px;
       line-height: 24px;
       color: #666666;
     }
