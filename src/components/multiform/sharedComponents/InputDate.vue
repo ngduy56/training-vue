@@ -8,6 +8,7 @@
       v-model="valueLocal"
       @input="onChange"
     />
+    <span v-if="error" class="error-vali">{{ error }}</span>
   </div>
 </template>
 <script>
@@ -54,7 +55,7 @@ export default {
 
 <style lang="scss" scoped>
 .input-date {
-  width: 200px;
+  width: 528px;
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;

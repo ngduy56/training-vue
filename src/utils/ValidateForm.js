@@ -124,31 +124,30 @@ const checkTime = (item, isValid) => {
   return isValid;
 };
 const checkSalary = (item) => {
-  let isValid = true;
   let salary = item.value;
   if (salary?.toString().length === 0) {
     item.error = `${item.label} là bắt buộc`;
-    isValid = false;
   }
   if (salary?.toString().length > 0 && !NUMBER_REGEX.test(salary)) {
     item.error = `${item.label} phải là số`;
-    isValid = false;
   }
   if (salary?.toString().length > item.maxLength) {
     item.error = `${item.label} tối đa là ${item.maxLength} chữ số`;
-    isValid = false;
   }
-  return isValid;
 };
 ////////////////////////////////////////////////
 const checkRequired = (item) => {
   if (item.required && !item.value) {
-    item.error = `${item.label} là bắt buộc`;
+    if (item.label) {
+      item.error = `${item.label} là thông tin bắt buộc`;
+    } else {
+      item.error = `Thông tin này là bắt buộc`;
+    }
   }
 };
 const checkLength = (item) => {
   if (item.value.length > item.maxLength) {
-    item.error = `${item.label} tối đa là ${item.maxLength} ký tự`;
+    item.error = `${item.label} có độ dài tối đa là ${item.maxLength} ký tự`;
   }
 };
 const checkDate = (item) => {
@@ -166,6 +165,10 @@ const checkInputDate = (item) => {
   checkRequired(item);
   checkDate(item);
 };
+const checkInputSalary = (item) => {
+  checkRequired(item);
+  checkSalary(item);
+};
 
 export {
   checkRequired,
@@ -173,4 +176,5 @@ export {
   checkDate,
   checkInputField,
   checkInputDate,
+  checkInputSalary,
 };

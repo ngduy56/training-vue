@@ -11,6 +11,7 @@
         >{{ length }}/{{ maxLength }}</span
       >
     </div>
+    <span v-if="error" class="error-vali">{{ error }}</span>
   </div>
 </template>
 
@@ -91,6 +92,10 @@ export default {
   .in-valid {
     border-color: red;
   }
+  .error-vali {
+    color: red;
+    font-size: 14px;
+  }
   .validate-block {
     display: flex;
     justify-content: flex-start;
@@ -102,11 +107,6 @@ export default {
       color: #666666;
     }
 
-    .error-vali {
-      margin-left: 10px;
-      color: red;
-      font-size: 14px;
-    }
     .error-length {
       color: red;
     }

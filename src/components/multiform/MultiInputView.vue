@@ -65,10 +65,10 @@
     <CompanyItem
       v-if="item.view_type === COMPANY_ITEM"
       :item="item"
+      :childrens="childrens"
       @onChangeChildren="onChangeChildren"
       @removeCompany="removeCompany"
     />
-    <span v-if="item.error" class="error-vali">{{ item.error }}</span>
   </div>
 </template>
 
@@ -91,8 +91,14 @@ import {
   INPUT_AREA,
   IMG_DROPZONE,
   COMPANY_ITEM,
+  INPUT_DATE_ZONE,
 } from "@/constants/FormConstants";
-import { checkInputDate, checkInputField } from "@/utils/ValidateForm";
+import {
+  checkInputDate,
+  checkInputField,
+  checkInputSalary,
+  checkRequired,
+} from "@/utils/ValidateForm";
 
 export default {
   data() {
@@ -127,18 +133,47 @@ export default {
     value: {
       type: [String, Array, Number],
     },
+    childrens: {
+      type: Array,
+    },
   },
 
+  created() {
+    if (this.value) {
+      this.valueLocal = this.value;
+    }
+  },
   watch: {
     value: {
       handler(val) {
         this.valueLocal = val;
-        if (this.item.view_type === INPUT_TEXT) {
+        if (
+          this.item.view_type === INPUT_TEXT ||
+          this.item.view_type === INPUT_AREA
+        ) {
           checkInputField(this.item);
-        }
-        if (this.item.view_type === INPUT_DATE) {
+        } else if (this.item.view_type === INPUT_DATE) {
           checkInputDate(this.item);
+        } else if (this.item.view_type === INPUT_SALARY) {
+          checkInputSalary(this.item);
         }
+      },
+      deep: true,
+    },
+    childrens: {
+      handler(val) {
+        val.forEach((child) => {
+          if (child.view_type === INPUT_DROPDOWN) {
+            checkRequired(child);
+          } else if (
+            child.view_type === INPUT_TEXT ||
+            child.view_type === INPUT_AREA
+          ) {
+            checkInputField(child);
+          } else if (child.view_type === INPUT_DATE_ZONE) {
+            console.log("huuh");
+          }
+        });
       },
       deep: true,
     },

@@ -1,7 +1,7 @@
 <template>
   <div class="company-item">
     <div
-      v-for="(child, indexChild) in item.childrens"
+      v-for="(child, indexChild) in childrens"
       :key="child.key"
       class="content"
     >
@@ -73,6 +73,9 @@ export default {
     error: {
       type: String,
     },
+    childrens: {
+      type: Array,
+    },
   },
   components: {
     TrashIcon,
@@ -110,7 +113,6 @@ export default {
     height: 60px;
     border-radius: 4px;
     padding: 10px 14px 10px 16px;
-    margin-bottom: 32px;
 
     select {
       border-radius: 4px;
@@ -125,6 +127,10 @@ export default {
   }
   .content {
     width: 100%;
+
+    &:first-child {
+      height: 92px;
+    }
   }
 }
 ::v-deep .dropdown {

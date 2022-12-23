@@ -74,6 +74,10 @@ export default {
     border-radius: 4px;
     font-size: 14px;
 
+    &:focus {
+      outline: none;
+    }
+
     option {
       width: 45px;
       height: 20px;

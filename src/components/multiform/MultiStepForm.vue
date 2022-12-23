@@ -3,9 +3,10 @@
     <div :class="{ container: !isSecondForm }">
       <MultiInputView
         v-for="(item, index) in formData"
-        :value="item.value"
         :key="item.key"
         :item="item"
+        :value="item.value"
+        :childrens="item.childrens"
         @onUploadFile="onUploadFile"
         @onRemoveFile="onRemoveFile"
         @onAddChosen="onAddChosen"
@@ -52,7 +53,7 @@ import { checkRequired } from "@/utils/ValidateForm";
 export default {
   data() {
     return {
-      isValid: false,
+      isValid: true,
       multiForm,
     };
   },
@@ -87,6 +88,14 @@ export default {
     },
     isEnable() {
       return this.formLength;
+    },
+  },
+  watch: {
+    formData: {
+      handler() {
+        this.isValid = true;
+      },
+      deep: true,
     },
   },
   methods: {
@@ -147,12 +156,23 @@ export default {
     // },
     nextStep() {
       let error;
-      this.formData.forEach((item) => {
-        checkRequired(item);
+      this.formData.map((item) => {
+        if (!item.value && item.required) {
+          this.isValid = false;
+          checkRequired(item);
+        }
+        if (item.childrens && item.childrens.length > 0) {
+          item.childrens.forEach((child) => {
+            if (!child.value && child.required) {
+              this.isValid = false;
+              checkRequired(child);
+            }
+          });
+        }
       });
       error = document.querySelector(".error-vali");
       if (this.isValid && !error) {
-        this.$emit("nextStep", this.formData);
+        this.$emit("nextStep");
         this.$emit("changeForm", this.numStep + 1);
         this.$emit("doneStep", this.numStep);
       } else {
@@ -185,7 +205,7 @@ export default {
 }
 .container {
   width: 100%;
-  min-height: 346px;
+  min-height: 360px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

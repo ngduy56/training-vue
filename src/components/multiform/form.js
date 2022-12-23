@@ -15,7 +15,8 @@ import {
 const defaultElement = {
   view_type: "company-item",
   companyList: COMPANY_LIST,
-  error: "",
+  label: "Công ty",
+  required: true,
   childrens: [
     {
       label: "",
