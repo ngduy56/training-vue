@@ -15,8 +15,7 @@ import {
 const defaultElement = {
   view_type: "company-item",
   companyList: COMPANY_LIST,
-  label: "Công ty",
-  required: true,
+  label: "Công ty làm việc",
   childrens: [
     {
       label: "",

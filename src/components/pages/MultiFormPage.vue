@@ -56,13 +56,7 @@ export default {
     formData() {
       const rs = this.multiForm.filter((item) => item.num === this.numStep)[0];
       rs.data.map((item) => {
-        if (item.childrens && item.childrens.length > 0) {
-          item.childrens.forEach((child) => {
-            child.error = "";
-          });
-        } else {
-          item.error = "";
-        }
+        item.error = "";
       });
       return rs.data;
     },
@@ -184,7 +178,9 @@ export default {
       this.formData[index].childrens[indexChild].error = "";
     },
     addCompany() {
-      this.formData.push(JSON.parse(JSON.stringify(defaultElement)));
+      const newDataForm = this.formData;
+      newDataForm.push(JSON.parse(JSON.stringify(defaultElement)));
+      this.dataForm = newDataForm;
     },
     removeCompany(index) {
       this.formData.splice(index, 1);

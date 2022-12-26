@@ -1,7 +1,7 @@
 <template>
   <div class="company-item">
     <div
-      v-for="(child, indexChild) in childrens"
+      v-for="(child, indexChild) in item.childrens"
       :key="child.key"
       class="content"
     >
@@ -56,6 +56,11 @@ import {
   INPUT_DROPDOWN,
   INPUT_AREA,
 } from "@/constants/FormConstants";
+import {
+  checkInputField,
+  checkRequired,
+  checkTimezone,
+} from "@/utils/ValidateForm";
 export default {
   data() {
     return {
@@ -63,6 +68,9 @@ export default {
       INPUT_DATE_ZONE,
       INPUT_DROPDOWN,
       INPUT_AREA,
+
+      valueLocal: "",
+      indexLocal: 0,
     };
   },
   props: {
@@ -70,11 +78,11 @@ export default {
       type: Object,
       required: true,
     },
+    formData: {
+      type: Array,
+    },
     error: {
       type: String,
-    },
-    childrens: {
-      type: Array,
     },
   },
   components: {
@@ -84,8 +92,62 @@ export default {
     WorkArea,
     DropdownList,
   },
+  watch: {
+    valueLocal: {
+      handler() {
+        let child = this.item.childrens.find(
+          (item, index) => index === this.indexLocal
+        );
+        if (child.view_type === INPUT_DROPDOWN) {
+          checkRequired(child);
+          this.formData.forEach((item, index, element) => {
+            let nextElement = {};
+            let nextCompany = {};
+            let currentCompany = {};
+
+            checkRequired(item);
+            currentCompany = item.childrens.find(
+              (item) => item.key === "company"
+            );
+            if (element[index + 1]) {
+              nextElement = element[index + 1];
+              nextCompany = nextElement.childrens.find(
+                (item) => item.key === "company"
+              );
+              if (Object.keys(nextCompany).length > 0) {
+                if (
+                  currentCompany.value === nextCompany.value &&
+                  currentCompany.value !== "" &&
+                  nextCompany.value !== ""
+                ) {
+                  currentCompany.error = "Công ty bị trùng";
+                  nextCompany.error = "Công ty bị trùng";
+                } else if (
+                  currentCompany.value !== nextCompany.value &&
+                  currentCompany.value !== "" &&
+                  nextCompany.value !== ""
+                ) {
+                  currentCompany.error = "";
+                }
+              }
+            }
+          });
+        } else if (
+          child.view_type === INPUT_TEXT ||
+          child.view_type === INPUT_AREA
+        ) {
+          checkInputField(child);
+        } else if (child.view_type === INPUT_DATE_ZONE) {
+          checkTimezone(child, this.formData);
+        }
+      },
+      deep: true,
+    },
+  },
   methods: {
     onChangeChildren(value, indexChild) {
+      this.valueLocal = value;
+      this.indexLocal = indexChild;
       this.$emit("onChangeChildren", value, indexChild);
     },
     removeCompany() {

@@ -6,7 +6,7 @@
         :key="item.key"
         :item="item"
         :value="item.value"
-        :childrens="item.childrens"
+        :formData="formData"
         @onUploadFile="onUploadFile"
         @onRemoveFile="onRemoveFile"
         @onAddChosen="onAddChosen"

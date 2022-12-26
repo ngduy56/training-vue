@@ -65,7 +65,7 @@
     <CompanyItem
       v-if="item.view_type === COMPANY_ITEM"
       :item="item"
-      :childrens="childrens"
+      :formData="formData"
       @onChangeChildren="onChangeChildren"
       @removeCompany="removeCompany"
     />
@@ -91,13 +91,11 @@ import {
   INPUT_AREA,
   IMG_DROPZONE,
   COMPANY_ITEM,
-  INPUT_DATE_ZONE,
 } from "@/constants/FormConstants";
 import {
   checkInputDate,
   checkInputField,
   checkInputSalary,
-  checkRequired,
 } from "@/utils/ValidateForm";
 
 export default {
@@ -130,14 +128,13 @@ export default {
       type: Object,
       required: true,
     },
+    formData: {
+      type: Array,
+    },
     value: {
       type: [String, Array, Number],
     },
-    childrens: {
-      type: Array,
-    },
   },
-
   created() {
     if (this.value) {
       this.valueLocal = this.value;
@@ -157,23 +154,6 @@ export default {
         } else if (this.item.view_type === INPUT_SALARY) {
           checkInputSalary(this.item);
         }
-      },
-      deep: true,
-    },
-    childrens: {
-      handler(val) {
-        val.forEach((child) => {
-          if (child.view_type === INPUT_DROPDOWN) {
-            checkRequired(child);
-          } else if (
-            child.view_type === INPUT_TEXT ||
-            child.view_type === INPUT_AREA
-          ) {
-            checkInputField(child);
-          } else if (child.view_type === INPUT_DATE_ZONE) {
-            console.log("huuh");
-          }
-        });
       },
       deep: true,
     },
