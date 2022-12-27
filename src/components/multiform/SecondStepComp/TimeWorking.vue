@@ -91,6 +91,10 @@ export default {
       text-align: center;
       line-height: 40px;
       padding: 0 8px 0 6px;
+
+      &::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+      }
     }
     .in-valid {
       border-color: red;

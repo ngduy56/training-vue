@@ -3,6 +3,7 @@
     <div :class="{ container: !isSecondForm }">
       <MultiInputView
         v-for="(item, index) in formData"
+        :index="index"
         :key="item.key"
         :item="item"
         :value="item.value"
@@ -123,47 +124,18 @@ export default {
     removeCompany(index) {
       this.$emit("removeCompany", index);
     },
-    // nextStep() {
-    //   let error;
-    //   if (this.isFirstForm) {
-    //     this.isValid = validateFirstForm(this.formData);
-    //   } else if (this.isSecondForm) {
-    //     this.isValid = validateSecondForm(this.formData);
-    //   } else if (this.isThirdForm) {
-    //     this.isValid = validateThirdForm(this.formData);
-    //   }
-    //   error = document.querySelector(".error-vali");
-    //   if (this.isValid && !error) {
-    //     this.$emit("nextStep", this.formData);
-    //     this.$emit("changeForm", this.numStep + 1);
-    //     this.$emit("doneStep", this.numStep);
-    //   } else {
-    //     setTimeout(() => {
-    //       error = document.querySelector(".error-vali");
-    //       const y = error?.getBoundingClientRect().y || 0;
-    //       this.$toast.open({
-    //         message: error?.innerHTML,
-    //         type: "error",
-    //         position: "top-right",
-    //         duration: 2000,
-    //       });
-    //       window.scrollBy({
-    //         top: y - 200,
-    //         behavior: "smooth",
-    //       });
-    //     }, 100);
-    //   }
-    // },
     nextStep() {
       let error;
       this.formData.map((item) => {
-        if (!item.value && item.required) {
+        if (item.required && !item.value) {
           this.isValid = false;
           checkRequired(item);
         }
         if (item.childrens && item.childrens.length > 0) {
           item.childrens.forEach((child) => {
-            if (!child.value && child.required) {
+            if (child.required && typeof child.value === "object") {
+              checkRequired(child);
+            } else if (child.required && !child.value) {
               this.isValid = false;
               checkRequired(child);
             }

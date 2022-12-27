@@ -5,6 +5,7 @@
       <input type="text" v-model="valueLocal" @input="onChange" />
       <span>VND</span>
     </div>
+    <span v-if="error" class="error-vali">{{ error }}</span>
   </div>
 </template>
 

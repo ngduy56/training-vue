@@ -10,8 +10,8 @@
       <span :class="{ 'error-length': showLengthError }"
         >{{ length }}/{{ maxLength }}</span
       >
+      <span v-if="error" class="error-vali">{{ error }}</span>
     </div>
-    <span v-if="error" class="error-vali">{{ error }}</span>
   </div>
 </template>
 
@@ -54,9 +54,6 @@ export default {
     },
   },
   computed: {
-    showError() {
-      return this.error.length > 0;
-    },
     showLengthError() {
       return this.length > this.maxLength;
     },
@@ -92,10 +89,7 @@ export default {
   .in-valid {
     border-color: red;
   }
-  .error-vali {
-    color: red;
-    font-size: 14px;
-  }
+
   .validate-block {
     display: flex;
     justify-content: flex-start;
@@ -106,7 +100,11 @@ export default {
       line-height: 24px;
       color: #666666;
     }
-
+    .error-vali {
+      margin-left: 10px;
+      color: red;
+      font-size: 14px;
+    }
     .error-length {
       color: red;
     }

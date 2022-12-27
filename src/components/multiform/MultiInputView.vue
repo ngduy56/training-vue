@@ -64,6 +64,7 @@
     />
     <CompanyItem
       v-if="item.view_type === COMPANY_ITEM"
+      :index="index"
       :item="item"
       :formData="formData"
       @onChangeChildren="onChangeChildren"
@@ -124,6 +125,9 @@ export default {
     CompanyItem,
   },
   props: {
+    index: {
+      type: Number,
+    },
     item: {
       type: Object,
       required: true,

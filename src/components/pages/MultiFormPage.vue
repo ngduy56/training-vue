@@ -54,15 +54,15 @@ export default {
       return this.numStep === this.multiForm.length;
     },
     formData() {
-      const rs = this.multiForm.filter((item) => item.num === this.numStep)[0];
-      rs.data.map((item) => {
-        item.error = "";
-      });
-      return rs.data;
+      const currentStep = this.multiForm.find(
+        (item) => item.num === this.numStep
+      );
+      return currentStep.data;
     },
   },
   mounted() {
     if (this.isFirstForm && this.firstForm.length > 0) {
+      console.log(this.firstForm.length);
       this.mutationForm(this.multiForm, this.firstForm, this.numStep);
     }
   },

@@ -57,8 +57,8 @@ import {
   INPUT_AREA,
 } from "@/constants/FormConstants";
 import {
+  checkCompany,
   checkInputField,
-  checkRequired,
   checkTimezone,
 } from "@/utils/ValidateForm";
 export default {
@@ -74,6 +74,9 @@ export default {
     };
   },
   props: {
+    index: {
+      type: Number,
+    },
     item: {
       type: Object,
       required: true,
@@ -99,46 +102,14 @@ export default {
           (item, index) => index === this.indexLocal
         );
         if (child.view_type === INPUT_DROPDOWN) {
-          checkRequired(child);
-          this.formData.forEach((item, index, element) => {
-            let nextElement = {};
-            let nextCompany = {};
-            let currentCompany = {};
-
-            checkRequired(item);
-            currentCompany = item.childrens.find(
-              (item) => item.key === "company"
-            );
-            if (element[index + 1]) {
-              nextElement = element[index + 1];
-              nextCompany = nextElement.childrens.find(
-                (item) => item.key === "company"
-              );
-              if (Object.keys(nextCompany).length > 0) {
-                if (
-                  currentCompany.value === nextCompany.value &&
-                  currentCompany.value !== "" &&
-                  nextCompany.value !== ""
-                ) {
-                  currentCompany.error = "Công ty bị trùng";
-                  nextCompany.error = "Công ty bị trùng";
-                } else if (
-                  currentCompany.value !== nextCompany.value &&
-                  currentCompany.value !== "" &&
-                  nextCompany.value !== ""
-                ) {
-                  currentCompany.error = "";
-                }
-              }
-            }
-          });
+          checkCompany(child, this.index, this.formData);
         } else if (
           child.view_type === INPUT_TEXT ||
           child.view_type === INPUT_AREA
         ) {
           checkInputField(child);
         } else if (child.view_type === INPUT_DATE_ZONE) {
-          checkTimezone(child, this.formData);
+          checkTimezone(child, this.index, this.formData);
         }
       },
       deep: true,
