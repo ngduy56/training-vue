@@ -62,7 +62,6 @@ export default {
   },
   mounted() {
     if (this.isFirstForm && this.firstForm.length > 0) {
-      console.log(this.firstForm.length);
       this.mutationForm(this.multiForm, this.firstForm, this.numStep);
     }
   },

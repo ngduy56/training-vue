@@ -64,7 +64,6 @@
     />
     <CompanyItem
       v-if="item.view_type === COMPANY_ITEM"
-      :index="index"
       :item="item"
       :formData="formData"
       @onChangeChildren="onChangeChildren"
@@ -93,11 +92,6 @@ import {
   IMG_DROPZONE,
   COMPANY_ITEM,
 } from "@/constants/FormConstants";
-import {
-  checkInputDate,
-  checkInputField,
-  checkInputSalary,
-} from "@/utils/ValidateForm";
 
 export default {
   data() {
@@ -125,9 +119,6 @@ export default {
     CompanyItem,
   },
   props: {
-    index: {
-      type: Number,
-    },
     item: {
       type: Object,
       required: true,
@@ -139,27 +130,13 @@ export default {
       type: [String, Array, Number],
     },
   },
-  created() {
-    if (this.value) {
-      this.valueLocal = this.value;
-    }
-  },
   watch: {
     value: {
       handler(val) {
         this.valueLocal = val;
-        if (
-          this.item.view_type === INPUT_TEXT ||
-          this.item.view_type === INPUT_AREA
-        ) {
-          checkInputField(this.item);
-        } else if (this.item.view_type === INPUT_DATE) {
-          checkInputDate(this.item);
-        } else if (this.item.view_type === INPUT_SALARY) {
-          checkInputSalary(this.item);
-        }
       },
       deep: true,
+      immediate: true,
     },
   },
   methods: {

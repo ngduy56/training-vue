@@ -3,7 +3,6 @@
     <div :class="{ container: !isSecondForm }">
       <MultiInputView
         v-for="(item, index) in formData"
-        :index="index"
         :key="item.key"
         :item="item"
         :value="item.value"
@@ -49,12 +48,25 @@
 import AddIcon from "@/components/icons/AddIcon.vue";
 import MultiInputView from "@/components/multiform/MultiInputView.vue";
 import { multiForm } from "@/components/multiform/form";
-import { checkRequired } from "@/utils/ValidateForm";
+import {
+  checkCompany,
+  checkDate,
+  checkLength,
+  checkRequired,
+  checkSalary,
+  checkTimezone,
+} from "@/utils/ValidateForm";
+import {
+  INPUT_DATE,
+  INPUT_DATE_ZONE,
+  INPUT_DROPDOWN,
+  INPUT_SALARY,
+} from "@/constants/FormConstants";
 
 export default {
   data() {
     return {
-      isValid: true,
+      isValid: false,
       multiForm,
     };
   },
@@ -78,9 +90,6 @@ export default {
     isSecondForm() {
       return this.numStep === 2;
     },
-    isThirdForm() {
-      return this.numStep === 3;
-    },
     isLastForm() {
       return this.numStep === this.multiForm.length;
     },
@@ -94,7 +103,13 @@ export default {
   watch: {
     formData: {
       handler() {
-        this.isValid = true;
+        this.isValid = false;
+      },
+      deep: true,
+    },
+    numStep: {
+      handler() {
+        this.isValid = false;
       },
       deep: true,
     },
@@ -124,26 +139,61 @@ export default {
     removeCompany(index) {
       this.$emit("removeCompany", index);
     },
-    nextStep() {
-      let error;
-      this.formData.map((item) => {
-        if (item.required && !item.value) {
-          this.isValid = false;
+    validate() {
+      this.formData.forEach((item) => {
+        if (item.childrens && item.childrens.length > 0) {
+          item.childrens.forEach((child) => {
+            child.error = "";
+          });
+        } else {
+          item.error = "";
+        }
+      });
+      this.formData.forEach((item) => {
+        if (item.required) {
           checkRequired(item);
+        }
+        if (item.maxLength) {
+          checkLength(item);
+        }
+        if (item.view_type === INPUT_DATE) {
+          checkDate(item);
+        }
+        if (item.view_type === INPUT_SALARY) {
+          checkSalary(item);
         }
         if (item.childrens && item.childrens.length > 0) {
           item.childrens.forEach((child) => {
-            if (child.required && typeof child.value === "object") {
+            if (child.required) {
               checkRequired(child);
-            } else if (child.required && !child.value) {
-              this.isValid = false;
-              checkRequired(child);
+            }
+            if (child.maxLength) {
+              checkLength(child);
+            }
+            if (child.view_type === INPUT_DATE_ZONE) {
+              checkTimezone(this.formData);
+            }
+            if (child.view_type === INPUT_DROPDOWN) {
+              checkCompany(this.formData);
             }
           });
         }
       });
-      error = document.querySelector(".error-vali");
-      if (this.isValid && !error) {
+    },
+    nextStep() {
+      this.validate();
+      let error = null;
+      if (!this.isSecondForm) {
+        error = this.formData.filter((item) => item.error);
+      } else {
+        this.formData.forEach((item) => {
+          error = item.childrens.filter((child) => child.error);
+        });
+      }
+      if (!error.length) {
+        this.isValid = true;
+      }
+      if (this.isValid) {
         this.$emit("nextStep");
         this.$emit("changeForm", this.numStep + 1);
         this.$emit("doneStep", this.numStep);

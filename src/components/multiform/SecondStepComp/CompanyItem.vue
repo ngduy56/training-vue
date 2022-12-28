@@ -56,11 +56,7 @@ import {
   INPUT_DROPDOWN,
   INPUT_AREA,
 } from "@/constants/FormConstants";
-import {
-  checkCompany,
-  checkInputField,
-  checkTimezone,
-} from "@/utils/ValidateForm";
+
 export default {
   data() {
     return {
@@ -68,15 +64,9 @@ export default {
       INPUT_DATE_ZONE,
       INPUT_DROPDOWN,
       INPUT_AREA,
-
-      valueLocal: "",
-      indexLocal: 0,
     };
   },
   props: {
-    index: {
-      type: Number,
-    },
     item: {
       type: Object,
       required: true,
@@ -95,30 +85,8 @@ export default {
     WorkArea,
     DropdownList,
   },
-  watch: {
-    valueLocal: {
-      handler() {
-        let child = this.item.childrens.find(
-          (item, index) => index === this.indexLocal
-        );
-        if (child.view_type === INPUT_DROPDOWN) {
-          checkCompany(child, this.index, this.formData);
-        } else if (
-          child.view_type === INPUT_TEXT ||
-          child.view_type === INPUT_AREA
-        ) {
-          checkInputField(child);
-        } else if (child.view_type === INPUT_DATE_ZONE) {
-          checkTimezone(child, this.index, this.formData);
-        }
-      },
-      deep: true,
-    },
-  },
   methods: {
     onChangeChildren(value, indexChild) {
-      this.valueLocal = value;
-      this.indexLocal = indexChild;
       this.$emit("onChangeChildren", value, indexChild);
     },
     removeCompany() {

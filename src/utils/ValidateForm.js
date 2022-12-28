@@ -134,7 +134,6 @@ const checkRequired = (item) => {
   }
   if (item.required && typeof item.value === "object") {
     if (!item.value.from || !item.value.to) {
-      console.log("hihi");
       if (item.label) {
         item.error = `${item.label} là thông tin bắt buộc`;
       } else {
@@ -167,60 +166,39 @@ const checkSalary = (item) => {
     item.error = `${item.label} tối đa là ${item.maxLength} chữ số`;
   }
 };
-const checkInputField = (item) => {
-  checkRequired(item);
-  checkLength(item);
-};
-const checkInputDate = (item) => {
-  checkRequired(item);
-  checkDate(item);
-};
-const checkInputSalary = (item) => {
-  checkRequired(item);
-  checkSalary(item);
-};
-const checkCompany = (child, index, formData) => {
-  let currentCompany = "";
-  let prevElement = {};
-  let prevCompanyElement = {};
-  let prevCompany = "";
-
-  checkRequired(child);
-  currentCompany = child.value;
-
-  let chosenCompany = [];
-  formData.forEach((item) => {
+const checkCompany = (formData) => {
+  let nextElement = {};
+  formData.forEach((item, index, element) => {
+    if (element[index + 1]) {
+      nextElement = element[index + 1];
+    } else {
+      nextElement = {};
+    }
     item.childrens.forEach((child) => {
+      let nextCompanyElement = {};
       if (child.key === "company") {
-        chosenCompany = [...chosenCompany, child.value];
+        if (Object.keys(nextElement).length > 0) {
+          nextCompanyElement = nextElement.childrens.find(
+            (child) => child.key === "company"
+          );
+          if (
+            child.value === nextCompanyElement.value &&
+            child.value !== "" &&
+            nextCompanyElement.value !== ""
+          ) {
+            child.error = `Công ty có thể đã bị trùng`;
+            nextCompanyElement.error = `Công ty có thể đã bị trùng`;
+          }
+        }
       }
     });
   });
-  console.log(chosenCompany);
-
-  if (formData[index - 1]) {
-    prevElement = formData[index - 1];
-    prevCompanyElement = prevElement.childrens.find(
-      (item) => item.key === "company"
-    );
-    prevCompany = prevCompanyElement.value;
-    if (
-      currentCompany === prevCompany &&
-      currentCompany !== "" &&
-      prevCompany !== ""
-    ) {
-      child.error = "Công ty bị trùng";
-      prevCompanyElement.error = "Công ty bị trùng";
-    } else {
-      prevCompanyElement.error = "";
-    }
-  }
 };
 const checkInvalidTime = (child) => {
   const currentDate = new Date().getTime();
   const startDate = new Date(child.value.from).getTime();
   const endDate = new Date(child.value.to).getTime();
-  if (!child.value.from && !child.value.to) {
+  if (!child.value.from || !child.value.to) {
     child.error = `${child.label} là thông tin bắt buộc`;
   }
   if (
@@ -232,39 +210,42 @@ const checkInvalidTime = (child) => {
     child.error = `${child.label} không hợp lệ`;
   }
 };
-const checkTimezone = (child, index, formData) => {
-  let currentStartDate = 0;
-
-  let prevElement = {};
-  let prevTimeElement = {};
-  let prevStartDate = 0;
-  let prevEndDate = 0;
-
-  checkInvalidTime(child);
-  currentStartDate = new Date(child.value.from).getTime();
-
-  if (formData[index - 1]) {
-    prevElement = formData[index - 1];
-    prevTimeElement = prevElement.childrens.find((item) => item.key === "time");
-    prevStartDate = new Date(prevTimeElement.value.from).getTime();
-    prevEndDate = new Date(prevTimeElement.value.to).getTime();
-
-    if (prevStartDate > currentStartDate || prevEndDate > currentStartDate) {
-      child.error = `${child.label} không hợp lệ`;
-      prevTimeElement.error = `${prevTimeElement.label} không hợp lệ`;
+const checkTimezone = (formData) => {
+  let nextElement = {};
+  formData.forEach((item, index, element) => {
+    if (element[index + 1]) {
+      nextElement = element[index + 1];
     } else {
-      prevTimeElement.error = "";
+      nextElement = {};
     }
-  }
-};
+    item.childrens.forEach((child) => {
+      let nextTimeElement = {};
+      let nextStartDate = 0;
+      if (child.key === "time") {
+        checkInvalidTime(child);
+        let startDate = new Date(child.value.from).getTime();
+        let endDate = new Date(child.value.to).getTime();
 
+        if (Object.keys(nextElement).length > 0) {
+          nextTimeElement = nextElement.childrens.find(
+            (child) => child.key === "time"
+          );
+          nextStartDate = new Date(nextTimeElement.value.from).getTime();
+
+          if (startDate > nextStartDate || endDate > nextStartDate) {
+            child.error = `${child.label} không hợp lệ`;
+            nextTimeElement.error = `${nextTimeElement?.label} không hợp lệ`;
+          }
+        }
+      }
+    });
+  });
+};
 export {
   checkRequired,
   checkLength,
   checkDate,
-  checkInputField,
-  checkInputDate,
-  checkInputSalary,
-  checkTimezone,
+  checkSalary,
   checkCompany,
+  checkTimezone,
 };
