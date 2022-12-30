@@ -1,6 +1,14 @@
 <template>
   <div class="main">
-    <DatePicker v-model="datetime" :placeholder="'Choose day'" />
+    <DatePicker
+      v-model="datetime"
+      :placeholder="'Choose day'"
+      :mode="'single'"
+      @onSelect="onSelect"
+      @onClear="onClear"
+      @onFocus="onFocus"
+      @onBlur="onBlur"
+    />
   </div>
 </template>
 
@@ -14,6 +22,20 @@ export default {
   },
   components: {
     DatePicker,
+  },
+  methods: {
+    onSelect(val) {
+      console.log(val);
+    },
+    onClear() {
+      console.log("clear");
+    },
+    onFocus() {
+      console.log("focus");
+    },
+    onBlur() {
+      console.log("blur");
+    },
   },
 };
 </script>

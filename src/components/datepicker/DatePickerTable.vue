@@ -1,11 +1,11 @@
 <template>
   <div class="popup">
-    <div class="overlay-popup"></div>
+    <div class="overlay-popup" @click="closePopup"></div>
     <div class="popup__container">
       <div class="popup__header">
         <div class="year-click">
-          <span>2022</span>
-          <button>
+          <span @click="mode = 'chooseYear'"> {{ yearChoose }}</span>
+          <button @click="getToday">
             <svg
               class="svg-icon"
               style="vertical-align: middle; overflow: hidden"
@@ -22,10 +22,10 @@
           </button>
         </div>
         <div class="display-flex">
-          <div class="date-month-click">Mon, Dec 12</div>
+          <div class="date-month-click">{{ getChooseDay }}</div>
         </div>
       </div>
-      <div class="popup__body">
+      <div class="popup__body" v-if="mode == 'chooseDate'">
         <div class="popup__body-top">
           <div class="month-picker">
             <span class="btn-prev" @click="decreaseMonth">&#10094;</span>
@@ -73,6 +73,9 @@
           </tbody>
         </table>
       </div>
+      <div class="popup__footer">
+        <button @click="clear">Clear</button>
+      </div>
     </div>
   </div>
 </template>
@@ -93,7 +96,7 @@ export default {
       dates: [],
       dateByGroup: [],
       chooseDay: null,
-      startDay: null,
+      startDayInWeek: null,
       numberOfFirstWeek: 0,
       numberOfWeek: 0,
       mode: "chooseDate",
@@ -119,15 +122,14 @@ export default {
       this.month = this.months.find((c) => c.key == now.getMonth() + 1);
       this.monthChoose = this.month;
       this.yearChoose = this.year;
-      this.getListYear(this.year);
+      // this.getListYear(this.year);
     } else {
       this.monthChoose = this.months.find((c) => c.key == now.getMonth() + 1);
       this.yearChoose = now.getFullYear();
-      this.getListYear(this.yearChoose);
+      // this.getListYear(this.yearChoose);
     }
     const weekday = now.toLocaleDateString(this.locale, { weekday: "short" });
-    console.log(weekday);
-    this.weekday = this.weekdays.find((c) => c.short_nm == weekday);
+    this.weekday = this.weekdays.find((c) => c.short_nm === weekday);
     this.prepareDates();
   },
   computed: {
@@ -173,6 +175,7 @@ export default {
     },
   },
   methods: {
+    // get name for months short and long
     getMonthList() {
       this.months = [];
       for (let i = 0; i < 12; i++) {
@@ -191,6 +194,7 @@ export default {
         this.months.push(data);
       }
     },
+    // get name for days short and long
     getWeekDays() {
       let baseDate = new Date(Date.UTC(2017, 0, 2));
       this.weekdays = [];
@@ -208,18 +212,19 @@ export default {
         baseDate.setDate(baseDate.getDate() + 1);
       }
     },
-    getListYear(from) {
-      this.years = [];
-      for (let j = 1; j < 9; j++) {
-        this.years.push(from - j);
-      }
-
-      this.years.reverse();
-
-      for (let i = 0; i < 10; i++) {
-        this.years.push(from + i);
-      }
-    },
+    // get years from a year
+    // getListYear(from) {
+    //   this.years = [];
+    //   for (let j = 1; j < 8; j++) {
+    //     this.years.push(from - j);
+    //   }
+    //   this.years.reverse();
+    //   for (let i = 0; i < 9; i++) {
+    //     this.years.push(from + i);
+    //   }
+    //   console.log(this.years);
+    // },
+    // get all dates in a month of a year
     getAllDaysInMonth(year, month) {
       const date = new Date(year, month, 1);
       const dates = [];
@@ -230,32 +235,45 @@ export default {
       return dates;
     },
     prepareDates() {
+      // set up day in a month: first day name, number week, number day in first week
       this.dates = this.getAllDaysInMonth(
         this.yearChoose,
         this.monthChoose.key - 1
       );
-      this.startDay = new Date(this.yearChoose, this.monthChoose.key - 1, 1);
-      let firstWeek = this.startDay.toLocaleDateString(this.locale, {
-        weekday: "short",
-      });
+      this.startDayInWeek = new Date(
+        this.yearChoose,
+        this.monthChoose.key - 1,
+        1
+      );
+      let firstDayInMonth = this.startDayInWeek.toLocaleDateString(
+        this.locale,
+        {
+          weekday: "short",
+        }
+      );
       this.numberOfWeek = Math.ceil(this.dates.length / 7) + 1;
-      this.dateByGroup = [];
       this.numberOfFirstWeek =
-        7 - this.weekdays.find((c) => c.short_nm == firstWeek).key;
-      let firstDates = [];
+        7 - this.weekdays.find((c) => c.short_nm == firstDayInMonth).key;
+
+      // set up day for a month
+      let dateInFirstWeek = [];
       for (let i = 0; i < this.numberOfFirstWeek; i++) {
-        firstDates.push(this.dates[i]);
+        dateInFirstWeek.push(this.dates[i]);
       }
+      // 0 if before first day in month not in this month
       if (this.numberOfFirstWeek < 7) {
         for (let k = 0; k < 7 - this.numberOfFirstWeek; k++) {
-          firstDates.unshift(0);
+          dateInFirstWeek.unshift(0);
         }
       }
+      // push data 1 week to month
+      this.dateByGroup = [];
       let firstData = {
         key: 0,
-        date: firstDates,
+        date: dateInFirstWeek,
       };
       this.dateByGroup.push(firstData);
+
       for (let i = 0; i < this.numberOfWeek - 1; i++) {
         let dates = [];
         for (
@@ -269,24 +287,14 @@ export default {
           key: i + 1,
           date: dates,
         };
-
         this.dateByGroup.push(data);
       }
-    },
-    closePopup() {
-      this.$emit("closePopup", false);
-    },
-    chooseDate(date) {
-      this.date = date;
-      this.month = this.monthChoose;
-      this.year = this.yearChoose;
-      this.$emit("input", this.convertDate);
-      this.$emit("onSelect", this.convertDate);
+      console.log(this.dateByGroup);
     },
     decreaseMonth() {
-      if (this.monthChoose.key == 1) {
+      if (this.monthChoose.key === 1) {
         this.yearChoose = this.yearChoose - 1;
-        this.monthChoose = this.months.find((c) => c.key == 12);
+        this.monthChoose = this.months.find((c) => c.key === 12);
       } else {
         this.monthChoose = this.months.find(
           (c) => c.key == this.monthChoose.key - 1
@@ -295,9 +303,9 @@ export default {
       this.prepareDates();
     },
     increaseMonth() {
-      if (this.monthChoose.key == 12) {
+      if (this.monthChoose.key === 12) {
         this.yearChoose = this.yearChoose + 1;
-        this.monthChoose = this.months.find((c) => c.key == 1);
+        this.monthChoose = this.months.find((c) => c.key === 1);
       } else {
         this.monthChoose = this.months.find(
           (c) => c.key == this.monthChoose.key + 1
@@ -313,13 +321,12 @@ export default {
       this.yearChoose += 1;
       this.prepareDates();
     },
-    decreaseYearRange() {
-      let from = this.years[0] - 10;
-      this.getListYear(from);
-    },
-    increaseYearRange() {
-      let from = this.years.slice(-1).pop() + 9;
-      this.getListYear(from);
+    chooseDate(date) {
+      this.date = date;
+      this.month = this.monthChoose;
+      this.year = this.yearChoose;
+      this.$emit("input", this.convertDate);
+      this.$emit("onSelect", this.convertDate);
     },
     chooseYear(year) {
       this.yearChoose = year;
@@ -337,6 +344,9 @@ export default {
       this.prepareDates();
       this.yearChoose = this.year;
       this.monthChoose = this.month;
+    },
+    closePopup() {
+      this.$emit("closePopup", false);
     },
     clear() {
       this.date = null;
@@ -493,6 +503,28 @@ export default {
         }
       }
     }
+    .popup__footer {
+      padding: 8px 16px;
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        background: 0 0;
+        font-size: 14px;
+        cursor: pointer;
+        padding: 5px 12px px;
+        color: #0085d1;
+        border: none;
+        outline: 0;
+        border-radius: 4px;
+        transition: all 0.25s;
+      }
+    }
+  }
+  .active {
+    background-color: #0085d1;
+    color: #ffffff;
+    border-radius: 50%;
   }
 }
 </style>

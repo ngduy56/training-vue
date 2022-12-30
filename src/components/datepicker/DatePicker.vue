@@ -1,17 +1,27 @@
 <template>
   <div class="datepicker">
-    <div class="datepicker__wrapper">
+    <div class="datepicker__wrapper" :class="{ focus: onFocus }">
       <input
-        type="text"
         class="datepicker__input"
+        type="text"
         v-model="datetime"
         :placeholder="placeholder"
+        :ref="refs"
+        @focus="focus"
+        @blur="blur"
       />
-      <span class="datepicker__icon-right">
+      <span class="datepicker__icon-right" @click="toggleDatepicker">
         <DateIcon />
       </span>
     </div>
-    <DatePickerTable v-model="datetime" :locale="locale" />
+    <DatePickerTable
+      v-model="datetime"
+      :locale="locale"
+      v-if="openPopup && this.mode === 'single'"
+      @closePopup="openPopup = $event"
+      @onSelect="onSelect"
+      @onClear="onClear"
+    />
   </div>
 </template>
 
@@ -21,7 +31,9 @@ import DatePickerTable from "@/components/datepicker/DatePickerTable.vue";
 export default {
   data() {
     return {
+      onFocus: false,
       datetime: null,
+      openPopup: false,
       locale: "en-US",
     };
   },
@@ -38,6 +50,10 @@ export default {
       type: String,
       default: "single",
     },
+    refs: {
+      type: String,
+      default: "datepicker__input",
+    },
   },
   created() {
     this.datetime = this.value;
@@ -52,6 +68,27 @@ export default {
   components: {
     DateIcon,
     DatePickerTable,
+  },
+  methods: {
+    focus() {
+      this.onFocus = true;
+      this.openPopup = true;
+      this.$emit("onFocus");
+    },
+    blur() {
+      this.onFocus = false;
+      this.$emit("onBlur");
+    },
+    toggleDatepicker() {
+      this.openPopup = !this.openPopup;
+      this.$refs[this.refs].focus();
+    },
+    onSelect(val) {
+      this.$emit("onSelect", val);
+    },
+    onClear() {
+      this.$emit("onClear");
+    },
   },
 };
 </script>
@@ -73,6 +110,7 @@ export default {
     .datepicker__input {
       color: #888;
       width: 100%;
+      font-size: 14px;
     }
 
     .datepicker__icon-right {
@@ -85,7 +123,7 @@ export default {
   }
 
   .focus {
-    border: 1px solid #16a085;
+    border: 1px solid #0085d1;
   }
 
   &__input {
