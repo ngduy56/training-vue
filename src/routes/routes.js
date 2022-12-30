@@ -3,10 +3,7 @@ import InputPage from "@/components/pages/InputPage.vue";
 import DropzonePage from "@/components/pages/DropzonePage.vue";
 import MultiFormPage from "@/components/pages/MultiFormPage.vue";
 import DatePickerPage from "@/components/pages/DatePickerPage.vue";
-
-// import FirstStepComp from "@/components/multiform/FirstStepComp/FirstStepComp.vue";
-// import SecondStepComp from "@/components/multiform/SecondStepComp/SecondStepComp.vue";
-// import ThirdStepComp from "@/components/multiform/ThirdStepComp/ThirdStepComp.vue";
+import SlideshowPage from "@/components/pages/SlideshowPage.vue";
 
 export const routes = [
   { path: "/", name: "HomePage", component: Homepage },
@@ -16,11 +13,7 @@ export const routes = [
     path: "/multiform",
     name: "multiform",
     component: MultiFormPage,
-    // children: [
-    //   { path: "first-step", name: "firstStep", component: FirstStepComp },
-    //   { path: "second-step", name: "secondStep", component: SecondStepComp },
-    //   { path: "third-step", name: "thirdStep", component: ThirdStepComp },
-    // ],
   },
   { path: "/datepicker", name: "datepicker", component: DatePickerPage },
+  { path: "/slideshow", name: "slideshow", component: SlideshowPage },
 ];

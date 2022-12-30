@@ -39,6 +39,16 @@
         >
           <a class="nav-link">Exam 4</a>
         </router-link>
+
+        <router-link
+          :to="{ name: 'slideshow' }"
+          class="nav-item"
+          active-class="active"
+          tag="li"
+          exact
+        >
+          <a class="nav-link">Exam 5</a>
+        </router-link>
       </ul>
     </div>
   </nav>
