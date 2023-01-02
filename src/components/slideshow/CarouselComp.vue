@@ -2,6 +2,7 @@
   <div class="carousel">
     <div class="carousel-inner">
       <CarouselIndicators
+        v-if="indicators"
         :total="slides.length"
         :currentIndex="currentSlide"
         @changeSlide="changeSlide"
@@ -16,7 +17,7 @@
         @mouseover="stopSlideTimer"
         @mouseleave="startSlideTimer"
       />
-      <CarouselControls @prev="prev" @next="next" />
+      <CarouselControls v-if="controls" @prev="prev" @next="next" />
     </div>
   </div>
 </template>
@@ -38,6 +39,18 @@ export default {
       type: Array,
       require: true,
     },
+    controls: {
+      type: Boolean,
+      default: false,
+    },
+    indicators: {
+      type: Boolean,
+      default: false,
+    },
+    interval: {
+      type: Number,
+      default: 5000,
+    },
   },
   components: {
     CarouselItem,
@@ -58,7 +71,7 @@ export default {
       this.stopSlideTimer();
       this.slideInterval = setInterval(() => {
         this.next();
-      }, 5000);
+      }, this.interval);
     },
     stopSlideTimer() {
       clearInterval(this.slideInterval);

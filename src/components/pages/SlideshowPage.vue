@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <CarouselComp :slides="slides" />
+    <CarouselComp :slides="slides" :interval="3000" controls indicators />
   </div>
 </template>
 
