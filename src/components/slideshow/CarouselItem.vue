@@ -1,6 +1,11 @@
 <template>
-  <transition name="slide-in">
-    <div class="item" v-show="currentSlide === index">
+  <transition :name="transtition">
+    <div
+      class="item"
+      v-show="currentSlide === index"
+      @mouseover="$emit('mouseover')"
+      @mouseleave="$emit('mouseleave')"
+    >
       <img :src="slide" />
     </div>
   </transition>
@@ -20,6 +25,14 @@ export default {
       type: Number,
       require: true,
     },
+    direction: {
+      type: String,
+    },
+  },
+  computed: {
+    transtition() {
+      return this.direction === "right" ? "slide-out" : "slide-in";
+    },
   },
 };
 </script>
@@ -34,13 +47,21 @@ export default {
   bottom: 0;
 }
 .slide-in-enter-active,
-.slide-in-leave-active {
+.slide-in-leave-active,
+.slide-out-enter-active,
+.slide-out-leave-active {
   transition: all 1s ease-in-out;
 }
-.slide-in-enter-from {
+.slide-in-enter {
   transform: translateX(-100%);
 }
 .slide-in-leave-to {
   transform: translateX(100%);
+}
+.slide-out-enter {
+  transform: translateX(100%);
+}
+.slide-out-leave-to {
+  transform: translateX(-100%);
 }
 </style>
